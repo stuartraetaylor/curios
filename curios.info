@@ -1,0 +1,11 @@
+name = CURIOS
+description = curios
+dependencies[] = panels
+dependencies[] = page_manager
+dependencies[] = sparql_views
+dependencies[] = sparql_views_related_resource
+dependencies[] = views_php
+package = curios
+core = 7.x
+files[] = curios_entities.inc
+files[] = curios_configuration.inc

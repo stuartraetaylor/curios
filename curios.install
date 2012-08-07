@@ -1,0 +1,212 @@
+<?php
+require_once('curios_entities.inc');
+require_once('curios_configuration.inc');
+
+
+/**
+ * Implements hook_install().
+ */
+function curios_install() {
+  // Create the SPARQL Views resource type(s).
+  foreach (_curios_installed_resource_types() as $resource_type) {
+    sparql_views_resource_type_save($resource_type);
+  }
+
+  // Create the node type(s).
+//  foreach (_kasabi_factbook_installed_node_types() as $node_type) {
+//    node_type_save($node_type);
+//  }
+
+  // Create all the fields we are adding.
+  foreach (_curios_installed_fields() as $field) {
+    try {
+     field_create_field($field);
+    } catch (Exception $e) {
+      echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+  }
+
+  // Attach instances of the fields to the resource type and node type.
+  foreach (_curios_installed_instances() as $bundle_name => $bundle) {
+    foreach ($bundle as $instance) {
+      $instance['bundle'] = $bundle_name;
+      field_create_instance($instance);
+    }
+  }
+  
+  // Create menu.
+  $menu = array(
+    'menu_name' => 'menu-curios',
+    'title' => 'CURIOS',
+    'description' => 'CURIOS menu',
+  );
+  menu_save($menu);
+  _activate_block('menu', 'menu-curios', 'sidebar_first', 'bartik', '', '0');
+
+  // Clear caches.
+  cache_clear_all(NULL, 'cache_views', TRUE);
+  menu_rebuild();
+  cache_clear_all(NULL, 'cache_block');
+  
+  // TODO assign resource type to endpoint
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function curios_uninstall() {
+  // Delete the fields.
+  foreach (_curios_installed_fields() as $field) {
+    try {
+      field_delete_field($field['field_name']);
+    } catch (Exception $e) {
+      echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+
+  }
+
+  // Delete the resource type.
+  foreach (_curios_installed_resource_types() as $resource_type) {
+    try {
+      sparql_views_resource_type_delete($resource_type['name']);
+    } catch (Exception $e) {
+      echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+  }
+  
+  // TODO delete menu, endpoint etc.
+
+  // Delete the node type.
+//  foreach (_kasabi_factbook_installed_node_types() as $node_type) {
+//    // Delete all of the nodes that use this type from the database.
+//    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+//    $result = db_query($sql, array(':type' => $node_type->type));
+//    $nids = array();
+//    foreach ($result as $row) {
+//      $nids[] = $row->nid;
+//    }
+//    node_delete_multiple($nids);
+//
+//    // Delete the node type itself.
+//    node_type_delete($node_type->type);
+//  }
+}
+
+/**
+ * Return a structured array defining the SPARQL Views resource types.
+ */
+function _curios_installed_resource_types() {
+  $config = _curios_configuration();
+  // Use get_t() to get the name of our localization function for translation
+  // during install, when t() is not available.
+  $t = get_t();
+  $resource_types = array();
+
+  // Create an array of endpoints.
+  $endpoints = array();
+  $endpoints['hc_endpoint'] = array(
+    'title' => 'Hebridean Connections',
+    'uri' => 'http://localhost:3030/dataset/query',
+  );
+
+  // Save the endpoints to the database.
+  sparql_views_register_endpoints($endpoints);
+  
+  // Define the SPARQL Views resource type.
+  foreach ($config['rdf_resources'] as $entity) {
+    $resource_types[$entity->getMachineName()] = array(
+      'name' => $entity->getMachineName(),
+      'label' => $t($entity->getLabel()),
+      'base' => 'sparql_views_resource',
+      'description' => $t($entity->getLabel()),
+      'endpoints' => array($endpoints['hc_endpoint']['uri'] => TRUE),
+    );
+  }
+
+  return $resource_types;
+}
+
+/**
+ * Return a structured array defining the node types.
+ */
+//function _curios_installed_node_types() {
+//  $t = get_t();
+//  $node_types = array();
+//
+//  $kasabi_factbook_leader = array(
+//    'type' => 'kasabi_factbook_leader',
+//    'name' => $t('Leader (Kasabi Factbook)'),
+//    'base' => 'node_content',
+//    'description' => $t('This is a world leader. Some additional information about the leader is pulled from the Kasabi SPARQL endpoint.'),
+//  );
+//
+//  // Set additional defaults and save the content type.
+//  $node_types['kasabi_factbook_leader'] = node_type_set_defaults($kasabi_factbook_leader);
+//  
+//  return $node_types;
+//}
+
+/**
+ * Return a structured array defining the fields created by this resource type.
+ * Note that field names must be shorter than 32 characters.
+ */
+function _curios_installed_fields() {
+  $config = _curios_configuration();
+  $fields = array();
+  $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
+  
+  foreach ($config['rdf_fields'] as $field) {
+    // TODO integrate formatter into field object
+    $settings = ($field->getMachineName() == 'dc_description') ? $description_settings : array('default_formatter' => 'filtered_html');
+
+    $fields[$field->getMachineName()] = array(
+      'field_name' => $field->getMachineName(),
+      'type' => $field->getType(),
+      'settings' => $settings,
+    );
+  }
+      
+  return $fields;
+}
+
+/**
+ * Return a structured array defining the instances for this content type.
+ */
+function _curios_installed_instances() {
+  $config = _curios_configuration();
+  $resource_instances = array();
+  $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
+
+  foreach ($config['rdf_resources'] as $entity) {
+    $field_instances = array();
+    
+    foreach ($entity->getFields() as $field) {
+      // TODO integrate formatter into field object
+      $settings = ($field->getMachineName() == 'dc_description') ? $description_settings : array('default_formatter' => 'filtered_html');
+
+      $field_instances[] = array(
+        'field_name' => $field->getMachineName(), 
+        'label' => t($field->getLabel()), 
+        'entity_type' => 'sparql_views_resource',
+        'settings' => $settings,
+      );
+    }
+    
+    $resource_instances[$entity->getMachineName()] = $field_instances;
+  }
+
+  return $resource_instances;
+}
+
+function _activate_block($module, $block, $region, $theme, $pages, $visibility) {
+  db_merge('block')
+  ->key(array('theme' => $theme, 'delta' => $block, 'module' => $module))
+  ->fields(array(
+    'region' => ($region == BLOCK_REGION_NONE ? '' : $region),
+    'pages' => trim($pages),
+    'status' => (int) ($region != BLOCK_REGION_NONE),
+    'visibility' => $visibility,
+  ))
+  ->execute();
+}
+

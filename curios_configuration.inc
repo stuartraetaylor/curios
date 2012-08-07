@@ -1,0 +1,1015 @@
+<?php
+
+// TODO better caching
+function _curios_configuration() {
+  $config = &drupal_static(__FUNCTION__);
+
+  if (!isset($config)) {
+    $config = array();
+
+    $config['namespaces'] = array(
+      'hc' => 'http://www.csd.abdn.ac.uk/~cmellish/ontologies/hebridean.owl#',
+      'dc' => 'http://purl.org/dc/elements/1.1/',
+    );
+
+    $config['rdf_fields'] = array(
+      // Data properties.
+      'hc_also_known_as'        => new RDFField('hc_also_known_as', 'AlsoKnownAs', 'hc:alsoKnownAs', 'text'),
+      'hc_bk_reference'         => new RDFField('hc_bk_reference', 'BkReference', 'hc:bkReference', 'text'),
+      'hc_born'                 => new RDFField('hc_born', 'Born', 'hc:dateOfBirth', 'text'),
+//      'hc_business_type'        => new RDFField('hc_business_type', 'BusinessType', 'hc:businessType', 'text'),
+      'hc_chassis'              => new RDFField('hc_chassis', 'Chassis', 'hc:chassis', 'text'),
+//      'hc_composer'             => new RDFField('hc_composer', 'Composer', 'hc:Composer', 'text'),
+      'hc_created_by'           => new RDFField('hc_created_by', 'Createdby', 'hc:createdBySociety', 'text'),
+      'hc_date'                 => new RDFField('hc_date', 'Date', 'hc:date', 'text'),
+      'hc_date_built'           => new RDFField('hc_date_built', 'DateBuilt', 'hc:dateBuilt', 'text'),
+      'hc_date_demolished'      => new RDFField('hc_date_demolished', 'DateDemolished', 'hc:dateDemolished', 'text'),
+      'hc_date_established'     => new RDFField('hc_date_established', 'DateEstablished','hc:dateEstablished', 'text'),
+      'hc_date_founded'         => new RDFField('hc_date_founded', 'DateFounded', 'hc:dateFounded', 'text'),
+      'hc_date_launched'        => new RDFField('hc_date_launched', 'DateLaunched', 'hc:dateLaunched', 'text'),
+      'hc_date_lotted'          => new RDFField('hc_date_lotted', 'DateLotted', 'hc:dateLotted', 'text'),
+      'hc_date_of_death'        => new RDFField('hc_date_of_death', 'DateOfDeath', 'hc:dateOfDeath', 'text'),  
+      'hc_date_of_marriage'     => new RDFField('hc_date_of_marriage', 'DateOfMarriage', 'hc:dateOfMarriage', 'text'),  
+      'hc_date_of_registration' => new RDFField('hc_date_of_registration', 'DateOfRegistration', 'hc:dateOfRegistration', 'text'),
+      'hc_date_of_source'       => new RDFField('hc_date_of_source', 'DateOfSource', 'hc:dateOfSource', 'text'),
+      'hc_description'          => new RDFField('hc_description', 'Description', 'hc:description', 'text'),
+//      'hc_easting'              => new RDFField('hc_easting', 'Easting', 'hc:Easting', 'text'),
+      'hc_english_name'         => new RDFField('hc_english_name', 'EnglishName', 'hc:englishName', 'text'),
+      'hc_file'                 => new RDFField('hc_file', 'File', 'hc:file', 'text'),      
+      'hc_file_name'            => new RDFField('hc_file_name', 'Filename', 'hc:fileName', 'text'),
+      'hc_gaelic_name'          => new RDFField('hc_gaelic_name', 'GaelicName', 'hc:GaelicName', 'text'),
+      'hc_geo_ref'              => new RDFField('hc_geo_ref', 'GeoRef', 'hc:geoRef', 'text'),
+//      'hc_location_type'        => new RDFField('hc_location_type', 'LocationType', 'hc:LocationType', 'text'),
+//      'hc_natural_landmark_type'=> new RDFField('hc_natural_landmark_type', 'NaturalLandmarkType', 'hc:NaturalLandmarkType', 'text'),
+      'hc_northing'             => new RDFField('hc_northing', 'Northing', 'hc:northing', 'text'),
+//      'hc_object_type'          => new RDFField('hc_object_type', 'ObjectType', 'hc:ObjectType', 'text'),
+      'hc_occupation'           => new RDFField('hc_occupation', 'Occupation', 'hc:occupation', 'text'),   
+      'hc_period'               => new RDFField('hc_period', 'Period', 'hc:period', 'text'),
+      'hc_period_of_construction_use' => new RDFField('hc_period_of_construction_use', 'PeriodOfConstructionUse', 'hc:periodOfConstructionUse', 'text'),
+      'hc_registration'         => new RDFField('hc_registration', 'Registration', 'hc:registration', 'text'),
+//      'hc_residence_type'       => new RDFField('hc_residence_type', 'ResidenceType', 'hc:ResidenceType', 'text'),
+      'hc_sex'                  => new RDFField('hc_sex', 'Sex', 'hc:sex', 'text'),
+//      'hc_site_type'            => new RDFField('hc_site_type', 'SiteType', 'hc:SiteType', 'text'),
+      'hc_smr_record_id'        => new RDFField('hc_smr_record_id', 'SMR Record ID', 'hc:smrRecordId', 'text'),
+      'hc_source_type'          => new RDFField('hc_source_type', 'SourceType', 'hc:sourceType', 'text'),
+      'hc_soundex_name'         => new RDFField('hc_soundex_name', 'Soundexname', 'hc:soundexName', 'text'),      
+      'hc_subject_id'           => new RDFField('hc_subject_id', 'Subjectid', 'hc:subjectID', 'text'),      
+      'hc_title'                => new RDFField('hc_title', 'Title', 'hc:title', 'text'),
+//      'hc_subject'              => new RDFField('hc_subject', 'Subject', 'hc:subject', 'text'),
+      'hc_theme'                => new RDFField('hc_theme', 'Theme', 'hc:theme', 'text'),
+      'hc_time_period'          => new RDFField('hc_time_period', 'TimePeriod', 'hc:timePeriod', 'text'),
+//      'hc_type'                 => new RDFField('hc_type', 'Type', 'hc:Type', 'text'),
+//      'hc_type_of_boat'         => new RDFField('hc_type_of_boat', 'TypeOfBoat', 'hc:TypeOfBoat', 'text'),
+//      'hc_type_of_building_public_amty' => new RDFField('hc_type_of_building_public_amty', 'TypeOfBuildingPublicAmenity', 'hc:TypeOfBuildingPublicAmenity', 'text'),
+//      'hc_type_of_organisation' => new RDFField('hc_type_of_organisation', 'TypeOfOrganisation', 'hc:TypeOfOrganisation', 'text'),
+//      'hc_type_of_vehicle'      => new RDFField('hc_type_of_vehicle', 'TypeOfVehicle', 'hc:TypeOfVehicle', 'text'),
+
+      // Object Properties
+      'hc_adopted_by'           => new RDFField('hc_adopted_by', 'AdoptedBy',  'hc:adoptedBy', 'sparql_views_related_resource'),
+      'hc_adopted_person'       => new RDFField('hc_adopted_person', 'AdoptedPerson',  'hc:adoptedPerson', 'sparql_views_related_resource'),
+      'hc_associated_with'      => new RDFField('hc_associated_with', 'AssociatedWith',  'hc:associatedWith', 'sparql_views_related_resource'),
+      'hc_author_originator_of' => new RDFField('hc_author_originator_of', 'AuthorOriginatorOf',  'hc:authorOriginatorOf', 'sparql_views_related_resource'),
+      'hc_born_in'              => new RDFField('hc_born_in', 'BornIn',  'hc:hasPlaceOfBirth', 'sparql_views_related_resource'),
+      'hc_builder'              => new RDFField('hc_builder', 'Builder',  'hc:hasBuilder', 'sparql_views_related_resource'),
+      'hc_built_by'             => new RDFField('hc_built_by', 'BuiltBy',  'hc:builtBy', 'sparql_views_related_resource'),
+      'hc_child_of'             => new RDFField('hc_child_of', 'ChildOf',  'hc:childOf', 'sparql_views_related_resource'),      
+      'hc_compiled_maintained_by' => new RDFField('hc_compiled_maintained_by', 'compiledMaintainedBy',  'hc:CompiledMaintainedBy', 'sparql_views_related_resource'),
+      'hc_compiler_of'          => new RDFField('hc_compiler_of', 'CompilerOf',  'hc:compilerOf', 'sparql_views_related_resource'),
+      'hc_composed_by'          => new RDFField('hc_composed_by', 'ComposedBy',  'hc:composedBy', 'sparql_views_related_resource'),
+      'hc_composed_song'        => new RDFField('hc_composed_song', 'ComposedSong',  'hc:composedSong', 'sparql_views_related_resource'),
+      'hc_comprises_sub_site'   => new RDFField('hc_comprises_sub_site', 'ComprisesSubSite',  'hc:comprisesSubSite', 'sparql_views_related_resource'),
+      'hc_crewed_by'            => new RDFField('hc_crewed_by', 'CrewedBy',  'hc:crewedBy', 'sparql_views_related_resource'),
+      'hc_died_in'              => new RDFField('hc_died_in', 'DiedIn',  'hc:hasPlaceOfDeath', 'sparql_views_related_resource'),
+      'hc_emigrated_to'         => new RDFField('hc_emigrated_to', 'EmigratedTo',  'hc:emigratedTo', 'sparql_views_related_resource'),
+      'hc_employed'             => new RDFField('hc_employed', 'Employed',  'hc:employed', 'sparql_views_related_resource'),      
+      'hc_employed_by'          => new RDFField('hc_employed_by', 'EmployedBy',  'hc:employedBy', 'sparql_views_related_resource'),      
+      'hc_fostered_by'          => new RDFField('hc_fostered_by', 'FosteredBy',  'hc:fosteredBy', 'sparql_views_related_resource'),      
+      'hc_fostered_person'      => new RDFField('hc_fostered_person', 'FosteredPerson',  'hc:fosteredPerson', 'sparql_views_related_resource'),      
+      'hc_found_at'             => new RDFField('hc_found_at', 'FoundAt',  'hc:foundAt', 'sparql_views_related_resource'),      
+      'hc_found_here'           => new RDFField('hc_found_here', 'FoundHere',  'hc:foundHere', 'sparql_views_related_resource'),      
+      'hc_has_file'             => new RDFField('hc_has_file', 'HasFile',  'hc:hasFile', 'sparql_views_related_resource'),      
+      'hc_holds'                => new RDFField('hc_holds', 'Holds',  'hc:holds', 'sparql_views_related_resource'),      
+      'hc_immigrant_from'       => new RDFField('hc_immigrant_from', 'ImmigrantFrom',  'hc:immigrantFrom', 'sparql_views_related_resource'),      
+      'hc_information_obtained_from' => new RDFField('hc_information_obtained_from', 'InformationObtainedFrom',  'hc:informationObtainedFrom', 'sparql_views_related_resource'),      
+      'hc_is_part_of_site'      => new RDFField('hc_is_part_of_site', 'IsPartOfSite',  'hc:isPartOfSite', 'sparql_views_related_resource'),      
+      'hc_lived_here'           => new RDFField('hc_lived_here', 'LivedHere',  'hc:livedHere', 'sparql_views_related_resource'),      
+      'hc_lived_in_at'          => new RDFField('hc_lived_in_at', 'LivedInAt',  'hc:livedInAt', 'sparql_views_related_resource'),     
+      'hc_lived_with'           => new RDFField('hc_lived_with', 'LivedWith',  'hc:livedWith', 'sparql_views_related_resource'),
+      'hc_located_at_in'        => new RDFField('hc_located_at_in', 'LocatedAtIn',  'hc:locatedAtIn', 'sparql_views_related_resource'),
+      'hc_located_here'         => new RDFField('hc_located_here', 'LocatedHere',  'hc:locatedHere', 'sparql_views_related_resource'),
+      'hc_located_near'         => new RDFField('hc_located_near', 'LocatedNear',  'hc:locatedNear', 'sparql_views_related_resource'),
+      'hc_married'              => new RDFField('hc_married', 'Married',  'hc:married', 'sparql_views_related_resource'),
+      'hc_may_be_the_same_as'   => new RDFField('hc_may_be_the_same_as', 'mayBeTheSameAs',  'hc:MayBeTheSameAs', 'sparql_views_related_resource'),
+      'hc_moved_from'           => new RDFField('hc_moved_from', 'MovedFrom',  'hc:movedFrom', 'sparql_views_related_resource'),      
+      'hc_moved_to'             => new RDFField('hc_moved_to', 'MovedTo',  'hc:movedTo', 'sparql_views_related_resource'),
+      'hc_on_crew_of_boat'      => new RDFField('hc_on_crew_of_boat', 'OnCrewOfBoat',  'hc:onCrewOfBoat', 'sparql_views_related_resource'),
+      'hc_owned'                => new RDFField('hc_owned', 'Owned',  'hc:ownedOf', 'sparql_views_related_resource'),
+      'hc_owned_by'             => new RDFField('hc_owned_by', 'OwnedBy',  'hc:ownedBy', 'sparql_views_related_resource'),
+      'hc_parent_of'            => new RDFField('hc_parent_of', 'ParentOf',  'hc:parentOf', 'sparql_views_related_resource'),
+      'hc_person_born_here'     => new RDFField('hc_person_born_here', 'PersonBornHere',  'hc:personBornHere', 'sparql_views_related_resource'),
+      'hc_person_who_died_here' => new RDFField('hc_person_who_died_here', 'PersonWhoDiedHere',  'hc:hasPersonWhoDiedHere', 'sparql_views_related_resource'),   
+      'hc_related_to'           => new RDFField('hc_related_to', 'RelatedTo',  'hc:relatedTo', 'sparql_views_related_resource'),
+      'hc_sibling_of'           => new RDFField('hc_sibling_of', 'SiblingOf',  'hc:siblingOf', 'sparql_views_related_resource'),
+      'hc_source_of_information_on' => new RDFField('hc_source_of_information_on', 'SourceOfInformationOn',  'hc:sourceOfInformationOn', 'sparql_views_related_resource'),
+      'hc_used_object'          => new RDFField('hc_used_object', 'UsedObject',  'hc:usedObject', 'sparql_views_related_resource'),
+      'hc_written_compiled_by'  => new RDFField('hc_written_compiled_by', 'WrittenCompiledBy',  'hc:writtenCompiledBy', 'sparql_views_related_resource'),
+
+      //Annotations  
+      'hc_approved'             => new RDFField('hc_approved', 'Approved', 'hc:Approved', 'text'),
+      'hc_approved_by'          => new RDFField('hc_approved_by', 'Approvedby', 'hc:Approvedby', 'text'),      
+      'hc_approved_date'        => new RDFField('hc_approved_date', 'Approveddate', 'hc:Approveddate', 'text'),      
+      'hc_approved_for_pub'     => new RDFField('hc_approved_for_pub', 'Approvedforpub', 'hc:Approvedforpub', 'text'),
+      'hc_caption'              => new RDFField('hc_caption', 'Caption', 'hc:Caption', 'text'),
+      'hc_compiler_notes'       => new RDFField('hc_compiler_notes', 'Compilernotes', 'hc:Compilernotes', 'text'),
+      'hc_copyright'            => new RDFField('hc_copyright', 'Copyright', 'hc:Copyright', 'text'),
+      'hc_edited_by'            => new RDFField('hc_edited_by', 'Editedby', 'hc:Editedby', 'text'),
+      'hc_extra_info'           => new RDFField('hc_extra_info', 'Extrainfo', 'hc:Extrainfo', 'text'),
+      'hc_fid'                  => new RDFField('hc_fid', 'Fid', 'hc:Fid', 'text'),      
+      'hc_internal_summary'     => new RDFField('hc_internal_summary', 'Internalsummary', 'hc:Internalsummary', 'text'),
+      'hc_inverse_caption'      => new RDFField('hc_inverse_caption', 'Inversecaption', 'hc:Inversecaption', 'text'),
+      'hc_is_primary'           => new RDFField('hc_is_primary', 'Isprimary', 'hc:Isprimary', 'text'),
+      'hc_lochistsoc'           => new RDFField('hc_lochistsoc', 'Lochistsoc', 'hc:Lochistsoc', 'text'),
+      'hc_lochistsocref'        => new RDFField('hc_lochistsocref', 'Lochistsocref', 'hc:Lochistsocref', 'text'),
+      'hc_originator'           => new RDFField('hc_originator', 'Originator', 'hc:Originator', 'text'),
+      'hc_origin_date'          => new RDFField('hc_origin_date', 'Origindate', 'hc:Origindate', 'text'),
+      'hc_to_be_published'      => new RDFField('hc_to_be_published', 'Tobepublished', 'hc:Tobepublished', 'text'),
+      'hc_when_created'         => new RDFField('hc_when_created', 'Whencreated', 'hc:Whencreated', 'text'),
+      'hc_when_edited'          => new RDFField('hc_when_edited', 'Whenedited', 'hc:Whenedited', 'text'),
+
+      // Dublin core.
+      //'dc_title'                => new RDFField('dc_title', 'dc:title', 'dc:title', 'text'),
+      //'dc_description'          => new RDFField('dc_description', 'dc:description', 'dc:description', 'text'),
+      'dc_title'                => new RDFField('dc_title', 'dc:title', 'hc:englishName', 'text'),
+      'dc_description'          => new RDFField('dc_description', 'dc:description', 'hc:description', 'text'),
+    );
+
+    $config['rdf_resources'] = array();
+
+    // TODO move these to each resource type
+  //  $config['rdf_resources']['hc_annotations'] = new RDFResource('hc_annotations', 'Annotations', NULL, array(
+  //    $config['rdf_fields']['hc_approved'],
+  //    $config['rdf_fields']['hc_approved_by'],
+  //    $config['rdf_fields']['hc_approved_date'],
+  //    $config['rdf_fields']['hc_approved_for_pub'],
+  //    $config['rdf_fields']['hc_caption'],
+  //    $config['rdf_fields']['hc_compiler_notes'],
+  //    $config['rdf_fields']['hc_copyright'],
+  //    $config['rdf_fields']['hc_created_by'],
+  //    $config['rdf_fields']['hc_description'],
+  //    $config['rdf_fields']['hc_edited_by'],
+  //    $config['rdf_fields']['hc_extra_info'],
+  //    $config['rdf_fields']['hc_fid'],
+  //    $config['rdf_fields']['hc_file'],
+  //    $config['rdf_fields']['hc_file_name'],
+  //    $config['rdf_fields']['hc_internal_summary'],
+  //    $config['rdf_fields']['hc_inverse_caption'],
+  //    $config['rdf_fields']['hc_is_primary'],
+  //    $config['rdf_fields']['hc_lochistsoc'],
+  //    $config['rdf_fields']['hc_lochistsocref'],
+  //    $config['rdf_fields']['hc_originator'],
+  //    $config['rdf_fields']['hc_origin_date'],
+  //    $config['rdf_fields']['hc_soundex_name'],
+  //    $config['rdf_fields']['hc_subject_id'],
+  //    $config['rdf_fields']['hc_title'],
+  //    $config['rdf_fields']['hc_to_be_published'],
+  //    $config['rdf_fields']['hc_when_created'],
+  //    $config['rdf_fields']['hc_when_edited'],
+  //  ));
+
+  $config['rdf_resources']['hc_subject'] = new RDFResource('hc_subject', 'Subject', 'hc:Subject',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+        $config['rdf_fields']['hc_also_known_as'],
+
+        $config['rdf_fields']['hc_bk_reference'],
+        $config['rdf_fields']['hc_born'],
+        $config['rdf_fields']['hc_chassis'],
+        $config['rdf_fields']['hc_created_by'],
+        $config['rdf_fields']['hc_date'],
+        $config['rdf_fields']['hc_date_built'],
+        $config['rdf_fields']['hc_date_demolished'],
+        $config['rdf_fields']['hc_date_established'],
+        $config['rdf_fields']['hc_date_founded'],
+        $config['rdf_fields']['hc_date_launched'],
+        $config['rdf_fields']['hc_date_lotted'],
+        $config['rdf_fields']['hc_date_of_death'],
+        $config['rdf_fields']['hc_date_of_marriage' ],
+        $config['rdf_fields']['hc_date_of_registration'],
+        $config['rdf_fields']['hc_date_of_source'],
+        $config['rdf_fields']['hc_file'],
+        $config['rdf_fields']['hc_file_name'],
+        $config['rdf_fields']['hc_geo_ref'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_occupation'],
+        $config['rdf_fields']['hc_period'],
+        $config['rdf_fields']['hc_period_of_construction_use'],
+        $config['rdf_fields']['hc_registration'],
+        $config['rdf_fields']['hc_sex'],
+        $config['rdf_fields']['hc_smr_record_id'],
+        $config['rdf_fields']['hc_source_type'],
+        $config['rdf_fields']['hc_soundex_name'],
+        $config['rdf_fields']['hc_title'],
+        $config['rdf_fields']['hc_theme'],
+        $config['rdf_fields']['hc_time_period'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_adopted_by'],
+        $config['rdf_fields']['hc_adopted_person'],
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_author_originator_of'],
+        $config['rdf_fields']['hc_born_in'],
+        $config['rdf_fields']['hc_builder'],
+        $config['rdf_fields']['hc_built_by'],
+        $config['rdf_fields']['hc_child_of'],
+        $config['rdf_fields']['hc_compiled_maintained_by'],
+        $config['rdf_fields']['hc_compiler_of'],
+        $config['rdf_fields']['hc_composed_by'],
+        $config['rdf_fields']['hc_composed_song'],
+        $config['rdf_fields']['hc_comprises_sub_site'],
+        $config['rdf_fields']['hc_crewed_by'],
+        $config['rdf_fields']['hc_died_in'],
+        $config['rdf_fields']['hc_emigrated_to'],
+        $config['rdf_fields']['hc_employed'],
+        $config['rdf_fields']['hc_employed_by'],
+        $config['rdf_fields']['hc_fostered_by'],
+        $config['rdf_fields']['hc_fostered_person'],
+        $config['rdf_fields']['hc_found_at'],
+        $config['rdf_fields']['hc_found_here'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_holds'],
+        $config['rdf_fields']['hc_immigrant_from'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_is_part_of_site'],
+        $config['rdf_fields']['hc_lived_here'],
+        $config['rdf_fields']['hc_lived_in_at'],
+        $config['rdf_fields']['hc_lived_with'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_here'],
+        $config['rdf_fields']['hc_located_near'],
+        $config['rdf_fields']['hc_married'],
+        $config['rdf_fields']['hc_may_be_the_same_as'],
+        $config['rdf_fields']['hc_moved_from'],
+        $config['rdf_fields']['hc_moved_to'],
+        $config['rdf_fields']['hc_on_crew_of_boat'],
+        $config['rdf_fields']['hc_owned'],
+        $config['rdf_fields']['hc_owned_by'],
+        $config['rdf_fields']['hc_parent_of'],
+        $config['rdf_fields']['hc_person_born_here'],
+        $config['rdf_fields']['hc_person_who_died_here'],
+        $config['rdf_fields']['hc_related_to'],
+        $config['rdf_fields']['hc_sibling_of'],
+        $config['rdf_fields']['hc_source_of_information_on'],
+        $config['rdf_fields']['hc_used_object'],
+        $config['rdf_fields']['hc_written_compiled_by'],
+      ),
+      array( // Object field ranges.
+
+      )
+    );
+
+    $config['rdf_resources']['hc_boat'] = new RDFResource('hc_boat', 'Boat', 'hc:Boat', 
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+        $config['rdf_fields']['hc_also_known_as'],
+
+        $config['rdf_fields']['hc_date_launched'],
+        $config['rdf_fields']['hc_date_of_registration'],
+        $config['rdf_fields']['hc_registration'],
+        //$config['rdf_fields']['hc_type_of_boat'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_built_by'],
+        $config['rdf_fields']['hc_crewed_by'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_owned_by'],
+      ),
+      array( // Object field ranges.
+        //'hc_associated_with'
+        'hc_built_by' => 'hc_person',
+        'hc_crewed_by' => 'hc_person',
+        'hc_information_obtained_from' => 'hc_organisation',
+        'hc_owned_by' => 'hc_person',
+      )
+    );
+
+    $config['rdf_resources']['hc_building_or_public_amenity'] = new RDFResource('hc_building_or_public_amenity', 'BuildingOrPublicAmenity', 'hc:BuildingOrPublicAmenity',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        //$config['rdf_fields']['hc_business_type'],
+        $config['rdf_fields']['hc_date_built'],
+        $config['rdf_fields']['hc_date_established'],
+        $config['rdf_fields']['hc_date_founded'],
+        $config['rdf_fields']['hc_geo_ref'],
+        //$config['rdf_fields']['hc_location_type'],
+        $config['rdf_fields']['hc_period'],
+        $config['rdf_fields']['hc_period_of_construction_use'],
+        //$config['rdf_fields']['hc_residence_type'],
+        //$config['rdf_fields']['hc_site_type'],
+        $config['rdf_fields']['hc_smr_record_id'],
+        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+        //$config['rdf_fields']['hc_type_of_organisation'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_lived_here'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_here'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_information_obtained_from' => 'hc_organisation',
+        'hc_lived_here' => 'hc_person',
+        'hc_located_at_in' => 'hc_location',
+//        'hc_located_here'
+      )
+    );
+
+    $config['rdf_resources']['hc_business'] = new RDFResource('hc_business', 'Business', 'hc:Business',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        //$config['rdf_fields']['hc_business_type'],
+        $config['rdf_fields']['hc_date_founded'],
+        $config['rdf_fields']['hc_period'],
+        //$config['rdf_fields']['hc_residence_type'],
+        //$config['rdf_fields']['hc_site_type'],
+        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_owned_by'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+//        'hc_has_file'
+        'hc_information_obtained_from' => 'hc_organisation',
+        'hc_located_at_in' => 'hc_location',
+        'hc_owned_by' => 'hc_person',
+      )
+    );
+
+    $config['rdf_resources']['hc_croft_or_residence'] = new RDFResource('hc_croft_or_residence', 'CroftOrResidence', 'hc:CroftOrResidence',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        $config['rdf_fields']['hc_date_built'],
+        $config['rdf_fields']['hc_date_demolished'],
+        $config['rdf_fields']['hc_date_founded'],
+        $config['rdf_fields']['hc_date_lotted'],
+        $config['rdf_fields']['hc_geo_ref'],
+        //$config['rdf_fields']['hc_location_type'],
+        $config['rdf_fields']['hc_period'],
+        $config['rdf_fields']['hc_period_of_construction_use'],
+        //$config['rdf_fields']['hc_residence_type'],
+        //$config['rdf_fields']['hc_site_type'],
+        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_lived_here'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_here'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+//        'hc_has_file'
+        'hc_information_obtained_from' => 'hc_organisation',
+        'hc_lived_here' => 'hc_person',
+        'hc_located_at_in' => 'hc_location',
+//        'hc_located_here'
+      )
+    );
+
+    $config['rdf_resources']['hc_gaelic_verseb_rdachd'] = new RDFResource('hc_gaelic_verseb_rdachd', 'GaelicVersebRdachd', 'hc:GaelicVersebRdachd',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        $config['rdf_fields']['hc_date'],
+        $config['rdf_fields']['hc_theme'],
+        //$config['rdf_fields']['hc_type'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_composed_by'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_has_file'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_composed_by' => 'hc_person',
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_has_file'
+      )
+    );
+
+    $config['rdf_resources']['hc_historical_event'] = new RDFResource('hc_historical_event', 'HistoricalEvent', 'hc:HistoricalEvent',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        $config['rdf_fields']['hc_date'],
+        $config['rdf_fields']['hc_date_established'],
+        $config['rdf_fields']['hc_geo_ref'],
+        //$config['rdf_fields']['hc_location_type'],
+        //$config['rdf_fields']['hc_source_type'],
+        //$config['rdf_fields']['hc_subject'],
+        $config['rdf_fields']['hc_time_period'],
+        //$config['rdf_fields']['hc_type'],
+        //$config['rdf_fields']['hc_type_of_organisation'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_source_of_information_on'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_has_file'
+//        'hc_located_at_in'
+//        'hc_source_of_information_on'
+      )
+    );
+
+    $config['rdf_resources']['hc_landmark_or_archaeological_site'] = new RDFResource('hc_landmark_or_archaeological_site', 'LandmarkOrArchaeologicalSite', 'hc:LandmarkOrArchaeologicalSite',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        //$config['rdf_fields']['hc_location_type'],
+        //$config['rdf_fields']['hc_natural_landmark_type'],
+        $config['rdf_fields']['hc_period'],
+        $config['rdf_fields']['hc_period_of_construction_use'],
+        //$config['rdf_fields']['hc_residence_type'],
+        //$config['rdf_fields']['hc_site_type'],
+        $config['rdf_fields']['hc_smr_record_id'],
+        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_source_of_information_on'],
+        $config['rdf_fields']['hc_comprises_sub_site'],
+        $config['rdf_fields']['hc_is_part_of_site'],
+        $config['rdf_fields']['hc_lived_here'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_here'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_has_file'
+//        'hc_source_of_information_on'
+//        'hc_comprises_sub_site'
+//        'hc_is_part_of_site'
+//        'hc_lived_here'
+//        'hc_located_at_in'
+//        'hc_located_here'
+      )
+    );
+
+    $config['rdf_resources']['hc_location'] = new RDFResource('hc_location', 'Location', 'hc:Location',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+        $config['rdf_fields']['hc_also_known_as'],
+
+        $config['rdf_fields']['hc_geo_ref'],
+        //$config['rdf_fields']['hc_location_type'],
+        //$config['rdf_fields']['hc_natural_landmark_type'],
+        $config['rdf_fields']['hc_period_of_construction_use'],
+        //$config['rdf_fields']['hc_site_type'],
+        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_found_here'],
+        $config['rdf_fields']['hc_lived_here'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_here'],
+        $config['rdf_fields']['hc_located_near'],
+        $config['rdf_fields']['hc_person_born_here'],
+        $config['rdf_fields']['hc_person_who_died_here'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_has_file'
+        'hc_found_here' => 'hc_object_or_artefact',
+        'hc_lived_here' => 'hc_person',
+//        'hc_located_at_in'
+//        'hc_located_here'
+//        'hc_located_near'
+        'hc_person_born_here' => 'hc_person',
+        'hc_person_who_died_here' => 'hc_person',
+      )
+    );
+
+    $config['rdf_resources']['hc_natural_landscape_feature'] = new RDFResource('hc_natural_landscape_feature', 'NaturalLandscapeFeature', 'hc:NaturalLandscapeFeature',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+        $config['rdf_fields']['hc_also_known_as'],
+
+        $config['rdf_fields']['hc_geo_ref'],
+        //$config['rdf_fields']['hc_location_type'],
+        //$config['rdf_fields']['hc_natural_landmark_type'],
+        //$config['rdf_fields']['hc_site_type'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_found_here'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_here'],
+        $config['rdf_fields']['hc_located_near'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_has_file'
+//        'hc_found_here'
+        'hc_located_at_in' => 'hc_location',
+//        'hc_located_here'
+//        'hc_located_near'
+      )
+    );
+
+    $config['rdf_resources']['hc_object_or_artefact'] = new RDFResource('hc_object_or_artefact', 'ObjectOrArtefact', 'hc:ObjectOrArtefact',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        //$config['rdf_fields']['hc_object_type'],
+        $config['rdf_fields']['hc_period'],
+        $config['rdf_fields']['hc_smr_record_id'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_found_at'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_has_file'
+//        'hc_found_at'
+      )
+    );
+
+    $config['rdf_resources']['hc_oral_traditionbeul_aithris'] = new RDFResource('hc_oral_traditionbeul_aithris', 'OralTraditionbeulAithris', 'hc:OralTraditionbeulAithris',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        $config['rdf_fields']['hc_bk_reference'],
+        $config['rdf_fields']['hc_born'],
+        $config['rdf_fields']['hc_date_of_death'],
+        $config['rdf_fields']['hc_sex'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_information_obtained_from' => 'hc_organisation',
+      )
+    );
+
+    $config['rdf_resources']['hc_organisation'] = new RDFResource('hc_organisation', 'Organisation', 'hc:Organisation',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        $config['rdf_fields']['hc_date_established'],
+        $config['rdf_fields']['hc_date_of_source'],
+        $config['rdf_fields']['hc_geo_ref'],
+        //$config['rdf_fields']['hc_source_type'],
+        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+        //$config['rdf_fields']['hc_type_of_organisation'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_compiler_of'],
+        $config['rdf_fields']['hc_holds'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_source_of_information_on'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+//        'hc_has_file'
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_compiler_of'
+        'hc_holds' => 'hc_resource',
+        'hc_located_at_in' => 'hc_location',
+//        'hc_source_of_information_on'
+      )
+    );
+
+    $config['rdf_resources']['hc_person'] = new RDFResource('hc_person', 'Person', 'hc:Person',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+        $config['rdf_fields']['hc_also_known_as'],
+
+        $config['rdf_fields']['hc_bk_reference'],
+        $config['rdf_fields']['hc_born'],
+        $config['rdf_fields']['hc_date'],
+        $config['rdf_fields']['hc_date_of_death'],
+        $config['rdf_fields']['hc_date_of_marriage'],
+        $config['rdf_fields']['hc_geo_ref'],
+        $config['rdf_fields']['hc_occupation'],
+        $config['rdf_fields']['hc_sex'],
+        //$config['rdf_fields']['hc_type'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_adopted_by'],
+        $config['rdf_fields']['hc_adopted_person'],
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_author_originator_of'],
+        $config['rdf_fields']['hc_born_in'],
+        $config['rdf_fields']['hc_builder'],
+        $config['rdf_fields']['hc_child_of'],
+        $config['rdf_fields']['hc_composed_song'],
+        $config['rdf_fields']['hc_died_in'],
+        $config['rdf_fields']['hc_emigrated_to'],
+        $config['rdf_fields']['hc_employed'],
+        $config['rdf_fields']['hc_employed_by'],
+        $config['rdf_fields']['hc_fostered_by'],
+        $config['rdf_fields']['hc_fostered_person'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_immigrant_from'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_lived_in_at'],
+        $config['rdf_fields']['hc_lived_with'],
+        $config['rdf_fields']['hc_married'],
+        $config['rdf_fields']['hc_may_be_the_same_as'],
+        $config['rdf_fields']['hc_moved_from'],
+        $config['rdf_fields']['hc_moved_to'],
+        $config['rdf_fields']['hc_on_crew_of_boat'],
+        $config['rdf_fields']['hc_owned'],
+        $config['rdf_fields']['hc_parent_of'],
+        $config['rdf_fields']['hc_related_to'],
+        $config['rdf_fields']['hc_sibling_of'],
+        $config['rdf_fields']['hc_used_object'],
+      ),
+      array( // Object field ranges.
+        'hc_adopted_by' => 'hc_person',
+        'hc_adopted_person' => 'hc_person',
+//        'hc_associated_with'
+        'hc_author_originator_of' => 'hc_resource',
+        'hc_born_in' => 'hc_location',
+        'hc_builder' => 'hc_boat',
+        'hc_child_of' => 'hc_person',
+        'hc_composed_song' => 'hc_gaelic_verseb_rdachd',
+        'hc_died_in' => 'hc_location',
+        'hc_emigrated_to' => 'hc_location',
+        'hc_employed' => 'hc_person',
+//        'hc_employed_by'
+        'hc_fostered_by' => 'hc_person',
+        'hc_fostered_person' => 'hc_person',
+//        'hc_has_file'
+        'hc_immigrant_from' => 'hc_location',
+        'hc_information_obtained_from' => 'hc_resource',
+//        'hc_lived_in_at'
+        'hc_lived_with' => 'hc_person',
+        'hc_married' => 'hc_person',
+        'hc_may_be_the_same_as' => 'hc_person',
+        'hc_moved_from' => 'hc_person',
+        'hc_moved_to' => 'hc_person',
+        'hc_on_crew_of_boat' => 'hc_boat',
+//        'hc_owned'
+        'hc_parent_of' => 'hc_person',
+        'hc_related_to' => 'hc_person',
+        'hc_sibling_of' => 'hc_person',
+        'hc_used_object' => 'hc_object_or_artefact',
+      )
+    );
+
+    $config['rdf_resources']['hc_resource'] = new RDFResource('hc_resource', 'Resource', 'hc:Resource',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        $config['rdf_fields']['hc_bk_reference'],
+        $config['rdf_fields']['hc_date'],
+        $config['rdf_fields']['hc_date_established'],
+        $config['rdf_fields']['hc_date_of_source'],
+        $config['rdf_fields']['hc_geo_ref'],
+        $config['rdf_fields']['hc_occupation'],
+        $config['rdf_fields']['hc_period'],
+        $config['rdf_fields']['hc_sex'],
+        //$config['rdf_fields']['hc_site_type'],
+        //$config['rdf_fields']['hc_source_type'],
+        //$config['rdf_fields']['hc_type'],
+        //$config['rdf_fields']['hc_type_of_organisation'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_compiled_maintained_by'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_source_of_information_on'],
+        $config['rdf_fields']['hc_written_compiled_by'],
+      ),
+      array( // Object field ranges.
+        //'hc_associated_with'
+        'hc_compiled_maintained_by' => 'hc_organisation',
+        //'hc_has_file'
+        //'hc_information_obtained_from'
+        //'hc_located_at_in'
+        //'hc_source_of_information_on'
+        'hc_written_compiled_by' => 'hc_person',
+      )
+    );
+
+    $config['rdf_resources']['hc_story_report_or_tradition'] = new RDFResource('hc_story_report_or_tradition', 'StoryReportOrTradition', 'hc:StoryReportOrTradition',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        //$config['rdf_fields']['hc_business_type'],
+        $config['rdf_fields']['hc_date'],
+        $config['rdf_fields']['hc_date_established'],
+        $config['rdf_fields']['hc_date_of_source'],
+        $config['rdf_fields']['hc_geo_ref'],
+        $config['rdf_fields']['hc_period_of_construction_use'],
+        //$config['rdf_fields']['hc_source_type'],
+        //$config['rdf_fields']['hc_subject'],
+        $config['rdf_fields']['hc_theme'],
+        //$config['rdf_fields']['hc_type'],
+        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+        //$config['rdf_fields']['hc_type_of_organisation'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_composed_by'],
+        $config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_information_obtained_from'],
+        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_source_of_information_on'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+        'hc_composed_by' => 'hc_person',
+//        'hc_has_file'
+        'hc_information_obtained_from' => 'hc_organisation',
+//        'hc_located_at_in'
+//        'hc_source_of_information_on'
+      )
+    );
+
+    $config['rdf_resources']['hc_vehicle'] = new RDFResource('hc_vehicle', 'Vehicle', 'hc:Vehicle',
+      array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+        $config['rdf_fields']['hc_subject_id'],
+
+        $config['rdf_fields']['hc_english_name'],
+        $config['rdf_fields']['hc_gaelic_name'],
+
+        $config['rdf_fields']['hc_chassis'],
+        $config['rdf_fields']['hc_registration'],
+        //$config['rdf_fields']['hc_type_of_vehicle'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_associated_with'],
+        $config['rdf_fields']['hc_has_file'],
+      ),
+      array( // Object field ranges.
+//        'hc_associated_with'
+//        'hc_has_file'
+      )
+    );
+
+    $config['rdf_resources']['hc_image_file'] = new RDFResource('hc_image_file', 'Imagefile', 'hc:Imagefile',
+      array( // Data fields.
+        $config['rdf_fields']['hc_copyright'],
+        $config['rdf_fields']['hc_fid'],
+        $config['rdf_fields']['hc_file'],
+        $config['rdf_fields']['hc_file_name'],
+        $config['rdf_fields']['hc_lochistsoc'],
+        $config['rdf_fields']['hc_lochistsocref'],
+        $config['rdf_fields']['hc_originator'],
+        $config['rdf_fields']['hc_origin_date'],
+        $config['rdf_fields']['hc_title'],
+      )
+    );
+
+
+    $config['rdf_views'] = array();
+
+    // General Subject
+    $config['rdf_views']['hc_subjects'] = new RDFView('hc_subjects', 'ALL SUBJECTS', 'subjects',
+      $config['rdf_resources']['hc_subject']);
+    $config['rdf_views']['hc_subjects']->setOptionalAll();
+
+    // People
+    $config['rdf_views']['hc_people'] = new RDFView('hc_people', 'People', 'people',
+      $config['rdf_resources']['hc_person']);//array('hc_sex'));
+    $config['rdf_views']['hc_people']->setOptionalAll();
+
+    // Organisations
+    $config['rdf_views']['hc_organisations'] = new RDFView('hc_organisations', 'Organisations', 'organisations',
+      $config['rdf_resources']['hc_organisation']);
+    $config['rdf_views']['hc_organisations']->setOptionalAll();
+
+    // Resources
+    $config['rdf_views']['hc_resources'] = new RDFView('hc_resources', 'Resources', 'resources',
+      $config['rdf_resources']['hc_resource']);
+    $config['rdf_views']['hc_resources']->setOptionalAll();
+
+    // Vehicles
+    $config['rdf_views']['hc_vehicles'] = new RDFView('hc_vehicles', 'Vehicles', 'vehicles',
+      $config['rdf_resources']['hc_vehicle']);
+    $config['rdf_views']['hc_vehicles']->setOptionalAll();
+    
+    // Boats
+    $config['rdf_views']['hc_boats'] = new RDFView('hc_boats', 'Boats', 'boats',
+      $config['rdf_resources']['hc_boat']);
+    $config['rdf_views']['hc_boats']->setOptionalAll();
+
+    // Buildings and Public Amenities
+    $config['rdf_views']['hc_buildings_and_public_amenities'] = new RDFView('hc_buildings_and_public_amenities', 'Buildings and Public Amenities', 'buildings-and-public-amenities',
+      $config['rdf_resources']['hc_building_or_public_amenity']);
+    $config['rdf_views']['hc_buildings_and_public_amenities']->setOptionalAll();
+
+    // Businesses
+    $config['rdf_views']['hc_businesses'] = new RDFView('hc_businesses', 'Businesses', 'businesses',
+      $config['rdf_resources']['hc_business']);
+    $config['rdf_views']['hc_businesses']->setOptionalAll();
+
+    // Crofts and Residences
+    $config['rdf_views']['hc_crofts_and_residences'] = new RDFView('hc_crofts_and_residences', 'Crofts and Residences', 'crofts-and-residences',
+      $config['rdf_resources']['hc_croft_or_residence']);
+    $config['rdf_views']['hc_crofts_and_residences']->setOptionalAll();
+
+    // GaelicVersebRdachd
+    $config['rdf_views']['hc_gaelic_verseb_rdachds'] = new RDFView('hc_gaelic_verseb_rdanchds', 'Gaelic Verseb Rdachds', 'gaelic-verseb-rdanchds',
+      $config['rdf_resources']['hc_gaelic_verseb_rdachd']);
+    $config['rdf_views']['hc_gaelic_verseb_rdachds']->setOptionalAll();
+
+    // Historical Events
+    $config['rdf_views']['hc_historical_events'] = new RDFView('hc_historical_events', 'Historical Events', 'historical-events',
+      $config['rdf_resources']['hc_historical_event']);
+    $config['rdf_views']['hc_historical_events']->setOptionalAll();
+
+    // Landmarks and Archaeological Sites
+    $config['rdf_views']['hc_landmarks_and_archaeological_sites'] = new RDFView('hc_landmarks_and_archaeological_sites', 'Landmarks and Archaeological Sites', 'landmarks-and-archaeological-sites',
+      $config['rdf_resources']['hc_landmark_or_archaeological_site']);
+    $config['rdf_views']['hc_landmarks_and_archaeological_sites']->setOptionalAll();
+
+    // Location
+    $config['rdf_views']['hc_locations'] = new RDFView('hc_locations', 'Locations', 'locations',
+      $config['rdf_resources']['hc_location']);
+    $config['rdf_views']['hc_locations']->setOptionalAll();
+
+    // Natural Landscape Features
+    $config['rdf_views']['hc_natural_landscape_features'] = new RDFView('hc_natural_landscape_features', 'Natural Landscape Features', 'natural-landscape-features',
+      $config['rdf_resources']['hc_natural_landscape_feature']);
+    $config['rdf_views']['hc_natural_landscape_features']->setOptionalAll();
+    
+    // Objects and Artefacts
+    $config['rdf_views']['hc_objects_and_artefacts'] = new RDFView('hc_objects_and_artefacts', 'Objects and Artefacts', 'objects-and-artefacts',
+      $config['rdf_resources']['hc_object_or_artefact']);
+    $config['rdf_views']['hc_objects_and_artefacts']->setOptionalAll();
+
+    // Oral Traditionbeul Aithrises
+//    $config['rdf_views']['hc_oral_traditionbeul_aithrises'] = new RDFView('hc_oral_traditionbeul_aithrises', 'Oral Traditionbeul Aithrises', 'oral-traditionbeul-aithrises',
+//      $config['rdf_resources']['hc_oral_traditionbeul_aithris']);
+//    $config['rdf_views']['hc_oral_traditionbeul_aithrises']->setOptionalAll();
+
+    // Story Reports and Traditions
+    $config['rdf_views']['hc_story_reports_and_traditions'] = new RDFView('hc_story_reports_and_traditions', 'Story Reports and Traditions', 'story-reports-and-traditions',
+      $config['rdf_resources']['hc_story_report_or_tradition']);
+    $config['rdf_views']['hc_story_reports_and_traditions']->setOptionalAll();
+
+    // DEBUG: remove unused resources.
+    // $keep = array('hc_image_file', 'hc_person', 'hc_organisation', 'hc_resource', 'hc_vehicle');
+    // foreach ($config['rdf_resources'] as $id=>$r) {
+    //   if (!in_array($id, $keep)) {
+    //     unset($config['rdf_resources'][$id]);
+    //   }
+    // }
+    //print($config['rdf_resources']);
+  }
+  
+  // Resource to View mapping.
+  $config['resource_views'] = array(
+    'hc_subject' => 'hc_subjects',
+    'hc_person' => 'hc_people',
+    'hc_organisation' => 'hc_organisations',
+    'hc_resource' => 'hc_resources',
+    'hc_vehicle' => 'hc_vehicles',
+    'hc_boat' => 'hc_boats',
+    'hc_building_or_public_amenity' => 'hc_buildings_and_public_amenities',
+    'hc_business' => 'hc_businesses',
+    'hc_croft_or_residence' => 'hc_crofts_and_residences',
+    'hc_gaelic_verseb_rdachd' => 'hc_gaelic_verseb_rdachds',
+    'hc_historical_event' => 'hc_historical_events',
+    'hc_landmark_or_archaeological_site' => 'hc_landmarks_and_archaeological_sites',
+    'hc_location' => 'hc_locations',
+    'hc_natural_landscape_feature' => 'hc_natural_landscape_features',
+    'hc_object_or_artefact' => 'hc_objects_and_artefacts',
+    'hc_story_report_or_tradition' => 'hc_story_reports_and_traditions',
+  );
+ 
+  return $config;
+}
+
+function _curios_get_view($resource_name) {
+  $config = _curios_configuration();
+  $view_name = $config['resource_views'][$resource_name];
+  return $config['rdf_views'][$view_name];
+}

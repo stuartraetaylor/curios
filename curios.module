@@ -1,0 +1,373 @@
+<?php
+require_once('curios_entities.inc');
+require_once('curios_configuration.inc');
+require_once('curios_sparql.inc');
+
+
+
+///**
+// * Implements hook_views_api().
+// */
+//function curios_views_api($module, $api) {
+//  return array('api' => 3);
+//}
+
+/**
+ * Implement hook_views_api().
+ */
+function curios_views_api($module, $api) {
+  if ($module == 'views' && $api == 'views_default') {
+    return array('version' => 2);
+  }
+}
+
+/**
+ * Implement hook_ctools_plugin_api().
+ */
+function curios_ctools_plugin_api($module, $api) {
+  if ($module == 'panels' && $api == 'layouts') {
+    return array('version' => 1);
+  }
+  if ($module == 'page_manager' && $api == 'pages_default') {
+    return array('version' => 1);
+  }
+}
+
+
+function curios_block_info() {
+  $items = array();
+//  $items['curios-test-block'] = array(
+//    'info' => t('CURIOS update test block')
+//  );
+
+  return $items;
+}
+
+function curios_menu() {
+  $items = array();
+//  $items['curios/insert'] = array(
+//    'title' => t('CURIOS Update Test Page'),
+//    'page callback' => 'curios_insert_form_page',
+//    'access arguments' => array('access content'),
+//    'description' => t('desc'),
+//    'type' => MENU_NORMAL_ITEM,
+//    'menu_name' => 'navigation',
+//    //'page arguments' => array(2),
+//  );
+  $items['curios/insert/%'] = array(
+    'title' => t('CURIOS INSERT Test Page'),
+    'page callback' => 'curios_insert_form_page',
+    'access arguments' => array('access content'),
+    'description' => t('desc'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'navigation',
+    'page arguments' => array(2),
+  );
+    $items['curios/delete'] = array(
+    'title' => t('CURIOS DELETE Test Page'),
+    'page callback' => 'curios_delete_form_page',
+    'access arguments' => array('access content'),
+    'description' => t('desc'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'navigation',
+  );
+  $items['curios/update/%/%'] = array(
+    'title' => t('CURIOS UPDATE Test Page'),
+    'page callback' => 'curios_update_form_page',
+    'access arguments' => array('access content'),
+    'description' => t('desc'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'navigation',
+    'page arguments' => array(2,3),
+  );
+  return $items;
+}
+
+function curios_filter_info() {
+  $filters = array();
+  $filters[] = array(
+    'title' => t('Description Link Filter'),
+    'description' => t('This filter renders the subject links that appear in the description fields of Hebridean Connections subjects.'),
+    'process callback' => 'curios_filter_description_links',
+  );
+  return $filters;
+}
+
+function curios_filter_description_links($text, $filter, $format, $langcode, $cache, $cache_id) {
+  //$subject_link = '/<<([0-9]+)##(.*?)>>/';
+  $subject_link = '/&lt;&lt;([0-9]+)##(.*?)&gt;&gt;/';
+  $replacement = '<a href="/subjects/$1">$2</a>';
+  return preg_replace($subject_link, $replacement, $text);
+}
+
+
+
+function curios_update_form_page($resource_name, $subject_id) {
+  $page = array();
+  $page[] = array('#markup' => '<h2>Example UPDATE From!!!</h2>');
+  $page[] = drupal_get_form('curios_update_form', $resource_name, $subject_id);
+  return $page;
+}
+
+function curios_update_form($form, $form_state, $resource_name, $subject_id) {
+  $resource_type = sparql_views_resource_type_load($resource_name);
+  $entity_info = entity_get_info('sparql_views_resource');
+  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+  $field_instances = field_read_instances(array(
+    'entity_type' => 'sparql_views_resource',
+    'bundle' => $resource_name,));
+
+  //$view = views_get_view('hc_boats');
+  $view_result = views_get_view_result('hc_boats', 'details', $subject_id, 'hc:Boat');
+
+  $form = array();
+  $form['status'] = array('#markup' => "<h3>Update: <em>".$resource_type->label." ".$subject_id." (".$subject_id." : ".$resource_type->name.")</em></h3>");
+  $form['resource'] = array('#type' => 'hidden', '#value' => $resource_name);
+  $form['identifier'] = array('#type' => 'hidden', '#value' => $subject_id);
+
+  foreach ($field_instances as $instance) {
+    //$block['content'] .= '<p><label style="display: inline-block; font-weight: bold; width: 280px;">'.$instance['label'].':</label>';
+    //$block['content'] .= '<input type="text" name="'.$instance['field_name'].'"/>&nbsp;&nbsp;';
+    //$block['content'] .= '';
+    $results_field = $resource_name.'_'.$instance['field_name'];
+    $value = empty($view_result[0]->$results_field) ? '' : $view_result[0]->$results_field;
+
+    $form[$instance['field_name']] = array(
+      '#type' => 'textfield',
+      '#default_value' => $value,
+      '#title' => t($instance['label']),
+      '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
+    );
+
+    $form['old_'.$instance['field_name']] = array(
+      '#type' => 'hidden',
+      '#value' => $value,
+    );
+  }
+
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Submit');
+  $form['reset'] = array('#markup' => '<input type="reset" class="form-submit" />');
+
+  return $form;
+}
+
+function curios_update_form_submit($form, &$form_state) {
+  $resource_name = $form_state['values']['resource'];
+  $subject_id = $form_state['values']['identifier'];
+
+  $entity_info = entity_get_info('sparql_views_resource');
+  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+  $field_instances = field_read_instances(array(
+    'entity_type' => 'sparql_views_resource',
+    'bundle' => $resource_name,));
+
+  // Calculate difference.
+  $triples_delete = '';
+  $triples_insert = '';
+  foreach ($field_instances as $instance) {
+    $form_value_new = $form_state['values'][$instance['field_name']];
+    $form_value_old = $form_state['values']['old_'.$instance['field_name']];
+
+    if ($form_value_new != $form_value_old) {
+      $triples_delete .= '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"$form_value_old\";\n";
+      $triples_insert .= '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"$form_value_new\";\n";
+    }
+  }
+
+  __curios_subject_update($subject_id, $triples_insert, $triples_delete);
+}
+
+function curios_delete_form_page() { 
+  $page = array();
+
+  $page[] = array('#markup' => '<h2>Example DELETE From</h2>');
+  $page[] = drupal_get_form('curios_delete_form');
+  return $page;
+}
+
+function curios_delete_form($form, $form_state) {dpm($form_state);
+  $form = array();
+  $form['subject_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject Id'),
+  );
+
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Delete');
+
+  return $form;
+}
+
+function curios_insert_form_page($resource_name) { 
+  $page = array();
+  $page[] = array('#markup' => '<h2>Example INSERT From</h2>');
+  $page[] = drupal_get_form('curios_insert_form', $resource_name);
+  return $page;
+}
+
+function curios_delete_form_submit($form, &$form_state) {
+  $subject_id = $form_state['values']['subject_id'];
+  __curios_subject_delete($subject_id);
+}
+
+function curios_insert_form($form, $form_state, $resource_name) {dpm($form_state);
+  $resource_type = sparql_views_resource_type_load($resource_name);
+  $entity_info = entity_get_info('sparql_views_resource');
+  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+  $field_instances = field_read_instances(array(
+    'entity_type' => 'sparql_views_resource',
+    'bundle' => $resource_name,));
+
+  $form = array();
+  $form['status'] = array('#markup' => "<h3>Add new: <em>".$resource_type->label." (".$resource_type->name.")</em></h3>");
+  $form['resource'] = array('#type' => 'hidden', '#value' => $resource_name);
+
+  $form['identifier'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Identifier'),
+  );
+
+  foreach ($field_instances as $instance) {
+    //$block['content'] .= '<p><label style="display: inline-block; font-weight: bold; width: 280px;">'.$instance['label'].':</label>';
+    //$block['content'] .= '<input type="text" name="'.$instance['field_name'].'"/>&nbsp;&nbsp;';
+    //$block['content'] .= '';
+
+    $form[$instance['field_name']] = array(
+      '#type' => 'textfield',
+      '#title' => t($instance['label']),
+      '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
+    );
+  }
+
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Submit');
+  $form['reset'] = array('#markup' => '<input type="reset" class="form-submit" />');
+
+  return $form;
+}
+
+function curios_insert_form_submit($form, &$form_state) {
+  $resource_name = $form_state['values']['resource'];
+  //$resource_type = sparql_views_resource_type_load($resource_name);
+  $entity_info = entity_get_info('sparql_views_resource');
+  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+  $field_instances = field_read_instances(array(
+    'entity_type' => 'sparql_views_resource',
+    'bundle' => $resource_name,));
+
+  $subject_id = $form_state['values']['identifier'];
+  $triples_insert = '';
+  foreach ($field_instances as $instance) {
+    $form_value = $form_state['values'][$instance['field_name']];
+    if (!empty($form_value)) {
+      $triples_insert .= '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"$form_value\";\n";
+    }
+  }
+
+  __curios_subject_insert($subject_id, $triples_insert);
+}
+
+function curios_insert_form_validate($form, &$form_state) {
+  //dpm($form);
+  //dpm($form_state);
+
+  //if (!$has_value) {
+  //  form_set_error('', t('No values entered.'));
+  //}
+}
+
+function curios_block_view($delta = ''){
+  $block = array();
+  if ($delta == 'curios-test-block') { }
+  return $block;
+}
+
+//function __curios_sparql_views_info() {
+//    $resource_name = 'hc_boat';
+//  $resource_type = sparql_views_resource_type_load($resource_name);
+//  dpm($resource_type);
+//  $entity_info = entity_get_info('sparql_views_resource');
+//  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+//  $field_instances = field_read_instances(array(
+//    'entity_type' => 'sparql_views_resource',
+//    'bundle' => $resource_name,));
+//}
+
+
+function _curios_split_camel_case($text) {
+  return trim(join(' ', preg_split('/(?=[A-Z])/', $text)));
+}
+
+
+/**
+ * Implements hook_rdf_mapping().
+ *
+ * This hook should only be used to define the RDF mapping for an entity or
+ * bundle that has been defined by this module. On installation, this mapping
+ * will be saved to the database. To alter anything in this mapping after module
+ * installation (or to alter bundles defined in another module), the RDF CRUD
+ * functions should be used.
+ */
+function curios_rdf_mapping() {
+  $config = _curios_configuration();
+  $mappings = array();
+
+  foreach ($config['rdf_resources'] as $entity) {
+    $rdf_mapping = array();    
+    $rdf_mapping['rdftype'] = array($entity->getRDFType());
+
+    foreach ($entity->getFields() as $field) {
+      $rdf_mapping[$field->getMachineName()] = array('predicates' => array($field->getRDFPredicate()));
+    }
+
+    $mappings[$entity->getMachineName()] = array(
+        'type' => 'sparql_views_resource', 
+        'bundle' => $entity->getMachineName(), 
+        'mapping' => $rdf_mapping);
+  }
+
+  return $mappings;
+}
+
+/*
+ * Implements hook_rdf_namespaces().
+ *
+ * This hook should be used to define any prefixes used by this module that are
+ * not already defined in core by rdf_rdf_namespaces.
+ *
+ * @see http://api.drupal.org/api/drupal/modules--rdf--rdf.api.php/function/hook_rdf_namespaces/7
+ */
+function curios_rdf_namespaces() {
+  $config = _curios_configuration();
+  return $config['namespaces'];
+}
+
+/**
+ * Implements hook_block_info_alter().
+ *
+ * This is used to place the block view (containing information about the
+ * Country from Factbook) in the sidebar for the Leader page.
+ *
+ * Because Views uses hook_block_info to create the block, we have to use
+ * hook_block_info_alter. Because this runs right before saving values to the
+ * database, it can overwrite user set values, so we safegaurd against this.
+ */
+//function kasabi_factbook_block_info_alter(&$blocks, $theme, $code_blocks) {
+///  $delta = 'kasabi_factbook-block_1';
+//
+//  // We only want this to run once, when the block is first saved to the
+//  // database. We test to ensure that the definition in block is the same as
+//  // the one provided in code.
+//  $array_diff = array_diff($blocks['views'][$delta], $code_blocks['views'][$delta]);
+//  if (empty($array_diff)) {
+//    $blocks['views'][$delta]['status'] = 1;
+//    $blocks['views'][$delta]['region'] = 'sidebar_first';
+//    $blocks['views'][$delta]['weight'] = -45;
+//
+//    $query = db_merge('block_node_type')
+//      ->key(array('delta' => $delta,))
+//      ->fields(array(
+//          'type' => 'kasabi_factbook_leader',
+//          'module' => 'views',
+//      ));
+//    $query->execute();
+//  }
+//}
