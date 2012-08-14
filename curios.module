@@ -2,7 +2,7 @@
 require_once('curios_entities.inc');
 require_once('curios_configuration.inc');
 require_once('curios_sparql.inc');
-
+require_once('curios_functions.inc');
 
 
 ///**
@@ -11,6 +11,51 @@ require_once('curios_sparql.inc');
 //function curios_views_api($module, $api) {
 //  return array('api' => 3);
 //}
+
+
+
+
+function curios_views_pre_build(&$view) {
+  //dpm($view->args);
+  //$view-add_item ???
+  //dpm($view->display_objects());
+  //dpm($view->get_items('field'));
+}
+
+
+function curios_views_pre_execute(&$view) {
+ //   die("query_alter");
+  //dpm("pre_execute");.
+  //dpm($view->build_info);
+}
+
+function curios_views_pre_render(&$view) {
+ //dpm("pre_render");
+ dpm($view->result, 'pre_render');
+ //var_dump($view->display);
+
+ foreach ($view->display as $id=>$display) {
+   dpm($id);
+   // rewrite links
+   if (startsWith('object_', $id)) {
+     dpm($display, $id);
+     dpm($display->display_options['curios_disply_type']);
+   }
+   // prune results
+ }
+
+}
+
+function curios_views_post_render(&$view, &$output, &$cache) {
+ //dpm("pre_render");
+ //dpm($view->result, 'post_render');
+
+ // if relationship view, rewrite url.. somehow.
+}
+
+function curios_views_pre_view(&$view, &$display_id, &$args) {
+  
+}
 
 /**
  * Implement hook_views_api().
@@ -99,7 +144,6 @@ function curios_filter_description_links($text, $filter, $format, $langcode, $ca
   $replacement = '<a href="/subjects/$1">$2</a>';
   return preg_replace($subject_link, $replacement, $text);
 }
-
 
 
 function curios_update_form_page($resource_name, $subject_id) {
