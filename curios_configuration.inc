@@ -1,6 +1,7 @@
 <?php
 
 // TODO better caching
+// TODO store with Entity/Field API
 function _curios_configuration() {
   $config = &drupal_static(__FUNCTION__);
 
@@ -296,7 +297,16 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_owned_by'],
       ),
       array( // Object field ranges.
-        //'hc_associated_with'
+        'hc_associated_with' => array( // Array indicates there are multiple possible targets.
+            'hc_historical_event',
+            'hc_location',
+            'hc_natural_landscape_feature',
+            'hc_organisation',
+            'hc_person',
+            'hc_business',
+            'hc_story_report_or_tradition',
+            'hc_boat',
+            'hc_croft_or_residence',),
         'hc_built_by' => 'hc_person',
         'hc_crewed_by' => 'hc_person',
         'hc_information_obtained_from' => 'hc_organisation',
@@ -1004,6 +1014,27 @@ function _curios_configuration() {
     'hc_object_or_artefact' => 'hc_objects_and_artefacts',
     'hc_story_report_or_tradition' => 'hc_story_reports_and_traditions',
   );
+
+
+  // RDF class to resource name mapping.
+  $config['rdf_class_resources'] = array(
+    'hc:Subject' => 'hc_subject',
+    'hc:Person' => 'hc_person',
+    'hc:Organisation' => 'hc_organisation',
+    'hc:Resource' => 'hc_resource',
+    'hc:Vehicle' => 'hc_vehicle',
+    'hc:Boat' => 'hc_boat',
+    'hc:BuildingOrPublicAmenity' => 'hc_building_or_public_amenity',
+    'hc:Business' => 'hc_business',
+    'hc:CroftOrResidence' => 'hc_croft_or_residence',
+    'hc:GaelicVersebRdachd' => 'hc_gaelic_verseb_rdachd',
+    'hc:HistoricalEvent' => 'hc_historical_event',
+    'hc:LandmarkOrArchaeologicalSite' => 'hc_landmark_or_archaeological_site',
+    'hc:Location' => 'hc_location',
+    'hc:NaturalLandscapeFeature' => 'hc_natural_landscape_feature',
+    'hc:ObjectOrArtefact' => 'hc_object_or_artefact',
+    'hc:StoryReportOrTradition' => 'hc_story_report_or_tradition',
+  );
  
   return $config;
 }
@@ -1012,4 +1043,10 @@ function _curios_get_view($resource_name) {
   $config = _curios_configuration();
   $view_name = $config['resource_views'][$resource_name];
   return $config['rdf_views'][$view_name];
+}
+
+function __curios_resource_name_from_class_uri($rdf_class) {
+  $config = _curios_configuration();
+  $class_name = 'hc:'.str_replace($config['namespaces']['hc'], '', $rdf_class);
+  return !empty($config['rdf_class_resources'][$class_name]) ? $config['rdf_class_resources'][$class_name] : FALSE ;
 }
