@@ -461,6 +461,9 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   } // else -> single target.
 
   $handler = $view->new_display('block', 'Object: '.$field->getLabel(), 'object_'.$field_name);
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
   //$handler->display->display_options['pager']['type'] = 'mini';
 //  $handler->display->display_options['attachment_position'] = 'after';
 //  $handler->display->display_options['displays'] = array(
@@ -544,37 +547,62 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   $handler->display->display_options['fields'][$identifier_field_name]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$identifier_field_name]['required'] = 1;
 
-  // Title.
-  $handler->display->display_options['fields'][$title_field_name]['id'] =  $title_field_name;
-  $handler->display->display_options['fields'][$title_field_name]['table'] = $view->base_table;
-  $handler->display->display_options['fields'][$title_field_name]['field'] =  $title_field_name;
-  $handler->display->display_options['fields'][$title_field_name]['relationship'] = $field_name;
-  $handler->display->display_options['fields'][$title_field_name]['label'] = '';//__format_name($field->getLabel());
-  $handler->display->display_options['fields'][$title_field_name]['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['make_link'] = 1;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['path'] = $target_view->getPath().'/['.$identifier_field_name.']';
-  $handler->display->display_options['fields'][$title_field_name]['alter']['absolute'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['external'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['trim'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['html'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['alter']['url_encode'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['element_label_type'] = 'strong';
-  $handler->display->display_options['fields'][$title_field_name]['element_label_colon'] = 1;
-  $handler->display->display_options['fields'][$title_field_name]['element_default_classes'] = 1;
-  $handler->display->display_options['fields'][$title_field_name]['hide_empty'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['empty_zero'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields'][$title_field_name]['hide_empty'] = 1;
-  $handler->display->display_options['fields'][$title_field_name]['required'] = 1;
+  if (!$use_rewrite) {
+    // Title.
+    $handler->display->display_options['fields'][$title_field_name]['id'] =  $title_field_name;
+    $handler->display->display_options['fields'][$title_field_name]['table'] = $view->base_table;
+    $handler->display->display_options['fields'][$title_field_name]['field'] =  $title_field_name;
+    $handler->display->display_options['fields'][$title_field_name]['relationship'] = $field_name;
+    $handler->display->display_options['fields'][$title_field_name]['label'] = '';//__format_name($field->getLabel());
+    $handler->display->display_options['fields'][$title_field_name]['alter']['alter_text'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['make_link'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['path'] = $target_view->getPath().'/['.$identifier_field_name.']';
+    $handler->display->display_options['fields'][$title_field_name]['alter']['absolute'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['external'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['replace_spaces'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['trim_whitespace'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['nl2br'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['word_boundary'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['ellipsis'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['strip_tags'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['trim'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['html'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['url_encode'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['element_label_type'] = 'strong';
+    $handler->display->display_options['fields'][$title_field_name]['element_label_colon'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['element_default_classes'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['hide_empty'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['empty_zero'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['hide_alter_empty'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['hide_empty'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['required'] = 1;
+  } else {// Set type and rewrite field and hidden title field for rewriter.
+    $handler->display->display_options['fields'][$title_field_name]['id'] =  $title_field_name;
+    $handler->display->display_options['fields'][$title_field_name]['table'] = $view->base_table;
+    $handler->display->display_options['fields'][$title_field_name]['field'] =  $title_field_name;
+    $handler->display->display_options['fields'][$title_field_name]['relationship'] = $field_name;
+    $handler->display->display_options['fields'][$title_field_name]['label'] = '';
+    $handler->display->display_options['fields'][$title_field_name]['exclude'] = TRUE;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['alter_text'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['make_link'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['absolute'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['external'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['replace_spaces'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['trim_whitespace'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['nl2br'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['word_boundary'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['ellipsis'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['strip_tags'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['trim'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['html'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['url_encode'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['element_label_colon'] = FALSE;
+    $handler->display->display_options['fields'][$title_field_name]['element_default_classes'] = 1;
+    $handler->display->display_options['fields'][$title_field_name]['hide_empty'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['empty_zero'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['hide_alter_empty'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['required'] = 1;
 
-  // Type.
-  if ($use_rewrite) {
     $handler->display->display_options['fields'][$type_field_name]['id'] =  $type_field_name;
     $handler->display->display_options['fields'][$type_field_name]['table'] = $view->base_table;
     $handler->display->display_options['fields'][$type_field_name]['field'] =  $type_field_name;
@@ -600,6 +628,18 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     $handler->display->display_options['fields'][$type_field_name]['empty_zero'] = 0;
     $handler->display->display_options['fields'][$type_field_name]['hide_alter_empty'] = 0;
     $handler->display->display_options['fields'][$type_field_name]['required'] = 1;
+
+    /* Field: Global: Link Target Rewriter */
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['id'] = 'curios_link_target_rewriter';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_link_target_rewriter';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['alter_text'] = TRUE;
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_subject_dc_title]';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = TRUE;
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['path'] = 'subjects/[hc_subject_hc_subject_id]';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
   }
 //  } else {
 //    // Plain field name.
