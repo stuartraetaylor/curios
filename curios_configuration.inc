@@ -94,9 +94,9 @@ function _curios_configuration() {
       'hc_information_obtained_from' => new RDFField('hc_information_obtained_from', 'InformationObtainedFrom',  'hc:informationObtainedFrom', 'sparql_views_related_resource'),      
       'hc_is_part_of_site'      => new RDFField('hc_is_part_of_site', 'IsPartOfSite',  'hc:isPartOfSite', 'sparql_views_related_resource'),      
       'hc_lived_here'           => new RDFField('hc_lived_here', 'LivedHere',  'hc:livedHere', 'sparql_views_related_resource'),      
-      'hc_lived_in_at'          => new RDFField('hc_lived_in_at', 'LivedInAt',  'hc:livedInAt', 'sparql_views_related_resource'),     
+      'hc_lived_at'             => new RDFField('hc_lived_at', 'LivedAt',  'hc:livedAt', 'sparql_views_related_resource'),
       'hc_lived_with'           => new RDFField('hc_lived_with', 'LivedWith',  'hc:livedWith', 'sparql_views_related_resource'),
-      'hc_located_at_in'        => new RDFField('hc_located_at_in', 'LocatedAtIn',  'hc:locatedAtIn', 'sparql_views_related_resource'),
+      'hc_located_at'           => new RDFField('hc_located_at', 'LocatedAt',  'hc:locatedAt', 'sparql_views_related_resource'),
       'hc_located_here'         => new RDFField('hc_located_here', 'LocatedHere',  'hc:locatedHere', 'sparql_views_related_resource'),
       'hc_located_near'         => new RDFField('hc_located_near', 'LocatedNear',  'hc:locatedNear', 'sparql_views_related_resource'),
       'hc_married'              => new RDFField('hc_married', 'Married',  'hc:married', 'sparql_views_related_resource'),
@@ -247,9 +247,9 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_information_obtained_from'],
         $config['rdf_fields']['hc_is_part_of_site'],
         $config['rdf_fields']['hc_lived_here'],
-        $config['rdf_fields']['hc_lived_in_at'],
+        $config['rdf_fields']['hc_lived_at'],
         $config['rdf_fields']['hc_lived_with'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_located_here'],
         $config['rdf_fields']['hc_located_near'],
         $config['rdf_fields']['hc_married'],
@@ -306,10 +306,11 @@ function _curios_configuration() {
             'hc_business',
             'hc_story_report_or_tradition',
             'hc_boat',
-            'hc_croft_or_residence',),
+            'hc_croft_or_residence',
+        ),
         'hc_built_by' => 'hc_person',
         'hc_crewed_by' => 'hc_person',
-        'hc_information_obtained_from' => 'hc_organisation',
+        'hc_information_obtained_from' => 'hc_resource',
         'hc_owned_by' => 'hc_person',
       )
     );
@@ -342,15 +343,24 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_information_obtained_from'],
         $config['rdf_fields']['hc_lived_here'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_located_here'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_information_obtained_from' => 'hc_organisation',
+        'hc_associated_with' => array(
+            'hc_historical_event',
+            'hc_object_or_artefact',
+            'hc_organisation',
+            'hc_landmark_or_archaeological_site',
+            'hc_croft_or_residence',
+            'hc_location',
+            'hc_building_or_public_amenity',
+            'hc_person',
+            'hc_story_report_or_tradition',
+        ),
+        'hc_information_obtained_from' => 'hc_resource',
         'hc_lived_here' => 'hc_person',
-        'hc_located_at_in' => 'hc_location',
-//        'hc_located_here'
+        'hc_located_at' => array('hc_building_or_public_amenity', 'hc_location'),
       )
     );
 
@@ -374,14 +384,21 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_associated_with'],
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_information_obtained_from'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_owned_by'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-//        'hc_has_file'
-        'hc_information_obtained_from' => 'hc_organisation',
-        'hc_located_at_in' => 'hc_location',
+        'hc_associated_with' => array(
+            'hc_story_report_or_tradition',
+            'hc_person',
+            'hc_business',
+            'hc_business',
+            'hc_organisation',
+            'hc_location',
+            'hc_boat',
+        ),
+        'hc_information_obtained_from' => 'hc_resource',
+        'hc_located_at' => 'hc_location',
         'hc_owned_by' => 'hc_person',
       )
     );
@@ -412,16 +429,22 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_information_obtained_from'],
         $config['rdf_fields']['hc_lived_here'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_located_here'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-//        'hc_has_file'
+        'hc_associated_with' => array(
+            'hc_historical_event',
+            'hc_landmark_or_archaeological_site',
+            'hc_business',
+            'hc_person',
+            'hc_story_report_or_tradition',
+            'hc_croft_or_residence',
+        ),
         'hc_information_obtained_from' => 'hc_organisation',
         'hc_lived_here' => 'hc_person',
-        'hc_located_at_in' => 'hc_location',
-//        'hc_located_here'
+        'hc_located_at' => 'hc_location',
+        'hc_located_here' => array('hc_building_or_public_amenity', 'hc_landmark_or_archaeological_site'),
       )
     );
 
@@ -445,10 +468,19 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_has_file'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
+        'hc_associated_with' => array(
+            'hc_person',
+            'hc_building_or_public_amenity',
+            'hc_story_report_or_tradition',
+            'hc_croft_or_residence',
+            'hc_natural_landscape_feature',
+            'hc_historical_event',
+            'hc_croft_or_residence',
+            'hc_boat',
+            'hc_location',
+        ),
         'hc_composed_by' => 'hc_person',
-        'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_has_file'
+        'hc_information_obtained_from' => 'hc_resource',
       )
     );
 
@@ -475,15 +507,25 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_associated_with'],
         $config['rdf_fields']['hc_information_obtained_from'],
         $config['rdf_fields']['hc_has_file'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_source_of_information_on'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_has_file'
-//        'hc_located_at_in'
-//        'hc_source_of_information_on'
+        'hc_associated_with' => array(
+            'hc_croft_or_residence',
+            'hc_boat',
+            'hc_building_or_public_amenity',
+            'hc_person',
+            'hc_business',
+            'hc_organisation',
+            'hc_natural_landscape_feature',
+            'hc_historical_event',
+            'hc_historical_event',
+            'hc_location',
+            'hc_landmark_or_archaeological_site',
+            'hc_story_report_or_tradition',
+        ),
+        'hc_information_obtained_from' => 'hc_resource',
       )
     );
 
@@ -513,19 +555,25 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_comprises_sub_site'],
         $config['rdf_fields']['hc_is_part_of_site'],
         $config['rdf_fields']['hc_lived_here'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_located_here'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_has_file'
-//        'hc_source_of_information_on'
-//        'hc_comprises_sub_site'
-//        'hc_is_part_of_site'
-//        'hc_lived_here'
-//        'hc_located_at_in'
-//        'hc_located_here'
+          'hc_associated_with' => array(
+              'hc_story_report_or_tradition',
+              'hc_person',
+              'hc_croft_or_residence',
+              'hc_building_or_public_amenity',
+              'hc_natural_landscape_feature',
+              'hc_landmark_or_archaeological_site',
+              'hc_location',
+              'hc_historical_event',
+          ),
+          'hc_comprises_sub_site' => 'hc_landmark_or_archaeological_site',
+          'hc_is_part_of_site' => 'hc_landmark_or_archaeological_site',
+          'hc_information_obtained_from' => 'hc_resource',
+          'hc_lived_here' => 'hc_person',
+          'hc_located_at' => array('hc_croft_or_residence', 'hc_natural_landscape_feature', 'hc_location'),
       )
     );
 
@@ -552,23 +600,34 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_found_here'],
         $config['rdf_fields']['hc_lived_here'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_located_here'],
         $config['rdf_fields']['hc_located_near'],
         $config['rdf_fields']['hc_person_born_here'],
         $config['rdf_fields']['hc_person_who_died_here'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_has_file'
+        'hc_associated_with' => array(
+            'hc_story_report_or_tradition',
+            'hc_organisation',
+            'hc_boat',
+            'hc_person',
+            'hc_business',
+            'hc_location',
+            'hc_object_or_artefact',
+            'hc_natural_landscape_feature',
+            'hc_historical_event',
+            'hc_building_or_public_amenity',
+            'hc_landmark_or_archaeological_site',
+        ),
+        'hc_information_obtained_from' => 'hc_resource',
         'hc_found_here' => 'hc_object_or_artefact',
         'hc_lived_here' => 'hc_person',
-//        'hc_located_at_in'
-//        'hc_located_here'
-//        'hc_located_near'
-        'hc_person_born_here' => 'hc_person',
+        'hc_located_at' => 'hc_location',
+        'hc_located_here' => array('hc_business', 'hc_croft_or_residence', 'hc_landmark_or_archaeological_site'),
+        'hc_located_near' => 'hc_natural_landscape_feature',
         'hc_person_who_died_here' => 'hc_person',
+        'hc_person_born_here' => 'hc_person',
       )
     );
 
@@ -592,18 +651,27 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_information_obtained_from'],
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_found_here'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_located_here'],
         $config['rdf_fields']['hc_located_near'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_has_file'
-//        'hc_found_here'
-        'hc_located_at_in' => 'hc_location',
-//        'hc_located_here'
-//        'hc_located_near'
+        'hc_associated_with' => array(
+            'hc_story_report_or_tradition',
+            'hc_boat',
+            'hc_person',
+            'hc_historical_event',
+            'hc_croft_or_residence',
+            'hc_landmark_or_archaeological_site',
+            'hc_gaelic_verseb_rdachd',
+            'hc_building_or_public_amenity',
+            'hc_location', // not in may2012-ontology (TODO check reasoner output)
+        ),
+        'hc_found_here' => 'hc_object_or_artefact',
+        'hc_information_obtained_from' => 'hc_resource',
+        'hc_located_at' => 'hc_location',
+        'hc_located_here' => 'hc_landmark_or_archaeological_site',
+        'hc_located_near' => array('hc_location', 'hc_natural_landscape_feature'),
       )
     );
 
@@ -627,10 +695,19 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_found_at'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_has_file'
-//        'hc_found_at'
+        'hc_associated_with' => array(
+          'hc_boat',
+          'hc_building_or_public_amenity',
+          'hc_story_report_or_tradition',
+          'hc_person',
+          'hc_location',
+          'hc_historical_event',
+          'hc_resource',
+          'hc_object_or_artefact',
+          'hc_croft_or_residence',
+        ),
+        'hc_information_obtained_from' => 'hc_resource',
+        'hc_found_at' => array('hc_location', 'hc_natural_landscape_feature', 'hc_landmark_or_archaeological_site'),
       )
     );
 
@@ -680,17 +757,25 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_information_obtained_from'],
         $config['rdf_fields']['hc_compiler_of'],
         $config['rdf_fields']['hc_holds'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_source_of_information_on'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-//        'hc_has_file'
-        'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_compiler_of'
+        'hc_associated_with' => array(
+            'hc_location',
+            'hc_historical_event',
+            'hc_story_report_or_tradition',
+            'hc_boat',
+            'hc_building_or_public_amenity',
+            'hc_person',
+            'hc_croft_or_residence',
+            'hc_organisation',
+        ),
+        'hc_compiler_of' => 'hc_resource',
+        'hc_information_obtained_from' => 'hc_resource',
         'hc_holds' => 'hc_resource',
-        'hc_located_at_in' => 'hc_location',
-//        'hc_source_of_information_on'
+        'hc_located_at' => 'hc_location', // not in may2012-ontology
+        //FIXME 'hc_source_of_information_on' => array('hc_location', 'hc_person'), // not in may2012-ontology
       )
     );
 
@@ -732,7 +817,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_immigrant_from'],
         $config['rdf_fields']['hc_information_obtained_from'],
-        $config['rdf_fields']['hc_lived_in_at'],
+        $config['rdf_fields']['hc_lived_at'],
         $config['rdf_fields']['hc_lived_with'],
         $config['rdf_fields']['hc_married'],
         $config['rdf_fields']['hc_may_be_the_same_as'],
@@ -763,7 +848,7 @@ function _curios_configuration() {
 //        'hc_has_file'
         'hc_immigrant_from' => 'hc_location',
         'hc_information_obtained_from' => 'hc_resource',
-//        'hc_lived_in_at'
+//        'hc_lived_at'
         'hc_lived_with' => 'hc_person',
         'hc_married' => 'hc_person',
         'hc_may_be_the_same_as' => 'hc_person',
@@ -805,7 +890,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_compiled_maintained_by'],
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_information_obtained_from'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_source_of_information_on'],
         $config['rdf_fields']['hc_written_compiled_by'],
       ),
@@ -814,7 +899,7 @@ function _curios_configuration() {
         'hc_compiled_maintained_by' => 'hc_organisation',
         //'hc_has_file'
         //'hc_information_obtained_from'
-        //'hc_located_at_in'
+        //'hc_located_at'
         //'hc_source_of_information_on'
         'hc_written_compiled_by' => 'hc_person',
       )
@@ -847,7 +932,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_composed_by'],
         $config['rdf_fields']['hc_has_file'],
         $config['rdf_fields']['hc_information_obtained_from'],
-        $config['rdf_fields']['hc_located_at_in'],
+        $config['rdf_fields']['hc_located_at'],
         $config['rdf_fields']['hc_source_of_information_on'],
       ),
       array( // Object field ranges.
@@ -855,7 +940,7 @@ function _curios_configuration() {
         'hc_composed_by' => 'hc_person',
 //        'hc_has_file'
         'hc_information_obtained_from' => 'hc_organisation',
-//        'hc_located_at_in'
+//        'hc_located_at'
 //        'hc_source_of_information_on'
       )
     );
@@ -946,7 +1031,7 @@ function _curios_configuration() {
     $config['rdf_views']['hc_crofts_and_residences']->setOptionalAll();
 
     // GaelicVersebRdachd
-    $config['rdf_views']['hc_gaelic_verseb_rdachds'] = new RDFView('hc_gaelic_verseb_rdanchds', 'Gaelic Verseb Rdachds', 'gaelic-verseb-rdanchds',
+    $config['rdf_views']['hc_gaelic_verseb_rdachds'] = new RDFView('hc_gaelic_verseb_rdachds', 'Gaelic Verseb Rdachds', 'gaelic-verseb-rdanchds',
       $config['rdf_resources']['hc_gaelic_verseb_rdachd']);
     $config['rdf_views']['hc_gaelic_verseb_rdachds']->setOptionalAll();
 
