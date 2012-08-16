@@ -291,7 +291,7 @@ function __curios_generate_view_details(&$view, &$view_spec, $base_fields, array
   $handler->display->display_options['fields'][$base_fields['description']]['empty_zero'] = 0;
   $handler->display->display_options['fields'][$base_fields['description']]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$base_fields['description']]['type'] = 'text_default';
-  $handler->display->display_options['fields'][$base_fields['description']]['required'] = 1;
+  $handler->display->display_options['fields'][$base_fields['description']]['required'] = 0;
   $handler->display->display_options['fields'][$base_fields['description']]['exists'] = 0;
 
   // Newline.
@@ -461,9 +461,15 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   } // else -> single target.
 
   $handler = $view->new_display('block', 'Object: '.$field->getLabel(), 'object_'.$field_name);
-  $handler->display->display_options['pager']['type'] = 'none';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
+  //$handler->display->display_options['pager']['type'] = 'none';
+  //$handler->display->display_options['pager']['options']['offset'] = '0';
+
   $handler->display->display_options['defaults']['pager'] = FALSE;
+  // FIXME using rdf:type increases the results, ARC2 dies, limit to 100 for now
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  
   //$handler->display->display_options['pager']['type'] = 'mini';
 //  $handler->display->display_options['attachment_position'] = 'after';
 //  $handler->display->display_options['displays'] = array(

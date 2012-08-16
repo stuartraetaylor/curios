@@ -775,7 +775,7 @@ function _curios_configuration() {
         'hc_information_obtained_from' => 'hc_resource',
         'hc_holds' => 'hc_resource',
         'hc_located_at' => 'hc_location', // not in may2012-ontology
-        //FIXME 'hc_source_of_information_on' => array('hc_location', 'hc_person'), // not in may2012-ontology
+        'hc_source_of_information_on' => array('hc_location', 'hc_person'), // not in may2012-ontology
       )
     );
 
@@ -833,7 +833,23 @@ function _curios_configuration() {
       array( // Object field ranges.
         'hc_adopted_by' => 'hc_person',
         'hc_adopted_person' => 'hc_person',
-//        'hc_associated_with'
+        'hc_associated_with' => array(
+            'hc_landmark_or_archaeological_site',
+            'hc_business',
+            'hc_historical_event',
+            'hc_location',
+            'hc_gaelic_verseb_rdachd',
+            'hc_object_or_artefact',
+            'hc_natural_landscape_feature',
+            'hc_story_report_or_tradition',
+            'hc_boat',
+            'hc_person',
+            'hc_croft_or_residence',
+            'hc_organisation',
+            'hc_person',
+            'hc_building_or_public_amenity',
+            'hc_resource',
+        ),
         'hc_author_originator_of' => 'hc_resource',
         'hc_born_in' => 'hc_location',
         'hc_builder' => 'hc_boat',
@@ -842,20 +858,19 @@ function _curios_configuration() {
         'hc_died_in' => 'hc_location',
         'hc_emigrated_to' => 'hc_location',
         'hc_employed' => 'hc_person',
-//        'hc_employed_by'
+        'hc_employed_by' => array('hc_person', 'hc_business'),
         'hc_fostered_by' => 'hc_person',
         'hc_fostered_person' => 'hc_person',
-//        'hc_has_file'
         'hc_immigrant_from' => 'hc_location',
         'hc_information_obtained_from' => 'hc_resource',
-//        'hc_lived_at'
+        'hc_lived_at' => array('hc_landmark_or_archaeological_site', 'hc_location', 'hc_croft_or_residence'),
         'hc_lived_with' => 'hc_person',
         'hc_married' => 'hc_person',
         'hc_may_be_the_same_as' => 'hc_person',
         'hc_moved_from' => 'hc_person',
         'hc_moved_to' => 'hc_person',
         'hc_on_crew_of_boat' => 'hc_boat',
-//        'hc_owned'
+        'hc_owned' => array('hc_business', 'hc_boat'),
         'hc_parent_of' => 'hc_person',
         'hc_related_to' => 'hc_person',
         'hc_sibling_of' => 'hc_person',
@@ -895,12 +910,21 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_written_compiled_by'],
       ),
       array( // Object field ranges.
-        //'hc_associated_with'
+        'hc_associated_with' => array('hc_person', 'hc_resource', 'hc_location'),
         'hc_compiled_maintained_by' => 'hc_organisation',
-        //'hc_has_file'
-        //'hc_information_obtained_from'
+        'hc_information_obtained_from' => 'hc_resource',
         //'hc_located_at'
-        //'hc_source_of_information_on'
+        'hc_source_of_information_on' => array(
+            'hc_building_or_public_amenity',
+            'hc_historical_event',
+            'hc_landmark_or_archaeological_site',
+            'hc_storyreport_or_tradition',
+            'hc_croft_or_residence',
+            'hc_boat',
+            'hc_location',
+            'hc_organisation',
+            'hc_person',
+        ),
         'hc_written_compiled_by' => 'hc_person',
       )
     );
@@ -936,10 +960,24 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_source_of_information_on'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_composed_by' => 'hc_person',
-//        'hc_has_file'
-        'hc_information_obtained_from' => 'hc_organisation',
+        'hc_associated_with' => array(
+            'hc_landmark_or_archaeological_site',
+            'hc_location',
+            'hc_business',
+            'hc_natural_landscape_feature',
+            'hc_object_or_artefact',
+            'hc_organisation',
+            'hc_gaelic_verseb_rdachd',
+            'hc_person',
+            'hc_boat',
+            'hc_croft_or_residence',
+            'hc_story_report_or_tradition',
+            'hc_historical_event',
+            'hc_building_or_public_amenity',
+            'hc_croft_or_residence',
+        ),
+        'hc_information_obtained_from' => 'hc_resource',
+        'hc_composed_by' => 'hc_person', // none of these are in may2012-ontology
 //        'hc_located_at'
 //        'hc_source_of_information_on'
       )
@@ -963,8 +1001,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_has_file'],
       ),
       array( // Object field ranges.
-//        'hc_associated_with'
-//        'hc_has_file'
+        'hc_associated_with' => array('hc_location', 'hc_business', 'hc_person', 'hc_croft_or_residence'),
       )
     );
 
