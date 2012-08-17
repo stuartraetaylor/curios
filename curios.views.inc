@@ -75,7 +75,7 @@ function curios_views_pre_render(&$view) {
 
       // Finally update the pager and set our result.
       // FIXME this misses results since the paged queries have LIMIT
-      //$view->total_rows -= $removed;
+      $view->total_rows -= $removed;
       //$view->query->pager->total_items -= $removed;
       //$view->query->pager->update_page_info();
 

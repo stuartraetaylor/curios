@@ -96,7 +96,7 @@ function curios_default_panels_layout() {
         'width' => 100,
         'width_type' => '%',
         'parent' => '5',
-        'class' => '',
+        'class' => 'curios-relationships',
       ),
       6 => array(
         'type' => 'row',

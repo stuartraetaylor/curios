@@ -1,0 +1,10 @@
+#content .curios-relationships .pane-title {
+    font-size: 1.2em;
+}
+
+#content .curios-relationships .pane-content {
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: nowrap;
+}

@@ -76,6 +76,11 @@ function curios_menu() {
   return $items;
 }
 
+function curios_preprocess_page(&$variables) {
+  $stylesheet = drupal_get_path('module', 'curios') .'/curios.css';
+  drupal_add_css($stylesheet);
+}
+
 function curios_filter_info() {
   $filters = array();
   $filters[] = array(

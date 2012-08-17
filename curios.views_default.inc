@@ -461,14 +461,14 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   } // else -> single target.
 
   $handler = $view->new_display('block', 'Object: '.$field->getLabel(), 'object_'.$field_name);
-  //$handler->display->display_options['pager']['type'] = 'none';
-  //$handler->display->display_options['pager']['options']['offset'] = '0';
+
 
   $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   // FIXME using rdf:type increases the results, ARC2 dies, limit to 100 for now
+  //$handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '100';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
   
   //$handler->display->display_options['pager']['type'] = 'mini';
 //  $handler->display->display_options['attachment_position'] = 'after';
@@ -554,7 +554,7 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   $handler->display->display_options['fields'][$identifier_field_name]['required'] = 1;
 
   if (!$use_rewrite) {
-    // Title.
+    // Display the title field directly (no rewriting).
     $handler->display->display_options['fields'][$title_field_name]['id'] =  $title_field_name;
     $handler->display->display_options['fields'][$title_field_name]['table'] = $view->base_table;
     $handler->display->display_options['fields'][$title_field_name]['field'] =  $title_field_name;
@@ -574,6 +574,9 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     $handler->display->display_options['fields'][$title_field_name]['alter']['trim'] = 0;
     $handler->display->display_options['fields'][$title_field_name]['alter']['html'] = 0;
     $handler->display->display_options['fields'][$title_field_name]['alter']['url_encode'] = 0;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['max_length'] = '15';
+    $handler->display->display_options['fields'][$title_field_name]['alter']['word_boundary'] = FALSE;
+    $handler->display->display_options['fields'][$title_field_name]['alter']['trim'] = TRUE;
     $handler->display->display_options['fields'][$title_field_name]['element_label_type'] = 'strong';
     $handler->display->display_options['fields'][$title_field_name]['element_label_colon'] = 1;
     $handler->display->display_options['fields'][$title_field_name]['element_default_classes'] = 1;
@@ -646,7 +649,10 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['path'] = 'subjects/[hc_subject_hc_subject_id]';
     $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
     $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
-  }
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['max_length'] = '15';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['word_boundary'] = FALSE;
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['trim'] = TRUE;
+      }
 //  } else {
 //    // Plain field name.
 //    $handler->display->display_options['fields'][$field_name]['id'] =  $field_name;
