@@ -17,7 +17,7 @@ function _curios_configuration() {
       // Data properties.
       'hc_also_known_as'        => new RDFField('hc_also_known_as', 'AlsoKnownAs', 'hc:alsoKnownAs', 'text'),
       'hc_bk_reference'         => new RDFField('hc_bk_reference', 'BkReference', 'hc:bkReference', 'text'),
-      'hc_born'                 => new RDFField('hc_born', 'Born', 'hc:dateOfBirth', 'text'),
+      'hc_born'                 => new RDFField('hc_born', 'Born', 'hc:born', 'text'),
 //      'hc_business_type'        => new RDFField('hc_business_type', 'BusinessType', 'hc:businessType', 'text'),
       'hc_chassis'              => new RDFField('hc_chassis', 'Chassis', 'hc:chassis', 'text'),
 //      'hc_composer'             => new RDFField('hc_composer', 'Composer', 'hc:Composer', 'text'),
@@ -38,7 +38,7 @@ function _curios_configuration() {
       'hc_english_name'         => new RDFField('hc_english_name', 'EnglishName', 'hc:englishName', 'text'),
       'hc_file'                 => new RDFField('hc_file', 'File', 'hc:file', 'text'),      
       'hc_file_name'            => new RDFField('hc_file_name', 'Filename', 'hc:fileName', 'text'),
-      'hc_gaelic_name'          => new RDFField('hc_gaelic_name', 'GaelicName', 'hc:GaelicName', 'text'),
+      'hc_gaelic_name'          => new RDFField('hc_gaelic_name', 'GaelicName', 'hc:gaelicName', 'text'),
       'hc_geo_ref'              => new RDFField('hc_geo_ref', 'GeoRef', 'hc:geoRef', 'text'),
 //      'hc_location_type'        => new RDFField('hc_location_type', 'LocationType', 'hc:LocationType', 'text'),
 //      'hc_natural_landmark_type'=> new RDFField('hc_natural_landmark_type', 'NaturalLandmarkType', 'hc:NaturalLandmarkType', 'text'),
