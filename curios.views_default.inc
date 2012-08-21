@@ -649,7 +649,7 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['path'] = 'subjects/[hc_subject_hc_subject_id]';
     $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
     $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
-    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['max_length'] = '15';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['max_length'] = '18';
     $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['word_boundary'] = FALSE;
     $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['trim'] = TRUE;
       }

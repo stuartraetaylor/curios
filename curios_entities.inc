@@ -96,7 +96,7 @@ class RDFView extends DrupalThing {
   }
   
   public function getPageDescription() { 
-    return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor, nisi id ultrices feugiat, enim eros auctor massa, et dictum lectus lorem mollis neque.';
+    return 'From this page you can both browse and search the Hebridean Connections repository.';
   }
   
 }
