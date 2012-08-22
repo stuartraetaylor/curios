@@ -21,20 +21,23 @@ class RDFResource extends DrupalThing {
   private $rdf_type;
   private $data_fields;
   private $object_fields;
-  private $object_field_ranges; // field_name => resource_name
+  private $object_field_ranges; // field_name => resource_name.
+  private $sub_types; // label => rdf type.
 
-  public function __construct($machine_name, $label, $rdf_type, array $data_fields = array(), array $object_fields = array(), array $object_field_ranges = array()) {
+  public function __construct($machine_name, $label, $rdf_type, array $data_fields = array(), array $object_fields = array(), array $object_field_ranges = array(), $sub_types = array()) {
     parent::__construct($machine_name, $label);
     $this->rdf_type = $rdf_type;
     $this->data_fields = $data_fields;
     $this->object_fields = $object_fields;
     $this->object_field_ranges = $object_field_ranges;
+    $this->sub_types = $sub_types;
   }
 
   public function getRDFType() { return $this->rdf_type; }
   public function getDataFields() { return $this->data_fields; }
   public function getObjectFields() { return $this->object_fields; }
   public function getObjectFieldRanges() { return $this->object_field_ranges; }
+  public function getSubTypes() { return $this->sub_types; }
   public function getFields() { return array_merge($this->data_fields, $this->object_fields); }
 
 }

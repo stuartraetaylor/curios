@@ -926,6 +926,30 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
     'language' => '0',
   );
 
+  // Exposed filter: rdf:type.
+  $sub_types = $resource->getSubTypes();
+  if (!empty($sub_types)) {
+    $type_field_name = $resource_name.'_type';
+    $handler->display->display_options['filters'][$type_field_name]['id'] = $type_field_name;
+    $handler->display->display_options['filters'][$type_field_name]['table'] = $view->base_table;
+    $handler->display->display_options['filters'][$type_field_name]['field'] = $type_field_name;
+    $handler->display->display_options['filters'][$type_field_name]['exposed'] = TRUE;
+    $handler->display->display_options['filters'][$type_field_name]['expose']['operator_id'] = $type_field_name.'_op';
+    $handler->display->display_options['filters'][$type_field_name]['expose']['label'] = 'Type';
+    $handler->display->display_options['filters'][$type_field_name]['expose']['operator'] = $type_field_name.'_op';
+    $handler->display->display_options['filters'][$type_field_name]['expose']['identifier'] = $type_field_name;
+    $handler->display->display_options['filters'][$type_field_name]['is_grouped'] = TRUE;
+    $handler->display->display_options['filters'][$type_field_name]['group_info']['label'] = 'Type';
+    $handler->display->display_options['filters'][$type_field_name]['group_info']['identifier'] = $type_field_name;
+    $handler->display->display_options['filters'][$type_field_name]['group_info']['remember'] = 1;
+    $handler->display->display_options['filters'][$type_field_name]['group_info']['group_items'] = array();
+    foreach ($sub_types as $label => $type) {
+      //1 => array('title' => 'Barge', 'value' => 'hc:Barge', 'operator' => '='),
+      $handler->display->display_options['filters'][$type_field_name]['group_info']['group_items'][] =
+          array('title' => __format_name($label), 'value' => $type, 'operator' => '=');
+    }
+  }
+
 }
 
 function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
