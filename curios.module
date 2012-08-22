@@ -27,13 +27,20 @@ function curios_ctools_plugin_api($module, $api) {
 }
 
 
-function curios_block_info() {
-  $items = array();
+//function curios_block_info() {
+//  $items = array();
 //  $items['curios-test-block'] = array(
 //    'info' => t('CURIOS update test block')
 //  );
+//
+//  return $items;
+//}
 
-  return $items;
+function curios_init() {
+  // Temporary fix for exposed drop down filter.
+  if (!isset($_GET['field_event_category_value'])) {
+    $_GET['field_event_category_value'] = 'All';
+  }
 }
 
 function curios_menu() {
