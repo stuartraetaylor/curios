@@ -92,9 +92,10 @@ function curios_filter_info() {
 }
 
 function curios_filter_description_links($text, $filter, $format, $langcode, $cache, $cache_id) {
+  global $base_path;
   //$subject_link = '/<<([0-9]+)##(.*?)>>/';
   $subject_link = '/&lt;&lt;([0-9]+)##(.*?)&gt;&gt;/';
-  $replacement = '<a href="/subjects/$1">$2</a>';
+  $replacement = '<a href="'.$base_path.'subjects/$1">$2</a>';
   return preg_replace($subject_link, $replacement, $text);
 }
 

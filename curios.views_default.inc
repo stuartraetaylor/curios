@@ -944,7 +944,6 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
     $handler->display->display_options['filters'][$type_field_name]['group_info']['remember'] = 1;
     $handler->display->display_options['filters'][$type_field_name]['group_info']['group_items'] = array();
     foreach ($sub_types as $label => $type) {
-      //1 => array('title' => 'Barge', 'value' => 'hc:Barge', 'operator' => '='),
       $handler->display->display_options['filters'][$type_field_name]['group_info']['group_items'][] =
           array('title' => __format_name($label), 'value' => $type, 'operator' => '=');
     }
