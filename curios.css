@@ -8,3 +8,7 @@
     overflow-x: hidden;
     white-space: nowrap;
 }
+
+#content .curios-image-gallery img {
+    max-width: 520px;
+}

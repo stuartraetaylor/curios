@@ -88,7 +88,7 @@ function curios_default_panels_layout() {
         'width' => 100,
         'width_type' => '%',
         'parent' => '4',
-        'class' => '',
+        'class' => 'curios-properties',
       ),
       'relationships_region' => array(
         'type' => 'region',
@@ -113,7 +113,7 @@ function curios_default_panels_layout() {
         'width' => 100,
         'width_type' => '%',
         'parent' => '6',
-        'class' => '',
+        'class' => 'curios-image-gallery',
       ),
     ),
   );
