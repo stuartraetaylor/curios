@@ -45,6 +45,7 @@ function _curios_configuration() {
       'hc_registration'         => new RDFField('hc_registration', 'Registration', 'hc:registration', 'text'),
       'hc_sex'                  => new RDFField('hc_sex', 'Sex', 'hc:sex', 'text'),
       'hc_smr_record_id'        => new RDFField('hc_smr_record_id', 'SMR Record ID', 'hc:SMRRecordID', 'text'),
+      'hc_source_type'          => new RDFField('hc_source_type', 'Source Type', 'hc:sourceType', 'text'),
       'hc_soundex_name'         => new RDFField('hc_soundex_name', 'Soundexname', 'hc:soundexName', 'text'),      
       'hc_subject_id'           => new RDFField('hc_subject_id', 'Subjectid', 'hc:subjectID', 'text'),      
       'hc_title'                => new RDFField('hc_title', 'Title', 'hc:title', 'text'),
@@ -372,8 +373,8 @@ function _curios_configuration() {
         //$config['rdf_fields']['hc_residence_type'],
         //$config['rdf_fields']['hc_site_type'],
         $config['rdf_fields']['hc_smr_record_id'],
-        //$config['rdf_fields']['hc_type_of_building_public_amty'],
-        //$config['rdf_fields']['hc_type_of_organisation'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -441,12 +442,10 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
-        //$config['rdf_fields']['hc_business_type'],
         $config['rdf_fields']['hc_date_founded'],
         $config['rdf_fields']['hc_period'],
-        //$config['rdf_fields']['hc_residence_type'],
-        //$config['rdf_fields']['hc_site_type'],
-        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -522,9 +521,8 @@ function _curios_configuration() {
         //$config['rdf_fields']['hc_location_type'],
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_period_of_construction_use'],
-        //$config['rdf_fields']['hc_residence_type'],
-        //$config['rdf_fields']['hc_site_type'],
-        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -578,7 +576,8 @@ function _curios_configuration() {
 
         $config['rdf_fields']['hc_date'],
         $config['rdf_fields']['hc_theme'],
-        //$config['rdf_fields']['hc_type'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -678,7 +677,8 @@ function _curios_configuration() {
         //$config['rdf_fields']['hc_residence_type'],
         //$config['rdf_fields']['hc_site_type'],
         $config['rdf_fields']['hc_smr_record_id'],
-        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -909,11 +909,9 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_also_known_as'],
 
         $config['rdf_fields']['hc_geo_ref'],
-        //$config['rdf_fields']['hc_location_type'],
-        //$config['rdf_fields']['hc_natural_landmark_type'],
         $config['rdf_fields']['hc_period_of_construction_use'],
-        //$config['rdf_fields']['hc_site_type'],
-        //$config['rdf_fields']['hc_type_of_building_public_amty'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -1005,9 +1003,8 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_also_known_as'],
 
         $config['rdf_fields']['hc_geo_ref'],
-        //$config['rdf_fields']['hc_location_type'],
-        //$config['rdf_fields']['hc_natural_landmark_type'],
-        //$config['rdf_fields']['hc_site_type'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -1078,6 +1075,8 @@ function _curios_configuration() {
         //$config['rdf_fields']['hc_object_type'],
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_smr_record_id'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -1312,7 +1311,8 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_geo_ref'],
         $config['rdf_fields']['hc_occupation'],
         $config['rdf_fields']['hc_sex'],
-        //$config['rdf_fields']['hc_type'],
+        $config['rdf_fields']['hc_northing'],
+        $config['rdf_fields']['hc_easting'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_adopted_by'],
@@ -1410,10 +1410,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_occupation'],
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_sex'],
-        //$config['rdf_fields']['hc_site_type'],
-        //$config['rdf_fields']['hc_source_type'],
-        //$config['rdf_fields']['hc_type'],
-        //$config['rdf_fields']['hc_type_of_organisation'],
+        $config['rdf_fields']['hc_source_type'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
