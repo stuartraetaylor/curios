@@ -1,3 +1,15 @@
+#content .curios-summary { }
+
+
+/* Properties region */
+
+#content .curios-properties .views-label {
+    display: inline-block;
+    min-width: 30%;
+}
+
+/* Relationships region */
+
 #content .curios-relationships .pane-title {
     font-size: 1.2em;
 }

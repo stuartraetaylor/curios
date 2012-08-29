@@ -355,8 +355,7 @@ function __curios_generate_view_properties(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['pager']['type'] = 'none';
 
   // Field options.
-  //$handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = 1;
 
