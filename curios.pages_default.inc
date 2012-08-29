@@ -195,9 +195,10 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
   $display->panel_settings = array(
     'style_settings' => array(
       'default' => NULL,
+      'summary_region' => NULL,
       'properties_region' => NULL,
-      'relationships_region' => NULL,
       'image_gallery_region' => NULL,
+      'relationships_region' => NULL,
     ),
   );
   $display->cache = array();
@@ -207,6 +208,41 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
   $display->hide_title = PANELS_TITLE_PANE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
+
+  // Summary Region.
+  $pane = new stdClass;
+  $pane->pid = 'summary_pane';
+  $pane->panel = 'summary_region';
+  $pane->type = 'views';
+  $pane->subtype = $view_spec->getMachineName(); // Name of view.
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 0,
+    'nodes_per_page' => '0',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 1,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '',
+    'display' => 'summary',
+    'override_title' => 0,
+    'override_title_text' => '',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $display->content['summary_pane'] = $pane;
+  $display->panels['summary_region'][0] = 'summary_pane';
 
   // Properties Region.
   $pane = new stdClass;
@@ -228,7 +264,7 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
     'link_to_view' => 0,
     'args' => '',
     'url' => '',
-    'display' => 'details',
+    'display' => 'properties',
     'override_title' => 0,
     'override_title_text' => '',
   );
