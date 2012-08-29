@@ -228,7 +228,7 @@ function _curios_configuration() {
         //$config['rdf_fields']['hc_fostered_person'],
         //$config['rdf_fields']['hc_found_at'],
         //$config['rdf_fields']['hc_found_here'],
-        //$config['rdf_fields']['hc_has_file'],
+        $config['rdf_fields']['hc_has_file'],
         //$config['rdf_fields']['hc_holds'],
         //$config['rdf_fields']['hc_immigrant_from'],
         $config['rdf_fields']['hc_information_obtained_from'],

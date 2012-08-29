@@ -19,7 +19,7 @@ function __curios_subject_update($subject_id, $triples_insert, $triples_delete) 
   __curios_execute_sparql($query);
 }
 
-function __curios_subject_insert($subject_id, $insert_triples) {
+function __curios_subject_insert($subject_id, $triples_insert) {
   $query = '';
   $query .= "PREFIX hc:<http://www.csd.abdn.ac.uk/~cmellish/ontologies/hebridean.owl#>\n";
   $query .= "INSERT DATA {\n";
@@ -46,7 +46,7 @@ function __curios_execute_sparql($query) {
   $rs = sparql_request($query, (object)array('uri' => 'http://localhost:3030/dataset/update'));
 
   if ($rs == NULL) {
-    dpm('error!');
+    dpm('Oh no, error!');
   } else {
     dpm($rs, 'QUERY RESULT!');
     drupal_set_message(t('The form has been submitted.'));
