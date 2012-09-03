@@ -44,3 +44,13 @@
     overflow-x: hidden;
     white-space: nowrap;
 }
+
+#content .curios-listing .form-text {
+    width: 300px;
+}
+
+#content .curios-listing .form-item-type select {
+    width: 130px;
+    overflow-x: hidden;
+    white-space: nowrap;
+}

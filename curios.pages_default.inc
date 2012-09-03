@@ -145,7 +145,10 @@ function _curios_generate_listing_panel(&$view_spec, $handler_id) {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array();
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'curios-listing',
+    );
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
