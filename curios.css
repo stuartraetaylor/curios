@@ -22,5 +22,25 @@
 }
 
 #content .curios-image-gallery img {
-    max-width: 520px;
+    max-width: 260px;
+}
+
+#content .curios-image-gallery .views-row-odd {
+    clear: both;
+    float: left;
+}
+
+#content .curios-image-gallery .views-row-even {
+    float: right;
+}
+
+#block-curios-search {
+    width: 200px;
+}
+
+#block-curios-search .form-item-query input,
+#block-curios-search .form-item-type select {
+    width: 200px;
+    overflow-x: hidden;
+    white-space: nowrap;
 }

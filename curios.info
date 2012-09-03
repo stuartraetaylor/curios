@@ -6,6 +6,7 @@ dependencies[] = page_manager
 dependencies[] = sparql_views
 dependencies[] = sparql_views_related_resource
 dependencies[] = views_php
+dependencies[] = lightbox2
 package = curios
 core = 7.x
 files[] = curios_entities.inc

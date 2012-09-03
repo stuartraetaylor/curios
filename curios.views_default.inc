@@ -1071,7 +1071,7 @@ function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
 
   $output = \'\';
   //$output .= \'Image: \'.$image_path.\'<br />\';
-  $output .= \'<img src="\'.$image_path.\'" /><br /><br />\';
+  $output .= \'<a href="\'.$image_path.\'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
 
   echo $output;
   ?>';

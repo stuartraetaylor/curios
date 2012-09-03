@@ -81,16 +81,41 @@ function curios_menu() {
     'menu_name' => 'navigation',
     'page arguments' => array(2,3),
   );
-  $items['curios/test-search'] = array(
-    'title' => t('CURIOS Test Search Engine Page'),
-    'page callback' => 'curios_search_engine_form_page',
-    'access arguments' => array('access content'),
-    'description' => t('desc'),
-    'type' => MENU_NORMAL_ITEM,
-    'menu_name' => 'navigation',
-   // 'page arguments' => array(0),
-  );
+//  $items['curios/test-search'] = array(
+//    'title' => t('CURIOS Test Search Engine Page'),
+//    'page callback' => 'curios_search_engine_form_page',
+//    'access arguments' => array('access content'),
+//    'description' => t('desc'),
+//    'type' => MENU_NORMAL_ITEM,
+//    'menu_name' => 'navigation',
+//   // 'page arguments' => array(0),
+//  );
   return $items;
+}
+
+function curios_block_info() {
+  $blocks = array();
+
+  $blocks['search'] = array(
+    'info' => t('CURIOS search block'),
+    'status' => TRUE,
+    'region' => 'header'
+  );
+
+  return $blocks;
+}
+
+function curios_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'search':
+      $block['subject'] = t('CURIOS search block');
+      $block['content'] = drupal_get_form('curios_search_engine_form');
+      break;
+  }
+  
+  return $block;
 }
 
 function curios_preprocess_page(&$variables) {
@@ -170,11 +195,6 @@ function curios_insert_form_validate($form, &$form_state) {
   //}
 }
 
-function curios_block_view($delta = ''){
-  $block = array();
-  if ($delta == 'curios-test-block') { }
-  return $block;
-}
 
 //function __curios_sparql_views_info() {
 //    $resource_name = 'hc_boat';
