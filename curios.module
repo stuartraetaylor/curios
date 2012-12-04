@@ -56,7 +56,7 @@ function curios_menu() {
 //    //'page arguments' => array(2),
 //  );
   $items['curios/insert/%'] = array(
-    'title' => t('CURIOS INSERT Test Page'),
+    'title' => t('Insert New Subject'),
     'page callback' => 'curios_insert_form_page',
     'access arguments' => array('access content'),
     'description' => t('desc'),
@@ -65,7 +65,7 @@ function curios_menu() {
     'page arguments' => array(2),
   );
     $items['curios/delete'] = array(
-    'title' => t('CURIOS DELETE Test Page'),
+    'title' => t('Delete Existing Subject'),
     'page callback' => 'curios_delete_form_page',
     'access arguments' => array('access content'),
     'description' => t('desc'),
@@ -73,7 +73,7 @@ function curios_menu() {
     'menu_name' => 'navigation',
   );
   $items['curios/update/%/%'] = array(
-    'title' => t('CURIOS UPDATE Test Page'),
+    'title' => t('Update Existing Subject'),
     'page callback' => 'curios_update_form_page',
     'access arguments' => array('access content'),
     'description' => t('desc'),

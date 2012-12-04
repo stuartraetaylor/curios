@@ -1,5 +1,6 @@
-#content .curios-summary { }
+/* Summary region */
 
+#content .curios-summary { text-align: justify; }
 
 /* Properties region */
 
@@ -21,6 +22,8 @@
     white-space: nowrap;
 }
 
+/* Image gallery region */
+
 #content .curios-image-gallery img {
     max-width: 260px;
 }
@@ -34,16 +37,7 @@
     float: right;
 }
 
-#block-curios-search {
-    width: 200px;
-}
-
-#block-curios-search .form-item-query input,
-#block-curios-search .form-item-type select {
-    width: 200px;
-    overflow-x: hidden;
-    white-space: nowrap;
-}
+/* Listings page */
 
 #content .curios-listing .form-text {
     width: 300px;
@@ -51,6 +45,19 @@
 
 #content .curios-listing .form-item-type select {
     width: 130px;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+/* Header search block */
+
+#block-curios-search {
+    width: 200px;
+}
+
+#block-curios-search .form-item-query input,
+#block-curios-search .form-item-type select {
+    width: 200px;
     overflow-x: hidden;
     white-space: nowrap;
 }

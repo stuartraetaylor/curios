@@ -37,7 +37,7 @@ function curios_install() {
   // Create menu.
   $menu = array(
     'menu_name' => 'menu-curios',
-    'title' => 'CURIOS',
+    'title' => 'Subject Types',
     'description' => 'CURIOS menu',
   );
   menu_save($menu);

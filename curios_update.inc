@@ -39,8 +39,12 @@ function curios_update_form($form, $form_state, $resource_name, $subject_id) {
     'entity_type' => 'sparql_views_resource',
     'bundle' => $resource_name,));
 
+  // Look up configuration and execute view.
+  $config = _curios_configuration();
+  $resource_config = $config['rdf_resources'][$resource_name];
+  $view_config = _curios_get_view($resource_name);
   //$view = views_get_view('hc_boats');
-  $view_result = views_get_view_result('hc_boats', 'details', $subject_id, 'hc:Boat');
+  $view_result = views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
 
   $form = array();
   $form['status'] = array('#markup' => "<h3>Update: <em>".$resource_type->label." ".$subject_id." (".$subject_id." : ".$resource_type->name.")</em></h3>");
@@ -74,7 +78,7 @@ function curios_update_form($form, $form_state, $resource_name, $subject_id) {
 }
 
 /* Insert */
-function curios_insert_form($form, $form_state, $resource_name) {dpm($form_state);
+function curios_insert_form($form, $form_state, $resource_name) {//dpm($form_state);
   $resource_type = sparql_views_resource_type_load($resource_name);
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
@@ -110,7 +114,7 @@ function curios_insert_form($form, $form_state, $resource_name) {dpm($form_state
 }
 
 /* Delete */
-function curios_delete_form($form, $form_state) {dpm($form_state);
+function curios_delete_form($form, $form_state) {//dpm($form_state);
   $form = array();
   $form['subject_id'] = array(
     '#type' => 'textfield',
@@ -163,6 +167,7 @@ function curios_insert_form_submit($form, &$form_state) {
     'bundle' => $resource_name,));
 
   $subject_id = $form_state['values']['identifier'];
+  $rdf_type = $rdf_mapping['rdftype'][0];
   $triples_insert = '';
   foreach ($field_instances as $instance) {
     $form_value = $form_state['values'][$instance['field_name']];
@@ -171,7 +176,7 @@ function curios_insert_form_submit($form, &$form_state) {
     }
   }
 
-  __curios_subject_insert($subject_id, $triples_insert);
+  __curios_subject_insert($subject_id, $rdf_type, $triples_insert);
 }
 
 /* Delete */

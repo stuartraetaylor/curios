@@ -540,6 +540,7 @@ function _curios_configuration() {
             'hc_person',
             'hc_story_report_or_tradition',
             'hc_croft_or_residence',
+            'hc_object_or_artefact', // not in may2012 ontology
         ),
         'hc_information_obtained_from' => 'hc_organisation',
         'hc_lived_here' => 'hc_person',
