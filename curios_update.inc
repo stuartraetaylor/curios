@@ -153,7 +153,11 @@ function curios_update_form_submit($form, &$form_state) {
     }
   }
 
-  __curios_subject_update($subject_id, $triples_insert, $triples_delete);
+  if (!empty($triples_delete)) {
+    __curios_subject_update($subject_id, $triples_insert, $triples_delete);
+  } else {
+    drupal_set_message(t('No fields to update.'));
+  }
 }
 
 /* Submit */
