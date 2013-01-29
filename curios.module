@@ -64,7 +64,15 @@ function curios_menu() {
     'menu_name' => 'navigation',
     'page arguments' => array(2),
   );
-    $items['curios/delete'] = array(
+  $items['curios/insert'] = array(
+    'title' => t('Insert New Subject'),
+    'page callback' => 'curios_insert_page',
+    'access arguments' => array('access content'),
+    'description' => t('desc'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'navigation',
+  );
+  $items['curios/delete'] = array(
     'title' => t('Delete Existing Subject'),
     'page callback' => 'curios_delete_form_page',
     'access arguments' => array('access content'),

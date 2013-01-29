@@ -41,13 +41,12 @@ function __curios_subject_delete($subject_id) {
   __curios_execute_sparql($query);
 }
 
-function __curios_execute_sparql($query) {dpm("UPDATE", $query);
+function __curios_execute_sparql($query) {
+  //dpm($query, "CURIOS update");
   $rs = sparql_request($query, (object)array('uri' => 'http://localhost:3030/dataset/update'));
 
-  if ($rs == NULL) {
-    dpm('Oh no, error!');
-  } else {
-    dpm($rs, 'QUERY RESULT!');
+  if ($rs != NULL) {
+    //dpm($rs, 'QUERY RESULT!');
     drupal_set_message(t('The form has been submitted.'));
   }
 }

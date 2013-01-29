@@ -11,6 +11,20 @@ function curios_update_form_page($resource_name, $subject_id) {
 }
 
 /* Insert */
+function curios_insert_page() {
+  $page = array();
+  $page[] = array('#markup' => '<h2>CURIOS Insert Form Page</h2>');
+
+  $resources = entity_load('sparql_views_resource_type');
+  $resource_list = '';
+  foreach ($resources as $entity) {
+    $resource_list .= '<li><a href="/curios/insert/'. $entity->name . '">' . $entity->name . '</a></li>';
+  }
+
+  $page[] = array('#markup' => "<ul>$resource_list</ul>");
+  return $page;
+}
+
 function curios_insert_form_page($resource_name) {
   $page = array();
   $page[] = array('#markup' => '<h2>CURIOS Insert Form Page</h2>');
