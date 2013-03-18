@@ -61,3 +61,7 @@
     overflow-x: hidden;
     white-space: nowrap;
 }
+
+
+
+#edit-dc-description-format { display: none; }

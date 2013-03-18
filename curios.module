@@ -55,40 +55,64 @@ function curios_menu() {
 //    'menu_name' => 'navigation',
 //    //'page arguments' => array(2),
 //  );
-  $items['curios/insert/%'] = array(
-    'title' => t('Insert New Subject'),
-    'page callback' => 'curios_insert_form_page',
+
+  $items['curios/manage'] = array(
+    'title' => t('Manage Repository'),
+    'page callback' => 'curios_manage_page',
     'access arguments' => array('access content'),
-    'description' => t('desc'),
+    'description' => t('Create, edit, delete records in the repository'),
     'type' => MENU_NORMAL_ITEM,
-    'menu_name' => 'navigation',
-    'page arguments' => array(2),
+    'menu_name' => 'main-menu',
+    'weight' => '99',
   );
-  $items['curios/insert'] = array(
-    'title' => t('Insert New Subject'),
+  
+  
+  $items['curios/manage/create'] = array(
+    'title' => t('Create New Record'),
     'page callback' => 'curios_insert_page',
     'access arguments' => array('access content'),
     'description' => t('desc'),
-    'type' => MENU_NORMAL_ITEM,
-    'menu_name' => 'navigation',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => '0',
   );
-  $items['curios/delete'] = array(
-    'title' => t('Delete Existing Subject'),
-    'page callback' => 'curios_delete_form_page',
+  $items['curios/manage/create/%'] = array(
+    'title' => t('Create New Record'),
+    'page callback' => 'curios_insert_form_page',
     'access arguments' => array('access content'),
     'description' => t('desc'),
-    'type' => MENU_NORMAL_ITEM,
-    'menu_name' => 'navigation',
+    'type' => MENU_LOCAL_TASK,
+    'page arguments' => array(3),
   );
-  $items['curios/update/%/%'] = array(
-    'title' => t('Update Existing Subject'),
+
+
+  $items['curios/manage/edit'] = array(
+    'title' => t('Edit Existing Record'),
+    'page callback' => 'curios_update_page',
+    'access arguments' => array('access content'),
+    'description' => t('desc'),
+    'type' => MENU_LOCAL_TASK,
+     'weight' => '1',
+  );
+  $items['curios/manage/edit/%/%'] = array(
+    'title' => t('Edit Existing Record'),
     'page callback' => 'curios_update_form_page',
     'access arguments' => array('access content'),
     'description' => t('desc'),
-    'type' => MENU_NORMAL_ITEM,
-    'menu_name' => 'navigation',
-    'page arguments' => array(2,3),
+    'type' => MENU_LOCAL_TASK,
+    'page arguments' => array(3,4),
   );
+
+
+  $items['curios/manage/delete'] = array(
+    'title' => t('Delete Record'),
+    'page callback' => 'curios_delete_page',
+    'access arguments' => array('access content'),
+    'description' => t('desc'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => '2',
+  );
+
+
 //  $items['curios/test-search'] = array(
 //    'title' => t('CURIOS Test Search Engine Page'),
 //    'page callback' => 'curios_search_engine_form_page',
@@ -98,8 +122,25 @@ function curios_menu() {
 //    'menu_name' => 'navigation',
 //   // 'page arguments' => array(0),
 //  );
+
   return $items;
 }
+
+function curios_contextual_links_view_alter(&$element, $items) {
+  //dpm($element, "ELEMENTS");
+  //dpm($items, "ITEMS");
+}
+
+//function curios_block_view_alter(&$data, $block) {
+//  switch ($block->delta) {
+//    case 'main':
+//      $data['content']['contextual_links']['#links'][] = array(
+//          'href' => 'test',
+//          'title' => 'TEST');
+//      dpm($data);
+//    break;
+//  }
+//}
 
 function curios_block_info() {
   $blocks = array();
@@ -170,7 +211,7 @@ function curios_search_engine_form($form, $form_state) {
   $form['query'] = array('#type' => 'textfield', '#title' => t('Search Hebridean Connections'));
   $form['type'] = array(
     '#type' => 'select',
-    '#title' => t('Subject Type'),
+    '#title' => t('Record Type'),
     '#options' => $options,
     '#default_value' => 'hc_people',
   );

@@ -714,6 +714,7 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $image_file = $resource_name.'_hc_has_file';
+  $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
   
   $handler = $view->new_display('block', 'Listing', 'listing');
   
@@ -755,6 +756,7 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
     $base_fields['title'] => $base_fields['title'],
     $base_fields['description'] => $base_fields['description'],
     $image_file => $image_file,
+    'subject_id_rewrite' => 'subject_id_rewrite',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -781,6 +783,11 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
       'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
+    ),
+    'subject_id_rewrite' => array(
+      'align' => 'views-align-right',
+      'separator' => '',
+      'empty_column' => 0,
     ),
   );
   $handler->display->display_options['style_options']['override'] = 1;
@@ -821,7 +828,6 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['fields'][$resource_name]['hide_alter_empty'] = 0;
 
   // Field: subject id.
-  $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
   $handler->display->display_options['fields'][$subject_id_field]['id'] = $subject_id_field;
   $handler->display->display_options['fields'][$subject_id_field]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$subject_id_field]['field'] = $subject_id_field;
@@ -925,6 +931,12 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['fields'][$image_file]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$image_file]['required'] = 0;
   $handler->display->display_options['fields'][$image_file]['exists'] = 1;
+
+  $handler->display->display_options['fields']['subject_id_rewrite']['id'] = 'subject_id_rewrite';
+  $handler->display->display_options['fields']['subject_id_rewrite']['table'] = 'views';
+  $handler->display->display_options['fields']['subject_id_rewrite']['field'] = 'nothing';
+  $handler->display->display_options['fields']['subject_id_rewrite']['label'] = 'Id';
+  $handler->display->display_options['fields']['subject_id_rewrite']['alter']['text'] = '['.$subject_id_field.']';
 
   // Contextual filters.
   __curios_rdf_type_filter($handler, $view, $view_spec);
