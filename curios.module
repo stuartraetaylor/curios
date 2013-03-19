@@ -44,6 +44,24 @@ function curios_init() {
   }
 }
 
+function curios_permission() {
+  return array(
+    'curios manage repository' => array(
+      'title' => t('Manage Repository'),
+      'description' => t('Create, edit, delete items in the CURIOS repository.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+function curios_resource_type_to_arg() {
+  return '';
+}
+
+function curios_subject_id_to_arg() {
+  return '';
+}
+
 function curios_menu() {
   $items = array();
 //  $items['curios/insert'] = array(
@@ -59,7 +77,7 @@ function curios_menu() {
   $items['curios/manage'] = array(
     'title' => t('Manage Repository'),
     'page callback' => 'curios_manage_page',
-    'access arguments' => array('access content'),
+    'access arguments' => array('curios manage repository'),
     'description' => t('Create, edit, delete records in the repository'),
     'type' => MENU_NORMAL_ITEM,
     'menu_name' => 'main-menu',
@@ -70,47 +88,44 @@ function curios_menu() {
   $items['curios/manage/create'] = array(
     'title' => t('Create New Record'),
     'page callback' => 'curios_insert_page',
-    'access arguments' => array('access content'),
-    'description' => t('desc'),
+    'access arguments' => array('curios manage repository'),
+    'description' => t('Create a new record'),
+     //'type' => MENU_DEFAULT_LOCAL_TASK,
     'type' => MENU_LOCAL_TASK,
     'weight' => '0',
   );
-  $items['curios/manage/create/%'] = array(
-    'title' => t('Create New Record'),
+  $items['curios/manage/create/%curios_resource_type'] = array(
     'page callback' => 'curios_insert_form_page',
-    'access arguments' => array('access content'),
-    'description' => t('desc'),
+    'access arguments' => array('curios manage repository'),
     'type' => MENU_LOCAL_TASK,
     'page arguments' => array(3),
+    'tab parent' => 'curios/manage/create',
   );
 
-
   $items['curios/manage/edit'] = array(
-    'title' => t('Edit Existing Record'),
+    'title' => t('Edit / Delete Record'),
     'page callback' => 'curios_update_page',
-    'access arguments' => array('access content'),
-    'description' => t('desc'),
+    'access arguments' => array('curios manage repository'),
+    'description' => t('Edit or delete an existing record'),
     'type' => MENU_LOCAL_TASK,
      'weight' => '1',
   );
-  $items['curios/manage/edit/%/%'] = array(
-    'title' => t('Edit Existing Record'),
+  $items['curios/manage/edit/%curios_resource_type/%curios_subject_id'] = array(
     'page callback' => 'curios_update_form_page',
-    'access arguments' => array('access content'),
-    'description' => t('desc'),
+    'access arguments' => array('curios manage repository'),
     'type' => MENU_LOCAL_TASK,
     'page arguments' => array(3,4),
+    'tab parent' => 'curios/manage/edit',
   );
 
-
-  $items['curios/manage/delete'] = array(
-    'title' => t('Delete Record'),
-    'page callback' => 'curios_delete_page',
-    'access arguments' => array('access content'),
-    'description' => t('desc'),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => '2',
-  );
+//  $items['curios/manage/delete'] = array(
+//    'title' => t('Delete Record'),
+//    'page callback' => 'curios_delete_page',
+//    'access arguments' => array('access content'),
+//    'description' => t('desc'),
+//    'type' => MENU_LOCAL_TASK,
+//    'weight' => '2',
+//  );
 
 
 //  $items['curios/test-search'] = array(

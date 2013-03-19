@@ -1,5 +1,18 @@
 <?php
 
+function curios_resource_type_load($resource_name) {
+  if (!empty($resource_name)) {
+    $resource_type = sparql_views_resource_type_load($resource_name);
+    
+    if ($resource_type != NULL) {
+      return $resource_type;
+    } else {
+      return FALSE;
+    }
+  }
+
+  return $resource_name;
+}
 
 function curios_manage_page() {
   $page = array();
@@ -8,9 +21,8 @@ function curios_manage_page() {
   $content = <<<EOT
 <p>From this page you can create, edit and delete records in the repository.</p>
 <ul>
-<li><a href="$base_path/create">Create New Record</a></li>
-<li><a href="$base_path/edit">Edit Existing Record</a></li>
-<li><a href="$base_path/delete">Delete Record</a></li>
+<li><a href="$base_path/create">Create a new record</a></li>
+<li><a href="$base_path/edit">Edit or delete an existing record</a></li>
 </ul>
 <p>Choose an action from the menu to continue.</p>
 EOT;
@@ -72,31 +84,31 @@ function curios_delete_page() {
   return $page;
 }
 
-function curios_manage_delete_form($form, &$form_state, $collapsed = FALSE) {
-  $form = array();
+//function curios_manage_delete_form($form, &$form_state, $collapsed = FALSE) {
+//  $form = array();
+//
+// // $form['fieldset']['type'] = __curios_resources_form_select();
+//  $form['delete_subject_id'] = array(
+//    '#type' => 'textfield',
+//    '#title' => t('Subject Id'),
+//    '#required' => TRUE,
+//    '#size' => '12',
+//  );
+//  $form['submit'] = array('#type' => 'submit', '#value' => 'Delete Record');
+//
+//  return $form;
+//}
 
- // $form['fieldset']['type'] = __curios_resources_form_select();
-  $form['delete_subject_id'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Subject Id'),
-    '#required' => TRUE,
-    '#size' => '12',
-  );
-  $form['submit'] = array('#type' => 'submit', '#value' => 'Delete Record');
-
-  return $form;
-}
-
-function curios_manage_delete_form_submit($form, &$form_state) {
+function curios_delete_form_submit($form, &$form_state) {
   // TODO add confirm form
-  $subject_id = $form_state['values']['delete_subject_id'];
+  $subject_id = $form_state['values']['identifier'];
   $success = __curios_subject_delete($subject_id);
 
   if ($success) {
-    drupal_set_message("The record has been deleted successfully  (ID: $subject_id).");
+    drupal_set_message("The record has been deleted successfully  (ID: $subject_id)", 'status', FALSE);
     $form_state['redirect'] = array("curios/manage", array(), 302);
   } else {
-    drupal_set_message("Failed to delete record.");
+    drupal_set_message("Failed to delete record", 'status', FALSE);
   }
 }
 
@@ -126,41 +138,33 @@ function __curios_resources_form_select() {
 
 // ------ INSERT -------
 
-function curios_insert_form_page($resource_name = NULL) {
+function curios_insert_form_page($resource_type) {
   $page = array();
-  $resource_type = sparql_views_resource_type_load($resource_name);
-
-  if ($resource_name != NULL && $resource_type != NULL) {
-    $page[] = array('#markup' => "<p>Complete the form below to create a new record.</p>");
-    $page[] = drupal_get_form('curios_insert_form', $resource_name, $resource_type);
-  } else {
-    $page = curios_insert_page();
-  }
-
+  $page[] = array('#markup' => "<p>Complete the form below to create a new record.</p>");
+  $page[] = drupal_get_form('curios_insert_form', $resource_type);
   return $page;
 }
 
 function curios_insert_page() {
   $page = array();
-
   $page[] = array('#markup' => "<p>Select the record type below then click 'Next' to continue.</p>");
   $page[] = drupal_get_form('curios_manage_insert_form');
 
   return $page;
 }
 
-function curios_insert_form($form, $form_state, $resource_name, $resource_type) {//dpm($form_state);
+function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_state);
   $entity_info = entity_get_info('sparql_views_resource');
-  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+  $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
   $field_instances = field_read_instances(array(
     'entity_type' => 'sparql_views_resource',
-    'bundle' => $resource_name,));
+    'bundle' => $resource_type->name));
 
   $break = array('#markup' => '<br/>');
 
   $form = array();
   $form['status'] = array('#markup' => "<h3>Create new: <strong>".$resource_type->label."</strong></h3>");//<span style=\"font-size: 0.8em; text-style: italic;\">(".$resource_type->name.")</span>
-  $form['resource'] = array('#type' => 'hidden', '#value' => $resource_name);
+  $form['resource'] = array('#type' => 'hidden', '#value' => $resource_type->name);
 
   //$form['identifier'] = array(
   //  '#type' => 'textfield',
@@ -233,7 +237,7 @@ function curios_insert_form_submit($form, &$form_state) {
   $rdf_type = $rdf_mapping['rdftype'][0];
   $triples_insert = array();
   // FIXME requied triples - should come from config
-  $triples_insert[] = '      ' . $rdf_mapping['hc_subject_id']['predicates'][0]  ." \"$subject_id\";";  // TODO 'id' field from config
+  $triples_insert[] = '      ' . $rdf_mapping['hc_subject_id']['predicates'][0]  ." \"$subject_id\"^^<http://www.w3.org/2001/XMLSchema#string>;";  // TODO 'id' field from config
 
   $required_fields = array('dc_title', 'dc_description'); // TODO add into config
 
@@ -245,7 +249,7 @@ function curios_insert_form_submit($form, &$form_state) {
       $form_value = $form_state['values'][$field_name]['value'];
     }
 
-    $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\";";
+    $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
   }
 
   //$triples_insert .= '      ' . $rdf_mapping['hc_english_name']['predicates'][0]  ." \"". $form_state['values']['dc_title']."\";\n";
@@ -260,7 +264,7 @@ function curios_insert_form_submit($form, &$form_state) {
 
     $form_value = $form_state['values'][$instance['field_name']];
     if (!empty($form_value)) {
-      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\";";
+      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
     }
   }
 
@@ -270,11 +274,11 @@ function curios_insert_form_submit($form, &$form_state) {
   $success = __curios_subject_insert($subject_id, $rdf_type, $triples_insert);
 
   if ($success) {
-    drupal_set_message("The new record has been created successfully (ID: $subject_id).");
+    drupal_set_message("The new record has been created successfully (ID: $subject_id)", 'status', FALSE);
     $path = "curios/manage/edit/$resource_name/$subject_id";
     $form_state['redirect'] = array($path, array(), 302);
   } else {
-    drupal_set_message("Failed to create record.");
+    drupal_set_message("Failed to create record", 'status', FALSE);
   }
 }
 
@@ -283,17 +287,27 @@ function curios_insert_form_submit($form, &$form_state) {
 // ------------
 
 /* Update */
-function curios_update_form_page($resource_name = NULL, $subject_id = NULL) {
-  $page = array();
+function curios_update_form_page($resource_type, $subject_id = NULL) {
+  $view_result = _curios_execute_details_view($resource_type->name, $subject_id);
 
-  if ($resource_name != NULL && $subject_id != NULL) {
+  if (!empty($view_result)) {
+    $page = array();
     $page[] = array('#markup' => "<p>Edit the form below to update this record.</p>");
-    $page[] = drupal_get_form('curios_update_form', $resource_name, $subject_id);
-  } else {
-    $page[] = curios_update_page();
-  }
+    $page[] = drupal_get_form('curios_update_form', $resource_type, $subject_id, $view_result);
 
-  return $page;
+    return $page;
+  } else {
+    drupal_set_message("Unknown record: $resource_type->label; ID: $subject_id", 'error', FALSE);
+    return curios_update_page();
+  }
+}
+
+function _curios_execute_details_view($resource_name, $subject_id) {
+  $config = _curios_configuration();
+  $resource_config = $config['rdf_resources'][$resource_name];
+  $view_config = _curios_get_view($resource_name);
+  
+  return views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
 }
 
 function curios_update_page() {
@@ -304,29 +318,21 @@ function curios_update_page() {
   return $page;
 }
 
-function curios_update_form($form, $form_state, $resource_name, $subject_id) {
-  $resource_type = sparql_views_resource_type_load($resource_name);
+function curios_update_form($form, $form_state, $resource_type, $subject_id, $view_result) {
   $entity_info = entity_get_info('sparql_views_resource');
-  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+  $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
   $field_instances = field_read_instances(array(
     'entity_type' => 'sparql_views_resource',
-    'bundle' => $resource_name,));
+    'bundle' => $resource_type->name));
 
-  // Look up configuration and execute view.
-  $config = _curios_configuration();
-  $resource_config = $config['rdf_resources'][$resource_name];
-  $view_config = _curios_get_view($resource_name);
-  //$view = views_get_view('hc_boats');
-  $view_result = views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
-
-  $title_field = $resource_name.'_dc_title';
+  $title_field = $resource_type->name.'_dc_title';
   $title_value = $view_result[0]->$title_field;
-  $description_field = $resource_name.'_dc_description';
+  $description_field = $resource_type->name.'_dc_description';
   $description_value = $view_result[0]->$description_field;
 
   $form = array();
   $form['status'] = array('#markup' => "<h3>Edit: <strong>".$resource_type->label."</strong>; ID: <strong>". $subject_id ."</strong>; Name: <strong>". $title_value ."</strong></h3>");
-  $form['resource'] = array('#type' => 'hidden', '#value' => $resource_name);
+  $form['resource'] = array('#type' => 'hidden', '#value' => $resource_type->name);
   $form['identifier'] = array('#type' => 'hidden', '#value' => $subject_id);
 
   $break = array('#markup' => '<br/>');
@@ -367,6 +373,8 @@ function curios_update_form($form, $form_state, $resource_name, $subject_id) {
     '#collapsed' => TRUE,
   );
 
+  $relationship_options = array();
+
   foreach ($field_instances as $instance) {
     if (__is_identifier_field($instance) ||
         __is_title_field($instance) ||
@@ -374,36 +382,59 @@ function curios_update_form($form, $form_state, $resource_name, $subject_id) {
         //__is_resource_field($instance)) {
       continue;
     }
-// TODO RELATIONSHIPS
-    $results_field = $resource_name.'_'.$instance['field_name'];
+
+    $results_field = $resource_type->name.'_'.$instance['field_name'];
     $value = empty($view_result[0]->$results_field) ? '' : $view_result[0]->$results_field;
 
-    $form['optional_fields'][$instance['field_name']] = array(
-      '#type' => 'textfield',
-      '#default_value' => $value,
-      '#title' => t($instance['label']),
-      '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
-    );
+    if (__is_resource_field($instance)) { // Relationship.
+      $relationship_options[$instance['field_name']] = $instance['label'];
+    } else { // Field.
+      $form['optional_fields'][$instance['field_name']] = array(
+        '#type' => 'textfield',
+        '#default_value' => $value,
+        '#title' => t($instance['label']),
+        '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
+      );
 
-    $form['old_'.$instance['field_name']] = array(
-      '#type' => 'hidden',
-      '#value' => $value,
-    );
+      $form['old_'.$instance['field_name']] = array(
+        '#type' => 'hidden',
+        '#value' => $value,
+      );
 
-    if (!empty($value)) {
-      $form['optional_fields']['#collapsed'] = FALSE;
+      if (!empty($value)) {
+        $form['optional_fields']['#collapsed'] = FALSE;
+      }
     }
   }
 
-  $form['relationship_fields'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Add Relationship'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
+  if (!empty($relationship_options)) {
+    $form['relationship_fields'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Add Relationship'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
 
-  $form['submit'] = array('#type' => 'submit', '#value' => 'Edit Record');
-  //$form['reset'] = array('#markup' => '<input type="reset" class="form-submit" value="Undo" />');
+    $form['relationship_fields']['relationship_select'] = array(
+      '#type' => 'select',
+      '#empty_option' => '- Select relationship -',
+      '#required' => FALSE,
+      '#options' => $relationship_options,
+    );
+  }
+
+
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
+
+  // TODO reset description
+  //$form['reset'] = array('#markup' => '<input type="reset" class="form-submit" value="Undo Changes" />');
+
+  $form['delete'] = array(
+    '#type' => 'submit',
+    '#value' => t('Delete Record'),
+    '#attributes' => array('onclick' => 'return confirm("Are you sure you wish to permanently delete this record?");'),
+    '#submit' => array('curios_delete_form_submit'),
+  );
 
   return $form;
 }
@@ -437,8 +468,8 @@ function curios_update_form_submit($form, &$form_state) {
     }
 
     if ($form_value_new != $form_value_old) {
-      $triples_delete[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\";\n";
-      $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) . "\";\n";
+      $triples_delete[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
+      $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) . "\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
     }
   }
 
@@ -446,8 +477,8 @@ function curios_update_form_submit($form, &$form_state) {
   foreach ($field_instances as $instance) {
     if (__is_identifier_field($instance) ||
         __is_title_field($instance) ||
-        __is_description_field($instance)) {
-        //__is_resource_field($instance)) {
+        __is_description_field($instance) ||
+        __is_resource_field($instance)) {
       continue;
     }
 
@@ -456,11 +487,11 @@ function curios_update_form_submit($form, &$form_state) {
 
     if ($form_value_new != $form_value_old) {
       if (!empty($form_value_old)) {
-        $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\";\n";
+        $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
       }
 
       if (!empty($form_value_new)) {
-        $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) ."\";\n";
+        $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
       }
     }
   }
@@ -475,15 +506,15 @@ function curios_update_form_submit($form, &$form_state) {
     $success = __curios_subject_update($subject_id, $triples_insert, $triples_delete);
 
     if ($success) {
-      drupal_set_message("The record has been updated successfully (ID: $subject_id).");
+      drupal_set_message("The record has been updated successfully (ID: $subject_id)", 'status', FALSE);
       //$path = "curios/manage/edit/$resource_name/$subject_id";
       //$form_state['redirect'] = array($path, array(), 302);
-      $form_state['rebuild'] = TRUE;
+      //$form_state['rebuild'] = TRUE;
     } else {
-      drupal_set_message("Failed to update record.");
+      drupal_set_message("Failed to update record", 'status', FALSE);
     }
   } else {
-    drupal_set_message('There were no fields to update.', 'warning');
+    drupal_set_message('There were no fields to update', 'warning', FALSE);
   }
 }
 
