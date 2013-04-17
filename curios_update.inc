@@ -387,7 +387,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     $value = empty($view_result[0]->$results_field) ? '' : $view_result[0]->$results_field;
 
     if (__is_resource_field($instance)) { // Relationship.
-      $relationship_options[$instance['field_name']] = $instance['label'];
+      $relationship_options[$instance['field_name']] = $instance['label'];// . ' ('.$rdf_mapping[$instance['field_name']]['predicates'][0].')';
     } else { // Field.
       $form['optional_fields'][$instance['field_name']] = array(
         '#type' => 'textfield',
@@ -407,22 +407,79 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     }
   }
 
-  if (!empty($relationship_options)) {
-    $form['relationship_fields'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Add Relationship'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
 
-    $form['relationship_fields']['relationship_select'] = array(
-      '#type' => 'select',
-      '#empty_option' => '- Select relationship -',
-      '#required' => FALSE,
-      '#options' => $relationship_options,
-    );
+  // === RELATIONSHIPS ===
+
+  $form['relationship_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Add Relationship'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#tree' => TRUE, // values stored in a tree for relationship fields.
+    '#prefix' => '<div id="relationships-fieldset-wrapper">', // for AJAX callback
+    '#suffix' => '</div>',
+  );
+
+  if (!empty($relationship_options)) { // If this resource has relationship fields.
+    if (empty($form_state['storage']['relationship_group_count'])) {
+      $form_state['storage']['relationship_group_count'] = 1;
+    }
+    if (empty($form_state['storage']['relationship_group_remove'])) {
+      $form_state['storage']['relationship_group_remove'] = array();
+    }
+
+    $relationship_group_count = $form_state['storage']['relationship_group_count'];
+    for ($i = 0; $i < $relationship_group_count; $i++) {
+      $current_group_name = 'relationship-'.$i;
+
+      if (in_array($current_group_name, $form_state['storage']['relationship_group_remove'])) {
+        continue; // Skip removed groups to retain numbering.
+      }
+
+      $form['relationship_fieldset'][$current_group_name]['field'] = array(
+        '#type' => 'select',
+        '#empty_option' => '- Select relationship -',
+        '#required' => FALSE,
+        '#options' => $relationship_options,
+      );
+
+      $form['relationship_fieldset'][$current_group_name]['value'] = array(
+        '#type' => 'textfield',
+        '#size' => '32',
+        '#required' => FALSE,
+      );
+
+      if ($i < $relationship_group_count - 1) {
+        $form['relationship_fieldset'][$current_group_name]['remove'] = array(
+          '#type' => 'submit',
+          '#name' => $current_group_name, // Allows drupal to distinguish multiple remove elements.
+          '#value' => t('Remove'),
+          '#submit' => array('curios_update_relationship_input_remove'),
+          '#ajax' => array(
+            'callback' => 'curios_update_relationship_input_callback',
+            'wrapper' => 'relationships-fieldset-wrapper',
+          ),
+          '#limit_validation_errors' => array(),
+        );
+        $form['relationship_fieldset'][$current_group_name]['field']['#required'] = TRUE;
+        $form['relationship_fieldset'][$current_group_name]['value']['#required'] = TRUE;
+      } else {
+        $form['relationship_fieldset'][$current_group_name]['add'] = array(
+          '#type' => 'submit',
+          '#value' => t('Add'),
+          '#submit' => array('curios_update_relationship_input_add'),
+          '#ajax' => array(
+            'callback' => 'curios_update_relationship_input_callback',
+            'wrapper' => 'relationships-fieldset-wrapper',
+          ),
+        );
+      }
+
+      $form['relationship_fieldset'][] = array('#markup' => '<div class="form-row"></div>');
+    }
+  } else {
+    $form['relationship_fieldset'][] = array('#markup' => "<p>No relationship fields have been defined for this record type.</p>");
   }
-
 
   $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
 
@@ -437,6 +494,21 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   );
 
   return $form;
+}
+
+
+function curios_update_relationship_input_add($form, &$form_state) {
+  $form_state['storage']['relationship_group_count'] += 1;
+  $form_state['rebuild'] = TRUE;
+}
+
+function curios_update_relationship_input_callback($form, $form_state) {
+  return $form['relationship_fieldset'];
+}
+
+function curios_update_relationship_input_remove($form, &$form_state) {
+  $form_state['storage']['relationship_group_remove'][] = $form_state['triggering_element']['#name'];
+  $form_state['rebuild'] = TRUE;
 }
 
 
@@ -517,7 +589,6 @@ function curios_update_form_submit($form, &$form_state) {
     drupal_set_message('There were no fields to update', 'warning', FALSE);
   }
 }
-
 
 
 

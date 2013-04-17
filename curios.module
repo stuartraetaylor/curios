@@ -54,13 +54,9 @@ function curios_permission() {
   );
 }
 
-function curios_resource_type_to_arg() {
-  return '';
-}
-
-function curios_subject_id_to_arg() {
-  return '';
-}
+// To work around odd bug in hook_menu
+function curios_resource_type_to_arg() { return ''; }
+function curios_subject_id_to_arg() { return ''; }
 
 function curios_menu() {
   $items = array();

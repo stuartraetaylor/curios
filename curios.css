@@ -63,5 +63,9 @@
 }
 
 
-
 #edit-dc-description-format { display: none; }
+
+#relationships-fieldset-wrapper .form-item,
+#relationships-fieldset-wrapper .form-submit {
+    display:inline;
+}
