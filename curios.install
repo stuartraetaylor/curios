@@ -104,8 +104,8 @@ function _curios_installed_resource_types() {
 
   // Create an array of endpoints.
   $endpoints = array();
-  $endpoints['hc_endpoint'] = array(
-    'title' => 'Hebridean Connections',
+  $endpoints['curios_query_endpoint'] = array(
+    'title' => 'CURIOS: query endpoint',
     'uri' => 'http://localhost:3030/dataset/query',
   );
 
@@ -119,7 +119,7 @@ function _curios_installed_resource_types() {
       'label' => $t($entity->getLabel()),
       'base' => 'sparql_views_resource',
       'description' => $t($entity->getLabel()),
-      'endpoints' => array($endpoints['hc_endpoint']['uri'] => TRUE),
+      'endpoints' => array($endpoints['curios_query_endpoint']['uri'] => TRUE),
     );
   }
 

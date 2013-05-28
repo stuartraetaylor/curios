@@ -32,22 +32,33 @@ function curios_views_default_views() {
 
 function __format_name($name) { return _curios_split_camel_case($name); }
 
+function _curios_table_id($resource_name) {
+  $select = db_select('sparql_views_resource_type_endpoint', 'ep')
+      ->fields('ep', array('endpoint_uri'));
+  $select->join('sparql_views_resource_type', 'svrt', 'svrt.id = ep.svid AND svrt.name = :name', array(':name' => $resource_name));
+  $rs = $select->execute()->fetchAssoc();
+  $endpoint = sparql_views_get_endpoint($rs['endpoint_uri']);
+
+  return $endpoint->table_id;
+}
+
 function __curios_generate_default_view(&$view_spec) {
   $config = _curios_configuration();
+
+  $resource_name = $view_spec->getResource()->getMachineName();
+  $table_id = _curios_table_id($resource_name);
 
   $view = new view;
   $view->name = $view_spec->getMachineName();
   $view->human_name = $view_spec->getLabel();
   $view->description = $view_spec->getLabel() .' ('. $view_spec->getMachineName() .')';
-  $view->base_table = 'sparql_views_3605289727'; //_sparql_views_hash($endpoint); // TODO get real endpoint base table
-  //$view->base_table = 'sparql_views_-689677569'
+  $view->base_table = $table_id;
   $view->tag = 'CURIOS';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE;
   
   // Base fields: URI, dc:title, dc:description.
-  $resource_name = $view_spec->getResource()->getMachineName();
   $base_fields = array(
     'title'       => $resource_name.'_dc_title', 
     'description' => $resource_name.'_dc_description');
