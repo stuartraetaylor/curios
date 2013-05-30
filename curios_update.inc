@@ -439,6 +439,8 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     '#prefix' => '<div id="relationships-fieldset-wrapper">', // for AJAX callback
     '#suffix' => '</div>',
   );
+  $form['relationship_fieldset'][] = array('#markup' => '<p>To add a relationship, select the relationship type
+      from the drop down menu and enter the SubjectId of the record in the textbox.</p>');
 
   if (!empty($relationship_options)) { // If this resource has relationship fields.
     if (empty($form_state['storage']['relationship_group_count'])) {
