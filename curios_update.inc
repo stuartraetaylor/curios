@@ -310,6 +310,25 @@ function _curios_execute_details_view($resource_name, $subject_id) {
   return views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
 }
 
+function _curios_execute_relationship_view($resource_name, $relationship_name, $subject_id) {
+  $config = _curios_configuration();
+  $resource_config = $config['rdf_resources'][$resource_name];
+  $view_config = _curios_get_view($resource_name);
+
+  return views_get_view_result($view_config->getMachineName(), 'object_'.$resource_name.'_'.$relationship_name,
+      $subject_id, $resource_config->getRDFType());
+
+  //  rendering view:
+  //
+  //  $filters = array('nid' => 5,'title' => 'foo');
+  //$view = views_get_view('product_result_exposed');
+  //$view->set_exposed_input($filters); // Set exposed filters
+  //
+  //$view->set_display('block_view');
+  //$view->execute();
+  //echo $view->render('block_view');
+}
+
 function curios_update_page() {
   $page = array();
   $page[] = array('#markup' => "<p>Select the record type and enter the SubjectId below then click 'Next' to continue.</p>");
@@ -410,12 +429,13 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
 
   // === RELATIONSHIPS ===
 
+  // New relationships.
   $form['relationship_fieldset'] = array(
     '#type' => 'fieldset',
     '#title' => t('Add Relationship'),
     '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-    '#tree' => TRUE, // values stored in a tree for relationship fields.
+    '#collapsed' => empty($form_state['storage']['relationship_group_count']), // collapsed if not used yet
+    '#tree' => TRUE, // values stored in a tree for grouping relationship fields.
     '#prefix' => '<div id="relationships-fieldset-wrapper">', // for AJAX callback
     '#suffix' => '</div>',
   );
@@ -436,6 +456,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
         continue; // Skip removed groups to retain numbering.
       }
 
+      // Field select drop down.
       $form['relationship_fieldset'][$current_group_name]['field'] = array(
         '#type' => 'select',
         '#empty_option' => '- Select relationship -',
@@ -443,16 +464,18 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
         '#options' => $relationship_options,
       );
 
+      // Field value input.
       $form['relationship_fieldset'][$current_group_name]['value'] = array(
         '#type' => 'textfield',
         '#size' => '32',
         '#required' => FALSE,
       );
 
+      // Add or remove button.
       if ($i < $relationship_group_count - 1) {
         $form['relationship_fieldset'][$current_group_name]['remove'] = array(
           '#type' => 'submit',
-          '#name' => $current_group_name, // Allows drupal to distinguish multiple remove elements.
+          '#name' => $current_group_name, // Allows drupal to distinguish multiple remove submit elements.
           '#value' => t('Remove'),
           '#submit' => array('curios_update_relationship_input_remove'),
           '#ajax' => array(
@@ -480,6 +503,57 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   } else {
     $form['relationship_fieldset'][] = array('#markup' => "<p>No relationship fields have been defined for this record type.</p>");
   }
+
+
+
+  // -------------------
+
+  // Existing relationships placeholder.
+  $form['relationship_edit_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Remove Relationship'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE, // values stored in a tree for grouping relationship fields.
+    '#prefix' => '<div id="relationship-edit-fieldset-wrapper">', // for AJAX callback
+    '#suffix' => '</div>',
+  );
+
+  $group_count = 0;
+  foreach ($relationship_options as $relationship_id=>$relationship_label) {
+    $view_results = _curios_execute_relationship_view($resource_type->name, $relationship_id, $subject_id);
+
+    if (!empty($view_results)) {
+      $form['relationship_edit_fieldset'][] = array('#markup' => "<h3>$relationship_label:</h3>");
+    }
+
+    $previous = array();
+    foreach ($view_results as $relationship_value) {
+      $current_group_name = 'relationship-'.$group_count;
+
+      // TODO process results properly.
+      $relationship_value = array_values((array)$relationship_value);
+      $object_value = "$relationship_value[1] ($relationship_value[0])";
+      if (in_array($object_value, $previous)) {
+        continue;
+      }
+
+      $form['relationship_edit_fieldset'][$current_group_name][] = array('#markup' => "$object_value : <a href=\"javascript:;\">Remove</a><br/>");
+
+      $previous[] = $object_value;
+      $group_count += 1;
+    }
+  }
+
+  if (!isset($form['relationship_edit_fieldset'][0])) {
+    $form['relationship_edit_fieldset'][] = array('#markup' => "<p>No relationships found.</p>");
+  }
+
+
+
+
+
+  // Form controls.
 
   $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
 
@@ -567,6 +641,17 @@ function curios_update_form_submit($form, &$form_state) {
       }
     }
   }
+
+  // Add new relationships - last 'add' item is ignored.
+  $relationships = $form_state['values']['relationship_fieldset'];
+  array_pop($relationships);
+  
+  foreach ($relationships as $relationship) {
+    $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
+    // TODO validation - qname, range
+    $triples_insert[] = '      '. $predicate .' hc:'. $relationship['value'] ." ;\n";
+  }
+
 
   $triples_insert = array_unique($triples_insert);
   $triples_insert = join("\n", $triples_insert);

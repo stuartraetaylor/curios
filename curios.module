@@ -159,7 +159,7 @@ function curios_block_info() {
   $blocks['search'] = array(
     'info' => t('CURIOS search block'),
     'status' => TRUE,
-    'region' => 'header'
+    'region' => 'header',
   );
 
   return $blocks;
@@ -170,7 +170,7 @@ function curios_block_view($delta = '') {
 
   switch ($delta) {
     case 'search':
-      $block['subject'] = t('CURIOS search block');
+      $block['subject'] = '<none>';
       $block['content'] = drupal_get_form('curios_search_engine_form');
       break;
   }

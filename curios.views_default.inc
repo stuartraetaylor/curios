@@ -491,7 +491,7 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     $use_rewrite = TRUE;
   } // else -> single target.
 
-  $handler = $view->new_display('block', 'Object: '.$field->getLabel(), 'object_'.$field_name);
+  $handler = $view->new_display('block', 'Rel: '.$field->getLabel(), 'object_'.$field_name);
 
 
   $handler->display->display_options['defaults']['pager'] = FALSE;
