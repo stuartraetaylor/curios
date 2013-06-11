@@ -71,7 +71,7 @@ function curios_menu() {
 //  );
 
   $items['curios/manage'] = array(
-    'title' => t('Manage Repository'),
+    'title' => t('Manage Records'),
     'page callback' => 'curios_manage_page',
     'access arguments' => array('curios manage repository'),
     'description' => t('Create, edit, delete records in the repository'),
@@ -178,10 +178,10 @@ function curios_block_view($delta = '') {
   return $block;
 }
 
-function curios_preprocess_page(&$variables) {
-  $stylesheet = drupal_get_path('module', 'curios') .'/curios.css';
-  drupal_add_css($stylesheet);
-}
+//function curios_preprocess_page(&$variables) {
+//  $stylesheet = drupal_get_path('module', 'curios') .'/curios.css';
+//  drupal_add_css($stylesheet);
+//}
 
 function curios_filter_info() {
   $filters = array();
