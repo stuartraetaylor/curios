@@ -1225,11 +1225,11 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
-        $config['rdf_fields']['hc_bk_reference'],
         $config['rdf_fields']['hc_born'],
         $config['rdf_fields']['hc_date_of_death'],
         $config['rdf_fields']['hc_sex'],
 
+        $config['rdf_fields']['hc_bk_reference'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -1316,7 +1316,6 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_gaelic_name'],
         $config['rdf_fields']['hc_also_known_as'],
 
-        $config['rdf_fields']['hc_bk_reference'],
         $config['rdf_fields']['hc_born'],
         $config['rdf_fields']['hc_date'],
         $config['rdf_fields']['hc_date_of_death'],
@@ -1327,7 +1326,8 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
-        $config['rdf_fields']['hc_subject_id'],
+      	$config['rdf_fields']['hc_bk_reference'],
+	$config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_adopted_by'],
