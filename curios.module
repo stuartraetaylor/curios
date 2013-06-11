@@ -231,7 +231,7 @@ function curios_search_engine_form($form, $form_state) {
 }
 
 function curios_search_engine_form_submit($form, &$form_state) {
-  global $base_path;
+  $base_path = base_path();
   $config = _curios_configuration();
 
   $query = $form_state['values']['query'];
@@ -239,6 +239,9 @@ function curios_search_engine_form_submit($form, &$form_state) {
   // TODO get path from panels.
   $view_spec = $config['rdf_views'][$view_name];
   $path = $base_path . $view_spec->getPath();
+
+  // Form redirects seem to mess up the path, remove first slash /.
+  $path = startsWith('/', $path) ? substr($path, 1) : $path;
 
   $form_state['redirect'] = array($path, array('query' => array('name' => $query)), 302);
 }
