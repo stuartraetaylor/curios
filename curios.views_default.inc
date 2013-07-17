@@ -100,7 +100,7 @@ function __curios_generate_view_master(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
   $handler->display->display_options['exposed_form']['options']['autosubmit'] = FALSE;
   $handler->display->display_options['exposed_form']['options']['autosubmit_hide'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['type'] = 'lite';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
@@ -752,8 +752,8 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['defaults']['relationships'] = FALSE;
 
   // Pager options.
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '20';
+  $handler->display->display_options['pager']['type'] = 'lite';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['pager']['options']['offset'] = '';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page'] = TRUE;
