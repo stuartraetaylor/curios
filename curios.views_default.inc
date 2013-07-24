@@ -1087,15 +1087,11 @@ function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['fields'][$field_name]['empty_zero'] = 0;
   $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$field_name]['use_php_setup'] = 0;
-  $handler->display->display_options['fields'][$field_name]['php_value'] = '$a = "VALUE"; return $a;';
+  $handler->display->display_options['fields'][$field_name]['php_value'] = '';
   $handler->display->display_options['fields'][$field_name]['php_output'] = '<?php 
-  print($value);
   $image_path = $GLOBALS[\'base_path\'].\'images/\'.str_replace("\\\\", \'/\', $row->hc_image_file_hc_file);
-
   $output = \'\';
-  //$output .= \'Image: \'.$image_path.\'<br />\';
   $output .= \'<a href="\'.$image_path.\'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
-
   echo $output;
   ?>';
   $handler->display->display_options['fields'][$field_name]['use_php_click_sortable'] = '0';
