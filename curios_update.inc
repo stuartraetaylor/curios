@@ -437,7 +437,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     '#type' => 'fieldset',
     '#title' => t('Add Relationship'),
     '#collapsible' => TRUE,
-    '#collapsed' => empty($form_state['storage']['relationship_group_count']), // collapsed if not used yet
+    '#collapsed' => FALSE, //empty($form_state['storage']['relationship_group_count']), // collapsed if not used yet
     '#tree' => TRUE, // values stored in a tree for grouping relationship fields.
     '#prefix' => '<div id="relationships-fieldset-wrapper">', // for AJAX callback
     '#suffix' => '</div>',
@@ -552,9 +552,9 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
 
   if (!isset($form['relationship_edit_fieldset'][0])) {
     $form['relationship_edit_fieldset'][] = array('#markup' => "<p>No relationships found.</p>");
+  } else {
+    $form['relationship_edit_fieldset']['#collapsed'] = FALSE;
   }
-
-
 
 
 
@@ -589,6 +589,34 @@ function curios_update_relationship_input_remove($form, &$form_state) {
   $form_state['storage']['relationship_group_remove'][] = $form_state['triggering_element']['#name'];
   $form_state['rebuild'] = TRUE;
 }
+
+
+// VALIDATION HANDLERS
+
+function curios_update_form_validate($form, &$form_state) {
+  $resource_name = $form_state['values']['resource'];
+  $subject_id = $form_state['values']['identifier'];
+
+  $entity_info = entity_get_info('sparql_views_resource');
+  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+
+  // Validate relationships.
+  $relationships = $form_state['values']['relationship_fieldset'];
+  array_pop($relationships);
+
+  foreach ($relationships as $field_name=>$relationship) {
+    $error_field_name = "relationship_fieldset][$field_name][value";
+    $class_name = $rdf_mapping['rdftype'][0];
+    $property_name = $rdf_mapping[$relationship['field']]['predicates'][0];
+
+    if (!__curios_valid_id($relationship['value'])) {
+      form_set_error($error_field_name, t('Relationship value is not a valid subject id.'));
+    } else if (!__curios_is_valid_property_assertion($class_name, $property_name, $relationship['value'])) {
+      form_set_error($error_field_name, 'Relationship type is not valid for subject '. $relationship['value']. '.');
+    }
+  }
+}
+
 
 
 // SUBMIT HANDLERS
@@ -653,7 +681,6 @@ function curios_update_form_submit($form, &$form_state) {
   
   foreach ($relationships as $relationship) {
     $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
-    // TODO validation - qname, range
     $triples_insert[] = '      '. $predicate .' hc:'. $relationship['value'] ." ;\n";
   }
 

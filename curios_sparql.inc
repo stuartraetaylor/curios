@@ -121,6 +121,25 @@ function __curios_fetch_max_identifier() {
     }
 }
 
+function __curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
+  $query = <<<EOT
+# Check individual is in the range of the specified property for the specified class.
+prefix owl:<http://www.w3.org/2002/07/owl#>
+prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+prefix hc:<http://www.csd.abdn.ac.uk/~cmellish/ontologies/hebridean.owl#>
+select ?range where  {
+  [] a owl:ObjectProperty ;
+      rdfs:subPropertyOf $property ;
+      rdfs:domain $domain_class ;
+      rdfs:range ?range .
+  hc:$range_individual a ?range .
+} limit 1
+EOT;
+
+    $rs = __curios_sparql_query($query, 'dataset');
+    return ($rs != NULL && !empty($rs['result']['rows']));
+}
+
 function __curios_fetch_property_values($class, $property) {
     $query = '';
     $query .= "prefix hc:<http://www.csd.abdn.ac.uk/~cmellish/ontologies/hebridean.owl#>\n";
