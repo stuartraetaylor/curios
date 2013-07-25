@@ -27,16 +27,6 @@ function curios_ctools_plugin_api($module, $api) {
   }
 }
 
-
-//function curios_block_info() {
-//  $items = array();
-//  $items['curios-test-block'] = array(
-//    'info' => t('CURIOS update test block')
-//  );
-//
-//  return $items;
-//}
-
 function curios_init() {
   // Temporary fix for exposed drop down filter.
   if (!isset($_GET['field_event_category_value'])) {
@@ -60,15 +50,6 @@ function curios_subject_id_to_arg() { return ''; }
 
 function curios_menu() {
   $items = array();
-//  $items['curios/insert'] = array(
-//    'title' => t('CURIOS Update Test Page'),
-//    'page callback' => 'curios_insert_form_page',
-//    'access arguments' => array('access content'),
-//    'description' => t('desc'),
-//    'type' => MENU_NORMAL_ITEM,
-//    'menu_name' => 'navigation',
-//    //'page arguments' => array(2),
-//  );
 
   $items['curios/manage'] = array(
     'title' => t('Manage Records'),
@@ -120,46 +101,10 @@ function curios_menu() {
       'access arguments' => array('curios manage repository'),
       'type' => MENU_CALLBACK,
       'page arguments' => array(3,4),
-    );
-
-//  $items['curios/manage/delete'] = array(
-//    'title' => t('Delete Record'),
-//    'page callback' => 'curios_delete_page',
-//    'access arguments' => array('access content'),
-//    'description' => t('desc'),
-//    'type' => MENU_LOCAL_TASK,
-//    'weight' => '2',
-//  );
-
-
-//  $items['curios/test-search'] = array(
-//    'title' => t('CURIOS Test Search Engine Page'),
-//    'page callback' => 'curios_search_engine_form_page',
-//    'access arguments' => array('access content'),
-//    'description' => t('desc'),
-//    'type' => MENU_NORMAL_ITEM,
-//    'menu_name' => 'navigation',
-//   // 'page arguments' => array(0),
-//  );
+  );
 
   return $items;
 }
-
-function curios_contextual_links_view_alter(&$element, $items) {
-  //dpm($element, "ELEMENTS");
-  //dpm($items, "ITEMS");
-}
-
-//function curios_block_view_alter(&$data, $block) {
-//  switch ($block->delta) {
-//    case 'main':
-//      $data['content']['contextual_links']['#links'][] = array(
-//          'href' => 'test',
-//          'title' => 'TEST');
-//      dpm($data);
-//    break;
-//  }
-//}
 
 function curios_block_info() {
   $blocks = array();
@@ -185,11 +130,6 @@ function curios_block_view($delta = '') {
   
   return $block;
 }
-
-//function curios_preprocess_page(&$variables) {
-//  $stylesheet = drupal_get_path('module', 'curios') .'/curios.css';
-//  drupal_add_css($stylesheet);
-//}
 
 function curios_filter_info() {
   $filters = array();
@@ -253,35 +193,6 @@ function curios_search_engine_form_submit($form, &$form_state) {
 }
 
 
-
-
-function curios_insert_form_validate($form, &$form_state) {
-  //dpm($form);
-  //dpm($form_state);
-
-  //if (!$has_value) {
-  //  form_set_error('', t('No values entered.'));
-  //}
-}
-
-
-//function __curios_sparql_views_info() {
-//    $resource_name = 'hc_boat';
-//  $resource_type = sparql_views_resource_type_load($resource_name);
-//  dpm($resource_type);
-//  $entity_info = entity_get_info('sparql_views_resource');
-//  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
-//  $field_instances = field_read_instances(array(
-//    'entity_type' => 'sparql_views_resource',
-//    'bundle' => $resource_name,));
-//}
-
-
-function _curios_split_camel_case($text) {
-  return trim(join(' ', preg_split('/(?=[A-Z])/', $text)));
-}
-
-
 /**
  * Implements hook_rdf_mapping().
  *
@@ -324,35 +235,3 @@ function curios_rdf_namespaces() {
   $config = _curios_configuration();
   return $config['namespaces'];
 }
-
-/**
- * Implements hook_block_info_alter().
- *
- * This is used to place the block view (containing information about the
- * Country from Factbook) in the sidebar for the Leader page.
- *
- * Because Views uses hook_block_info to create the block, we have to use
- * hook_block_info_alter. Because this runs right before saving values to the
- * database, it can overwrite user set values, so we safegaurd against this.
- */
-//function kasabi_factbook_block_info_alter(&$blocks, $theme, $code_blocks) {
-///  $delta = 'kasabi_factbook-block_1';
-//
-//  // We only want this to run once, when the block is first saved to the
-//  // database. We test to ensure that the definition in block is the same as
-//  // the one provided in code.
-//  $array_diff = array_diff($blocks['views'][$delta], $code_blocks['views'][$delta]);
-//  if (empty($array_diff)) {
-//    $blocks['views'][$delta]['status'] = 1;
-//    $blocks['views'][$delta]['region'] = 'sidebar_first';
-//    $blocks['views'][$delta]['weight'] = -45;
-//
-//    $query = db_merge('block_node_type')
-//      ->key(array('delta' => $delta,))
-//      ->fields(array(
-//          'type' => 'kasabi_factbook_leader',
-//          'module' => 'views',
-//      ));
-//    $query->execute();
-//  }
-//}
