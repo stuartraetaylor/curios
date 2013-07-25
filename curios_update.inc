@@ -1,4 +1,5 @@
 <?php
+require_once('php_fast_cache.php');
 
 function curios_resource_type_load($resource_name) {
   if (!empty($resource_name)) {
@@ -213,6 +214,7 @@ function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_sta
       '#type' => 'textfield',
       '#title' => t($instance['label']),
       '#size' => '80',
+      '#autocomplete_path' => 'curios/manage/autocomplete_fields/'. $resource_type->name .'/'. $instance['field_name'] ,
       '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
     );
   }
@@ -413,6 +415,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
         '#default_value' => $value,
         '#title' => t($instance['label']),
         '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
+        '#autocomplete_path' => 'curios/manage/autocomplete_fields/'. $resource_type->name .'/'. $instance['field_name'] ,
       );
 
       $form['old_'.$instance['field_name']] = array(
@@ -678,6 +681,35 @@ function curios_update_form_submit($form, &$form_state) {
 }
 
 
+function curios_autocomplete_fields($resource_name, $field_name, $q = '') {
+  $entity_info = entity_get_info('sparql_views_resource');
+  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
+
+  $class_name = $rdf_mapping['rdftype'][0];
+  $property_name = $rdf_mapping[$field_name]['predicates'][0];
+
+  // Fetch property values.
+  $key = __curios_hash($class_name, $property_name);
+  $values = phpFastCache::get($key);
+
+  if ($values == NULL) {
+    $rs = __curios_fetch_property_values($class_name, $property_name);
+    $values = array();
+
+   	if ($rs != NULL) {
+			foreach ($rs['result']['rows'] as $row) {
+			  $values[$row['value']] = check_plain($row['value']);
+			}
+		}
+  }
+  phpFastCache::set($key, $values, 600);
+
+  // Find matches.
+  $match_function = function($value) use (&$q) { return startsWith_ncasecmp($q, $value); };
+  $matches = array_filter($values, $match_function);
+
+  drupal_json_output($matches);
+}
 
 function __generate_new_subject_id() { return intval(__curios_fetch_max_identifier()) + 1; }
 
