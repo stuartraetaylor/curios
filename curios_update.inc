@@ -439,7 +439,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     '#collapsible' => TRUE,
     '#collapsed' => FALSE, //empty($form_state['storage']['relationship_group_count']), // collapsed if not used yet
     '#tree' => TRUE, // values stored in a tree for grouping relationship fields.
-    '#prefix' => '<div id="relationships-fieldset-wrapper">', // for AJAX callback
+    '#prefix' => '<div id="relationships-create-fieldset-wrapper">', // for AJAX callback
     '#suffix' => '</div>',
   );
   $form['relationship_fieldset'][] = array('#markup' => '<p>To add a relationship, select the relationship type
@@ -485,7 +485,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
           '#submit' => array('curios_update_relationship_input_remove'),
           '#ajax' => array(
             'callback' => 'curios_update_relationship_input_callback',
-            'wrapper' => 'relationships-fieldset-wrapper',
+            'wrapper' => 'relationships-create-fieldset-wrapper',
           ),
           '#limit_validation_errors' => array(),
         );
@@ -498,7 +498,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
           '#submit' => array('curios_update_relationship_input_add'),
           '#ajax' => array(
             'callback' => 'curios_update_relationship_input_callback',
-            'wrapper' => 'relationships-fieldset-wrapper',
+            'wrapper' => 'relationships-create-fieldset-wrapper',
           ),
         );
       }
@@ -513,23 +513,26 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
 
   // -------------------
 
-  // Existing relationships placeholder.
-  $form['relationship_edit_fieldset'] = array(
+  $form['relationship_listing_fieldset'] = array(
     '#type' => 'fieldset',
     '#title' => t('Remove Relationship'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
     '#tree' => TRUE, // values stored in a tree for grouping relationship fields.
-    '#prefix' => '<div id="relationship-edit-fieldset-wrapper">', // for AJAX callback
+    '#prefix' => '<div id="relationships-remove-fieldset-wrapper">', // for AJAX callback
     '#suffix' => '</div>',
   );
+
+  if (empty($form_state['storage']['relationship_listing_group_remove'])) {
+    $form_state['storage']['relationship_listing_group_remove'] = array();
+  }
 
   $group_count = 0;
   foreach ($relationship_options as $relationship_id=>$relationship_label) {
     $view_results = _curios_execute_relationship_view($resource_type->name, $relationship_id, $subject_id);
 
     if (!empty($view_results)) {
-      $form['relationship_edit_fieldset'][] = array('#markup' => "<h3>$relationship_label:</h3>");
+      $form['relationship_listing_fieldset'][] = array('#markup' => "<h3>$relationship_label:</h3>");
     }
 
     $previous = array();
@@ -543,17 +546,58 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
         continue;
       }
 
-      $form['relationship_edit_fieldset'][$current_group_name][] = array('#markup' => "$object_value : <a href=\"javascript:;\">Remove</a><br/>");
+      // Textbox with current value.
+      $form['relationship_listing_fieldset'][$current_group_name]['description'] = array(
+        '#type' => 'textfield',
+        '#title' => '',
+        '#required' => FALSE,
+        '#disabled' => TRUE,
+        '#size' => '40',
+        '#default_value' => $object_value,
+      );
+
+      if (in_array($current_group_name, $form_state['storage']['relationship_listing_group_remove'])) {
+        $form['relationship_listing_fieldset'][$current_group_name]['description']['#default_value'] = "Delete: [$object_value]";
+        
+        $form['relationship_listing_fieldset'][$current_group_name]['remove-relationship'] = array('#type' => 'hidden', '#value' => TRUE);
+        $form['relationship_listing_fieldset'][$current_group_name]['field'] = array('#type' => 'hidden', '#value' => $relationship_id);
+        $form['relationship_listing_fieldset'][$current_group_name]['value'] = array('#type' => 'hidden', '#value' => $relationship_value[0]);
+
+        $form['relationship_listing_fieldset'][$current_group_name]['undo'] = array(
+            '#type' => 'submit',
+            '#name' => $current_group_name,
+            '#value' => t('Undo'),
+            '#submit' => array('curios_update_relationship_listing_undo'),
+            '#ajax' => array(
+              'callback' => 'curios_update_relationship_listing_callback',
+              'wrapper' => 'relationships-remove-fieldset-wrapper',
+            ),
+            '#limit_validation_errors' => array(),
+          );
+      } else {
+        $form['relationship_listing_fieldset'][$current_group_name]['delete'] = array(
+            '#type' => 'submit',
+            '#name' => $current_group_name,
+            '#value' => t("Delete"),
+            '#submit' => array('curios_update_relationship_listing_remove'),
+            '#ajax' => array(
+              'callback' => 'curios_update_relationship_listing_callback',
+              'wrapper' => 'relationships-remove-fieldset-wrapper',
+            ),
+            '#limit_validation_errors' => array(),
+          );
+      }
+
 
       $previous[] = $object_value;
       $group_count += 1;
     }
   }
 
-  if (!isset($form['relationship_edit_fieldset'][0])) {
-    $form['relationship_edit_fieldset'][] = array('#markup' => "<p>No relationships found.</p>");
+  if (!isset($form['relationship_listing_fieldset'][0])) {
+    $form['relationship_listing_fieldset'][] = array('#markup' => "<p>No relationships found.</p>");
   } else {
-    $form['relationship_edit_fieldset']['#collapsed'] = FALSE;
+    $form['relationship_listing_fieldset']['#collapsed'] = FALSE;
   }
 
 
@@ -573,6 +617,21 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   );
 
   return $form;
+}
+
+function curios_update_relationship_listing_callback($form, $form_state) {
+  return $form['relationship_listing_fieldset'];
+}
+
+function curios_update_relationship_listing_remove($form, &$form_state) {
+  $form_state['storage']['relationship_listing_group_remove'][] = $form_state['triggering_element']['#name'];
+  $form_state['rebuild'] = TRUE;
+}
+
+function curios_update_relationship_listing_undo($form, &$form_state) {
+  $remove = function($value) use (&$form_state) { return $value != $form_state['triggering_element']['#name']; };
+  $form_state['storage']['relationship_listing_group_remove'] = array_filter($form_state['storage']['relationship_listing_group_remove'], $remove);
+  $form_state['rebuild'] = TRUE;
 }
 
 
@@ -595,7 +654,6 @@ function curios_update_relationship_input_remove($form, &$form_state) {
 
 function curios_update_form_validate($form, &$form_state) {
   $resource_name = $form_state['values']['resource'];
-  $subject_id = $form_state['values']['identifier'];
 
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
@@ -683,7 +741,16 @@ function curios_update_form_submit($form, &$form_state) {
     $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
     $triples_insert[] = '      '. $predicate .' hc:'. $relationship['value'] ." ;\n";
   }
-
+  
+  // Remove existing relationships.
+  $relationships = $form_state['values']['relationship_listing_fieldset'];
+  
+  foreach ($relationships as $relationship) {
+    if (isset($relationship['remove-relationship'])) {
+      $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
+      $triples_delete[] = '      '. $predicate .' hc:'. $relationship['value'] ." ;\n";
+    }
+  }
 
   $triples_insert = array_unique($triples_insert);
   $triples_insert = join("\n", $triples_insert);

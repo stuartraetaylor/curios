@@ -65,7 +65,9 @@
 
 #edit-dc-description-format { display: none; }
 
-#relationships-fieldset-wrapper .form-item,
-#relationships-fieldset-wrapper .form-submit {
-    display:inline;
+#relationships-create-fieldset-wrapper .form-item,
+#relationships-create-fieldset-wrapper .form-submit,
+#relationships-remove-fieldset-wrapper .form-item,
+#relationships-remove-fieldset-wrapper .form-submit {
+    display: inline;
 }
