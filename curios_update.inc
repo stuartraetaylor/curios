@@ -588,7 +588,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
           );
       }
 
-
+      $form['relationship_listing_fieldset'][] = array('#markup' => '<div class="form-row"></div>');
       $previous[] = $object_value;
       $group_count += 1;
     }
