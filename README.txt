@@ -9,19 +9,19 @@ Requirements:
   * Apache, MySQL, PHP 5.3+
   * wget, git, drush
 
-Requied modules from Drupal.org version control:
-  * Entity    7.x-1.x
-  * Views     7.x-3.x
-  * Panels    7.x-3.x
-  * Lightbox2 7.x-1.x
-  * Ckeditor  7.x-1.x
-  * CTools    7.x-1.x
-  * RDFx      7.x-2.x
-  * SPARQL    7.x-2.x
-  * SPARQL Views 7.x-2.x
-  * Libraries 7.x-2.x
-  * Views PHP 7.x-2.x
-  * Views Litepager 7.x-3.x
+Required modules from Drupal.org version control:
+  * Entity        7.x-1.x    https://drupal.org/project/entity
+  * Views         7.x-3.x    https://drupal.org/project/views
+  * Panels        7.x-3.x    https://drupal.org/project/panels
+  * Lightbox2     7.x-1.x    https://drupal.org/project/lightbox2
+  * Ckeditor      7.x-1.x    https://drupal.org/project/ckeditor
+  * CTools        7.x-1.x    https://drupal.org/project/ctools
+  * RDFx          7.x-2.x    https://drupal.org/project/rdfx
+  * SPARQL        7.x-2.x    https://drupal.org/project/sparql
+  * SPARQL Views  7.x-2.x    https://drupal.org/project/sparql_views
+  * Libraries     7.x-2.x    https://drupal.org/project/libraries
+  * Views PHP     7.x-2.x    https://drupal.org/project/views_php
+  * Views Litepager 7.x-3.x  https://drupal.org/project/views_litepager
   * Devel     latest-version (optional)
 
 Special Requirements:
