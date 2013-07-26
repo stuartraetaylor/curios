@@ -96,20 +96,21 @@ function curios_menu() {
     'tab parent' => 'curios/manage/edit',
   );
 
+  $items['curios/manage/tools'] = array(
+    'title' => t('Admin Tools'),
+    'page callback' => 'curios_admin_tools_page',
+    'access arguments' => array('curios manage repository'),
+    'description' => t('Repository administration tools.'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => '99',
+  );
+
   $items['curios/manage/autocomplete_fields/%/%'] = array(
    'title' => 'Auto complete handler',
     'page callback' => 'curios_autocomplete_fields',
     'access arguments' => array('curios manage repository'),
     'type' => MENU_CALLBACK,
     'page arguments' => array(3,4),
-  );
-
-  $items['curios/manage/tools'] = array(
-    'title' => t('Admin Tools'),
-    'page callback' => 'curios_admin_tools_page',
-    'access arguments' => array('curios manage repository'),
-    'description' => t('Repository administration tools.'),
-    'type' => MENU_NORMAL_ITEM,
   );
 
   return $items;

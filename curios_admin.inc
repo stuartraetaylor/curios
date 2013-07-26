@@ -24,7 +24,7 @@ function curios_admin_tools_page() {
   $latest_records = __curios_latest_record_identifiers(15);
   $content = '';
 
-  $content .= '<p>This page contains a selection of tools for the Hebridean Connections repository.</p>';
+  $content .= '<p>This page contains a selection of admin tools for the Hebridean Connections repository.</p>';
   $content .= '<h2>Recently created records:</h2>';
   $content .= '<ul>';
   foreach ($latest_records as $id=>$title) {
