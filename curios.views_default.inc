@@ -16,15 +16,13 @@ function curios_views_default_views() {
     // then import that view.
     // Otherwise the default view is generated is generated from the view spec.
     if ($use_exports && file_exists($view_path)) {
-      drupal_set_message($view_spec->getMachineName().': importing view from '.$view_file.'.');
+      //drupal_set_message($view_spec->getMachineName().': importing view from '.$view_file.'.');
       include_once $view_path;
       $views[$view_name] = $view;
     } else {
-      drupal_set_message($view_spec->getMachineName().': generating default view.');
+      //drupal_set_message($view_spec->getMachineName().': generating default view.');
       $views[$view_name] = __curios_generate_default_view($view_spec);
     }
-    
-    // TODO generate update views from view spec.
   }
   
   return $views;
