@@ -1590,78 +1590,78 @@ function _curios_configuration() {
     $config['rdf_views'] = array();
 
     // General Subject
-    $config['rdf_views']['hc_subjects'] = new RDFView('hc_subjects', 'ALL SUBJECTS', 'subjects',
-      $config['rdf_resources']['hc_subject']);
+    $config['rdf_views']['hc_subjects'] = new RDFView('hc_subjects', 'ALL SUBJECTS', 'subjects', NULL,
+      $config['rdf_resources']['hc_subject'], NULL, NULL);
     $config['rdf_views']['hc_subjects']->setOptionalAll();
 
     // People
-    $config['rdf_views']['hc_people'] = new RDFView('hc_people', 'People', 'people',
-      $config['rdf_resources']['hc_person']);//array('hc_sex'));
+    $config['rdf_views']['hc_people'] = new RDFView('hc_people', 'People', 'people', NULL,
+      $config['rdf_resources']['hc_person'], NULL, NULL);
     $config['rdf_views']['hc_people']->setOptionalAll();
 
     // Organisations
-    $config['rdf_views']['hc_organisations'] = new RDFView('hc_organisations', 'Organisations', 'organisations',
-      $config['rdf_resources']['hc_organisation']);
+    $config['rdf_views']['hc_organisations'] = new RDFView('hc_organisations', 'Organisations', 'organisations', NULL,
+      $config['rdf_resources']['hc_organisation'], NULL, NULL);
     $config['rdf_views']['hc_organisations']->setOptionalAll();
 
     // Resources
-    $config['rdf_views']['hc_resources'] = new RDFView('hc_resources', 'Resources', 'resources',
-      $config['rdf_resources']['hc_resource']);
+    $config['rdf_views']['hc_resources'] = new RDFView('hc_resources', 'Resources', 'resources', NULL,
+      $config['rdf_resources']['hc_resource'], NULL, NULL);
     $config['rdf_views']['hc_resources']->setOptionalAll();
 
     // Vehicles
-    $config['rdf_views']['hc_vehicles'] = new RDFView('hc_vehicles', 'Vehicles', 'vehicles',
-      $config['rdf_resources']['hc_vehicle']);
+    $config['rdf_views']['hc_vehicles'] = new RDFView('hc_vehicles', 'Vehicles', 'vehicles', NULL,
+      $config['rdf_resources']['hc_vehicle'], NULL, NULL);
     $config['rdf_views']['hc_vehicles']->setOptionalAll();
     
     // Boats
-    $config['rdf_views']['hc_boats'] = new RDFView('hc_boats', 'Boats', 'boats',
-      $config['rdf_resources']['hc_boat']);
+    $config['rdf_views']['hc_boats'] = new RDFView('hc_boats', 'Boats', 'boats', NULL,
+      $config['rdf_resources']['hc_boat'], NULL, NULL);
     $config['rdf_views']['hc_boats']->setOptionalAll();
 
     // Buildings and Public Amenities
-    $config['rdf_views']['hc_buildings_and_public_amenities'] = new RDFView('hc_buildings_and_public_amenities', 'Buildings and Public Amenities', 'buildings-and-public-amenities',
-      $config['rdf_resources']['hc_building_or_public_amenity']);
+    $config['rdf_views']['hc_buildings_and_public_amenities'] = new RDFView('hc_buildings_and_public_amenities', 'Buildings and Public Amenities', 'buildings-and-public-amenities', NULL,
+      $config['rdf_resources']['hc_building_or_public_amenity'], NULL, NULL);
     $config['rdf_views']['hc_buildings_and_public_amenities']->setOptionalAll();
 
     // Businesses
-    $config['rdf_views']['hc_businesses'] = new RDFView('hc_businesses', 'Businesses', 'businesses',
-      $config['rdf_resources']['hc_business']);
+    $config['rdf_views']['hc_businesses'] = new RDFView('hc_businesses', 'Businesses', 'businesses', NULL,
+      $config['rdf_resources']['hc_business'], NULL, NULL);
     $config['rdf_views']['hc_businesses']->setOptionalAll();
 
     // Crofts and Residences
-    $config['rdf_views']['hc_crofts_and_residences'] = new RDFView('hc_crofts_and_residences', 'Crofts and Residences', 'crofts-and-residences',
-      $config['rdf_resources']['hc_croft_or_residence']);
+    $config['rdf_views']['hc_crofts_and_residences'] = new RDFView('hc_crofts_and_residences', 'Crofts and Residences', 'crofts-and-residences', NULL,
+      $config['rdf_resources']['hc_croft_or_residence'], NULL, NULL);
     $config['rdf_views']['hc_crofts_and_residences']->setOptionalAll();
 
     // GaelicVersebRdachd
-    $config['rdf_views']['hc_gaelic_verses'] = new RDFView('hc_gaelic_verses', 'Gaelic Verses', 'gaelic-verses',
-      $config['rdf_resources']['hc_gaelic_verse']);
+    $config['rdf_views']['hc_gaelic_verses'] = new RDFView('hc_gaelic_verses', 'Gaelic Verses', 'gaelic-verses', NULL,
+      $config['rdf_resources']['hc_gaelic_verse'], NULL, NULL);
     $config['rdf_views']['hc_gaelic_verses']->setOptionalAll();
 
     // Historical Events
-    $config['rdf_views']['hc_historical_events'] = new RDFView('hc_historical_events', 'Historical Events', 'historical-events',
-      $config['rdf_resources']['hc_historical_event']);
+    $config['rdf_views']['hc_historical_events'] = new RDFView('hc_historical_events', 'Historical Events', 'historical-events', NULL,
+      $config['rdf_resources']['hc_historical_event'], NULL, NULL);
     $config['rdf_views']['hc_historical_events']->setOptionalAll();
 
     // Landmarks and Archaeological Sites
-    $config['rdf_views']['hc_landmarks_and_archaeological_sites'] = new RDFView('hc_landmarks_and_archaeological_sites', 'Landmarks and Archaeological Sites', 'landmarks-and-archaeological-sites',
-      $config['rdf_resources']['hc_landmark_or_archaeological_site']);
+    $config['rdf_views']['hc_landmarks_and_archaeological_sites'] = new RDFView('hc_landmarks_and_archaeological_sites', 'Landmarks and Archaeological Sites', 'landmarks-and-archaeological-sites', NULL,
+      $config['rdf_resources']['hc_landmark_or_archaeological_site'], NULL, NULL);
     $config['rdf_views']['hc_landmarks_and_archaeological_sites']->setOptionalAll();
 
     // Location
-    $config['rdf_views']['hc_locations'] = new RDFView('hc_locations', 'Locations', 'locations',
-      $config['rdf_resources']['hc_location']);
+    $config['rdf_views']['hc_locations'] = new RDFView('hc_locations', 'Locations', 'locations', NULL,
+      $config['rdf_resources']['hc_location'], NULL, NULL);
     $config['rdf_views']['hc_locations']->setOptionalAll();
 
     // Natural Landscape Features
-    $config['rdf_views']['hc_natural_landscape_features'] = new RDFView('hc_natural_landscape_features', 'Natural Landscape Features', 'natural-landscape-features',
-      $config['rdf_resources']['hc_natural_landscape_feature']);
+    $config['rdf_views']['hc_natural_landscape_features'] = new RDFView('hc_natural_landscape_features', 'Natural Landscape Features', 'natural-landscape-features', NULL,
+      $config['rdf_resources']['hc_natural_landscape_feature'], NULL, NULL);
     $config['rdf_views']['hc_natural_landscape_features']->setOptionalAll();
     
     // Objects and Artefacts
-    $config['rdf_views']['hc_objects_and_artefacts'] = new RDFView('hc_objects_and_artefacts', 'Objects and Artefacts', 'objects-and-artefacts',
-      $config['rdf_resources']['hc_object_or_artefact']);
+    $config['rdf_views']['hc_objects_and_artefacts'] = new RDFView('hc_objects_and_artefacts', 'Objects and Artefacts', 'objects-and-artefacts', NULL,
+      $config['rdf_resources']['hc_object_or_artefact'], NULL, NULL);
     $config['rdf_views']['hc_objects_and_artefacts']->setOptionalAll();
 
     // Oral Traditionbeul Aithrises
@@ -1670,8 +1670,8 @@ function _curios_configuration() {
 //    $config['rdf_views']['hc_oral_traditionbeul_aithrises']->setOptionalAll();
 
     // Story Reports and Traditions
-    $config['rdf_views']['hc_story_reports_and_traditions'] = new RDFView('hc_story_reports_and_traditions', 'Story Reports and Traditions', 'story-reports-and-traditions',
-      $config['rdf_resources']['hc_story_report_or_tradition']);
+    $config['rdf_views']['hc_story_reports_and_traditions'] = new RDFView('hc_story_reports_and_traditions', 'Story Reports and Traditions', 'story-reports-and-traditions', NULL,
+      $config['rdf_resources']['hc_story_report_or_tradition'], NULL, NULL);
     $config['rdf_views']['hc_story_reports_and_traditions']->setOptionalAll();
 
     // DEBUG: remove unused resources.
