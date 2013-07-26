@@ -10,7 +10,7 @@ require_once('curios_configuration.inc');
 function curios_install() {
   // Create the SPARQL Views resource type(s).
   foreach (_curios_installed_resource_types() as $resource_type) {
-    sparql_views_resource_type_save($resource_type);
+    sparql_views_resource_type_save((object)$resource_type);
   }
 
   // Create all the fields we are adding.
@@ -83,7 +83,7 @@ function _curios_installed_resource_types() {
 
   // Create an array of endpoints.
   $endpoints = array();
-  $endpoints['curios_query_endpoint'] = array(
+  $endpoints['curios_query_endpoint'] = (object)array(
     'title' => 'CURIOS: query endpoint',
     'uri' => 'http://localhost:3030/dataset/query',
   );
@@ -98,7 +98,7 @@ function _curios_installed_resource_types() {
       'label' => $t($entity->getLabel()),
       'base' => 'sparql_views_resource',
       'description' => $t($entity->getLabel()),
-      'endpoints' => array($endpoints['curios_query_endpoint']['uri'] => TRUE),
+      'endpoints' => array($endpoints['curios_query_endpoint']->uri => TRUE),
     );
   }
 
