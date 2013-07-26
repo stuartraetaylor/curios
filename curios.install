@@ -1,4 +1,5 @@
 <?php
+require_once('curios_functions.inc');
 require_once('curios_entities.inc');
 require_once('curios_configuration.inc');
 
@@ -11,11 +12,6 @@ function curios_install() {
   foreach (_curios_installed_resource_types() as $resource_type) {
     sparql_views_resource_type_save($resource_type);
   }
-
-  // Create the node type(s).
-//  foreach (_kasabi_factbook_installed_node_types() as $node_type) {
-//    node_type_save($node_type);
-//  }
 
   // Create all the fields we are adding.
   foreach (_curios_installed_fields() as $field) {
@@ -47,8 +43,6 @@ function curios_install() {
   cache_clear_all(NULL, 'cache_views', TRUE);
   menu_rebuild();
   cache_clear_all(NULL, 'cache_block');
-  
-  // TODO assign resource type to endpoint
 }
 
 /**
@@ -75,21 +69,6 @@ function curios_uninstall() {
   }
   
   // TODO delete menu, endpoint etc.
-
-  // Delete the node type.
-//  foreach (_kasabi_factbook_installed_node_types() as $node_type) {
-//    // Delete all of the nodes that use this type from the database.
-//    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-//    $result = db_query($sql, array(':type' => $node_type->type));
-//    $nids = array();
-//    foreach ($result as $row) {
-//      $nids[] = $row->nid;
-//    }
-//    node_delete_multiple($nids);
-//
-//    // Delete the node type itself.
-//    node_type_delete($node_type->type);
-//  }
 }
 
 /**
@@ -125,26 +104,6 @@ function _curios_installed_resource_types() {
 
   return $resource_types;
 }
-
-/**
- * Return a structured array defining the node types.
- */
-//function _curios_installed_node_types() {
-//  $t = get_t();
-//  $node_types = array();
-//
-//  $kasabi_factbook_leader = array(
-//    'type' => 'kasabi_factbook_leader',
-//    'name' => $t('Leader (Kasabi Factbook)'),
-//    'base' => 'node_content',
-//    'description' => $t('This is a world leader. Some additional information about the leader is pulled from the Kasabi SPARQL endpoint.'),
-//  );
-//
-//  // Set additional defaults and save the content type.
-//  $node_types['kasabi_factbook_leader'] = node_type_set_defaults($kasabi_factbook_leader);
-//  
-//  return $node_types;
-//}
 
 /**
  * Return a structured array defining the fields created by this resource type.
@@ -198,15 +157,4 @@ function _curios_installed_instances() {
   return $resource_instances;
 }
 
-function _activate_block($module, $block, $region, $theme, $pages, $visibility) {
-  db_merge('block')
-  ->key(array('theme' => $theme, 'delta' => $block, 'module' => $module))
-  ->fields(array(
-    'region' => ($region == BLOCK_REGION_NONE ? '' : $region),
-    'pages' => trim($pages),
-    'status' => (int) ($region != BLOCK_REGION_NONE),
-    'visibility' => $visibility,
-  ))
-  ->execute();
-}
 
