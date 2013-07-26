@@ -121,6 +121,29 @@ function __curios_fetch_max_identifier() {
     }
 }
 
+function __curios_latest_record_identifiers($n = 10) {
+   $query = <<<EOT
+prefix hc:<http://www.csd.abdn.ac.uk/~cmellish/ontologies/hebridean.owl#>
+select ?id ?title where {
+  [] hc:subjectID ?id ;
+     hc:englishName ?title .
+}
+order by desc(strlen(?id)) desc(?id)
+limit $n
+EOT;
+
+  $rs = __curios_sparql_query($query, 'dataset');
+  $identifiers = array();
+
+  if ($rs != NULL) {
+    foreach ($rs['result']['rows'] as $row) {
+      $identifiers[$row['id']] = $row['title'];
+    }
+  }
+
+  return $identifiers;
+}
+
 function __curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
   $query = <<<EOT
 # Check individual is in the range of the specified property for the specified class.

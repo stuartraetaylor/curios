@@ -1,5 +1,5 @@
 <?php
-require_once('php_fast_cache.php');
+require_once('scripts/php_fast_cache.php');
 
 function curios_resource_type_load($resource_name) {
   if (!empty($resource_name)) {
@@ -13,23 +13,6 @@ function curios_resource_type_load($resource_name) {
   }
 
   return $resource_name;
-}
-
-function curios_manage_page() {
-  $page = array();
-
-  $base_path = base_path() . 'curios/manage';
-  $content = <<<EOT
-<p>From this page you can create, edit and delete records in the repository.</p>
-<ul>
-<li><a href="$base_path/create">Create a new record</a></li>
-<li><a href="$base_path/edit">Edit or delete an existing record</a></li>
-</ul>
-<p>Choose an action from the menu to continue.</p>
-EOT;
-  $page[] = array('#markup' => $content);
-
-  return $page;
 }
 
 function curios_manage_insert_form($form, &$form_state) {

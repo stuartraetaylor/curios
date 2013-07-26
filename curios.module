@@ -1,6 +1,7 @@
 <?php
 require_once('curios_entities.inc');
 require_once('curios_configuration.inc');
+require_once('curios_admin.inc');
 require_once('curios_update.inc');
 require_once('curios_sparql.inc');
 require_once('curios_functions.inc');
@@ -101,6 +102,14 @@ function curios_menu() {
     'access arguments' => array('curios manage repository'),
     'type' => MENU_CALLBACK,
     'page arguments' => array(3,4),
+  );
+
+  $items['curios/manage/tools'] = array(
+    'title' => t('Admin Tools'),
+    'page callback' => 'curios_admin_tools_page',
+    'access arguments' => array('curios manage repository'),
+    'description' => t('Repository administration tools.'),
+    'type' => MENU_NORMAL_ITEM,
   );
 
   return $items;
