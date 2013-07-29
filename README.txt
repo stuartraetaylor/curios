@@ -18,13 +18,16 @@ Required modules from Drupal.org version control:
   * CTools        7.x-1.x    https://drupal.org/project/ctools
   * RDFx          7.x-2.x    https://drupal.org/project/rdfx
   * SPARQL        7.x-2.x    https://drupal.org/project/sparql
-  * SPARQL Views  7.x-2.x    https://drupal.org/project/sparql_views
+  * SPARQL Views  curios-7.x-2.x See special requirements below.
   * Libraries     7.x-2.x    https://drupal.org/project/libraries
   * Views PHP     7.x-2.x    https://drupal.org/project/views_php
   * Views Litepager 7.x-3.x  https://drupal.org/project/views_litepager
   * Devel     latest-version (optional)
 
 Special Requirements:
+  * SPARQL Views CURIOS branch from github:
+      $ cd sites/all/modules
+      $ git pull https://github.com/stuartraetaylor/sparql_views.git
   * arc2-sparql11 from github:
       $ mkdir -p sites/all/libraries/ARC2
       $ cd sites/all/libraries/ARC2
@@ -33,10 +36,6 @@ Special Requirements:
       $ cd sites/all/modules/sparql
       $ wget http://www.abdn.ac.uk/~csc363/curios/sparql-module-arc2-sparql11.patch
       $ git apply -v sparql-module-arc2-sparql11.patch
-  * SPARQL Views CURIOS branch from Bitbucket:
-      $ cd sites/all/modules/sparql_views
-      $ git remote add -t curios-7.x-2.x -f curios-bitbucket https://<USERNAME>@bitbucket.org/stuartraetaylor/sparql_views.git
-      $ git checkout -b curios-7.x-2.x remotes/curios-bitbucket/curios-7.x-2.x
   * CURIOS module from BitBucket:
       $ cd sites/all/modules
       $ git clone https://<USERNAME>@bitbucket.org/stuartraetaylor/curios.git
