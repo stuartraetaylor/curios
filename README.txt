@@ -27,7 +27,7 @@ Required modules from Drupal.org version control:
 Special Requirements:
   * SPARQL Views CURIOS branch from github:
       $ cd sites/all/modules
-      $ git pull https://github.com/stuartraetaylor/sparql_views.git
+      $ git clone https://github.com/stuartraetaylor/sparql_views.git
   * arc2-sparql11 from github:
       $ mkdir -p sites/all/libraries/ARC2
       $ cd sites/all/libraries/ARC2
