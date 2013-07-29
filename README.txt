@@ -18,9 +18,9 @@ Required modules from Drupal.org version control:
   * CTools        7.x-1.x    https://drupal.org/project/ctools
   * RDFx          7.x-2.x    https://drupal.org/project/rdfx
   * SPARQL        7.x-2.x    https://drupal.org/project/sparql
-  * SPARQL Views  curios-7.x-2.x See special requirements below.
+  * SPARQL Views  curios-7.x-2.x - See special requirements below.
   * Libraries     7.x-2.x    https://drupal.org/project/libraries
-  * Views PHP     7.x-2.x    https://drupal.org/project/views_php
+  * Views PHP     7.x-1.x    https://drupal.org/project/views_php
   * Views Litepager 7.x-3.x  https://drupal.org/project/views_litepager
   * Devel     latest-version (optional)
 
@@ -36,6 +36,8 @@ Special Requirements:
       $ cd sites/all/modules/sparql
       $ wget http://www.abdn.ac.uk/~csc363/curios/sparql-module-arc2-sparql11.patch
       $ git apply -v sparql-module-arc2-sparql11.patch
+      $ wget https://drupal.org/files/sparql-registry-strict-errors-2053013-1.patch
+      $ git apply -v sparql-registry-strict-errors-2053013-1.patch
   * CURIOS module from BitBucket:
       $ cd sites/all/modules
       $ git clone https://bitbucket.org/stuartraetaylor/curios.git
@@ -44,10 +46,13 @@ Special Requirements:
       $ git clone https://bitbucket.org/stuartraetaylor/curios_theme.git
 
 Installation:
-  * Install Drupal 7 - typical installation.
-  * Install and enable required modules.
-  * Follow steps in Special Requirements.
-  * Enable CURIOS module and clear cache:
+  1. Install Drupal 7 - standard installation.
+  2. Download the required Drupal modules.
+  3. Follow the steps in Special Requirements.
+  4. Enable CURIOS module:
       $ drush -v en curios
+  5. Enable CURIOS Theme via admin/appearance (if required).
+  6. Enable 'Description Link Filter' for Filtered HTML and Full HTML via admin/config/content/formats.
+  7, Download and install the standalone CKEditor to the libraries folder as described in http://docs.cksource.com/CKEditor_for_Drupal/Open_Source/Drupal_7/Installation
+  8, Finally, clear Drupal's cache:
       $ drush cc all
-
