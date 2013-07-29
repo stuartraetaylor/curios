@@ -12,7 +12,7 @@ function curios_views_data() {
     'title' => t('Link Target Rewriter'),
     'help' => t('Rewrites link target based on the ontology.'),
     'field' => array(
-      'help' => t('Does some stuff in the CURIOS module..'),
+      'help' => t('CURIOS custom field handler.'),
       'handler' => 'curios_handler_field',
     ),
   );
