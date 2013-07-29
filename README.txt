@@ -38,10 +38,10 @@ Special Requirements:
       $ git apply -v sparql-module-arc2-sparql11.patch
   * CURIOS module from BitBucket:
       $ cd sites/all/modules
-      $ git clone https://<USERNAME>@bitbucket.org/stuartraetaylor/curios.git
+      $ git clone https://bitbucket.org/stuartraetaylor/curios.git
   * CURIOS Hebridean Connections theme from BitBucket (optional):
       $ cd sites/all/themes
-      $ git clone https://<USERNAME>@bitbucket.org/stuartraetaylor/curios_theme.git
+      $ git clone https://bitbucket.org/stuartraetaylor/curios_theme.git
 
 Installation:
   * Install Drupal 7 - typical installation.
