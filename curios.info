@@ -27,6 +27,7 @@ dependencies[] = panels_ipe
 dependencies[] = views_content
 dependencies[] = views_litepager
 dependencies[] = rdfui
+dependencies[] = libraries
 files[] = curios_entities.inc
 files[] = curios_configuration.inc
 files[] = curios.views.inc
