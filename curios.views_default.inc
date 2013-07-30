@@ -967,7 +967,9 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
     'language' => '0',
   );
 
+  // FIXME types are no longer classes in the ontology, this needs to be updated to dynamically read typeOf properties.
   // Exposed filter: rdf:type.
+  /*
   $sub_types = $resource->getSubTypes();
   if (!empty($sub_types)) {
     $type_field_name = $resource_name.'_type';
@@ -990,6 +992,7 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
           array('title' => __format_name($label), 'value' => $type, 'operator' => '=');
     }
   }
+  */
 
 }
 
