@@ -9,7 +9,7 @@ function _curios_configuration() {
 
     $config['namespaces'] = array(
       'hc' => 'http://www.hebrideanconnections.com/hebridean.owl#',
-      'dc' => 'http://purl.org/dc/elements/1.1/',
+      'dc' => 'http://purl.org/dc/terms/',
     );
 
     $config['rdf_fields'] = array(
@@ -33,8 +33,6 @@ function _curios_configuration() {
       'hc_description'          => new RDFField('hc_description', 'Description', 'hc:description', 'text'),
       'hc_easting'              => new RDFField('hc_easting', 'Easting', 'hc:easting', 'text'),
       'hc_english_name'         => new RDFField('hc_english_name', 'EnglishName', 'hc:englishName', 'text'),
-      'hc_file'                 => new RDFField('hc_file', 'File', 'hc:file', 'text'),      
-      'hc_file_name'            => new RDFField('hc_file_name', 'Filename', 'hc:fileName', 'text'),
       'hc_gaelic_name'          => new RDFField('hc_gaelic_name', 'GaelicName', 'hc:gaelicName', 'text'),
       'hc_geo_ref'              => new RDFField('hc_geo_ref', 'GeoRef', 'hc:geoRef', 'text'),
       'hc_northing'             => new RDFField('hc_northing', 'Northing', 'hc:northing', 'text'),
@@ -50,6 +48,25 @@ function _curios_configuration() {
       'hc_title'                => new RDFField('hc_title', 'Title', 'hc:title', 'text'),
       'hc_theme'                => new RDFField('hc_theme', 'Theme', 'hc:theme', 'text'),
       'hc_time_period'          => new RDFField('hc_time_period', 'TimePeriod', 'hc:timePeriod', 'text'),
+
+       // Images.
+      'hc_title'                => new RDFField('hc_title', 'Title', 'hc:title', 'text'),
+      'hc_file'                 => new RDFField('hc_file', 'File', 'hc:file', 'text'),
+      'hc_file_name'            => new RDFField('hc_file_name', 'Filename', 'hc:fileName', 'text'),
+
+      // TypeOf.
+      'hc_type_of_boat'                     => new RDFField('hc_type_of_boat', 'TypeOfBoat', 'hc:typeOfBoat', 'text'),
+      'hc_type_of_building_public_ameni'    => new RDFField('hc_type_of_building_public_ameni', 'Type', 'hc:typeOfBuildingPublicAmenity', 'text'),
+      'hc_type_of_business'                 => new RDFField('hc_type_of_business', 'Type', 'hc:typeOfBusiness', 'text'),
+      'hc_type_of_event'                    => new RDFField('hc_type_of_event', 'Type', 'hc:typeOfEvent', 'text'),
+      'hc_type_of_location'                 => new RDFField('hc_type_of_location', 'Type', 'hc:typeOfLocation', 'text'),
+      'hc_type_of_natural_landscape_fea'    => new RDFField('hc_type_of_natural_landscape_fea', 'Type', 'hc:typeOfNaturalLandscapeFeature', 'text'),
+      'hc_type_of_object_artefact'          => new RDFField('hc_type_of_object_artefact', 'Type', 'hc:typeOfObjectArtefact', 'text'),
+      'hc_type_of_organisation'             => new RDFField('hc_type_of_organisation', 'Type', 'hc:typeOfOrganisation', 'text'),
+      'hc_type_of_residence'                => new RDFField('hc_type_of_residence', 'Type', 'hc:typeOfResidence', 'text'),
+      'hc_type_of_site'                     => new RDFField('hc_type_of_site', 'Type', 'hc:typeOfSite', 'text'),
+      'hc_type_of_story_report_traditio'    => new RDFField('hc_type_of_story_report_traditio', 'Type', 'hc:typeOfStoryReportTradition', 'text'),
+      'hc_type_of_vehicle'                  => new RDFField('hc_type_of_vehicle', 'Type', 'hc:typeOfVehicle', 'text'),
 
       // Object Properties
       'hc_adopted_by'           => new RDFField('hc_adopted_by', 'AdoptedBy',  'hc:adoptedBy', 'sparql_views_related_resource'),
@@ -78,7 +95,8 @@ function _curios_configuration() {
       'hc_holds'                => new RDFField('hc_holds', 'Holds',  'hc:holds', 'sparql_views_related_resource'),      
       'hc_immigrant_from'       => new RDFField('hc_immigrant_from', 'ImmigrantFrom',  'hc:immigrantFrom', 'sparql_views_related_resource'),      
       'hc_information_obtained_from' => new RDFField('hc_information_obtained_from', 'InformationObtainedFrom',  'hc:informationObtainedFrom', 'sparql_views_related_resource'),      
-      'hc_is_part_of_site'      => new RDFField('hc_is_part_of_site', 'IsPartOfSite',  'hc:isPartOfSite', 'sparql_views_related_resource'),      
+      'hc_is_part_of_site'      => new RDFField('hc_is_part_of_site', 'IsPartOfSite',  'hc:isPartOfSite', 'sparql_views_related_resource'),
+      'hc_is_shown_here'        => new RDFField('hc_is_shown_here', 'IsShownHere',  'hc:isShownHere', 'sparql_views_related_resource'),
       'hc_lived_here'           => new RDFField('hc_lived_here', 'LivedHere',  'hc:livedHere', 'sparql_views_related_resource'),      
       'hc_lived_at'             => new RDFField('hc_lived_at', 'LivedAt',  'hc:livedAt', 'sparql_views_related_resource'),
       'hc_lived_with'           => new RDFField('hc_lived_with', 'LivedWith',  'hc:livedWith', 'sparql_views_related_resource'),
@@ -101,11 +119,15 @@ function _curios_configuration() {
       'hc_used_object'          => new RDFField('hc_used_object', 'UsedObject',  'hc:usedObject', 'sparql_views_related_resource'),
       'hc_written_compiled_by'  => new RDFField('hc_written_compiled_by', 'WrittenCompiledBy',  'hc:writtenCompiledBy', 'sparql_views_related_resource'),
 
-      //Annotations  
-      'hc_approved'             => new RDFField('hc_approved', 'Approved', 'hc:Approved', 'text'),
+      // Validation / provenance.
       'hc_approved_by'          => new RDFField('hc_approved_by', 'Approvedby', 'hc:Approvedby', 'text'),      
       'hc_approved_date'        => new RDFField('hc_approved_date', 'Approveddate', 'hc:Approveddate', 'text'),      
-      'hc_approved_for_pub'     => new RDFField('hc_approved_for_pub', 'Approvedforpub', 'hc:Approvedforpub', 'text'),
+      'hc_approved_for_pub'     => new RDFField('hc_approved_for_pub', 'ApprovedForPub', 'hc:approvedForPub', 'text'),
+      'hc_owned_by_society'     => new RDFField('hc_owned_by_society', 'OwnedBySociety', 'hc:ownedBySociety', 'text'),
+      'hc_maintained_by_society'=> new RDFField('hc_maintained_by_society', 'MaintainedBySociety', 'hc:maintainedBySociety', 'text'),
+
+      // Unused?
+      'hc_approved'             => new RDFField('hc_approved', 'Approved', 'hc:Approved', 'text'),
       'hc_caption'              => new RDFField('hc_caption', 'Caption', 'hc:Caption', 'text'),
       'hc_compiler_notes'       => new RDFField('hc_compiler_notes', 'Compilernotes', 'hc:Compilernotes', 'text'),
       'hc_copyright'            => new RDFField('hc_copyright', 'Copyright', 'hc:Copyright', 'text'),
@@ -124,10 +146,8 @@ function _curios_configuration() {
       'hc_when_edited'          => new RDFField('hc_when_edited', 'Whenedited', 'hc:Whenedited', 'text'),
 
       // Dublin core.
-      //'dc_title'                => new RDFField('dc_title', 'dc:title', 'dc:title', 'text'),
-      //'dc_description'          => new RDFField('dc_description', 'dc:description', 'dc:description', 'text'),
-      'dc_title'                => new RDFField('dc_title', 'dc:title', 'hc:englishName', 'text'),
-      'dc_description'          => new RDFField('dc_description', 'dc:description', 'hc:description', 'text'),
+      'dc_title'                => new RDFField('dc_title', 'dc:title', 'dc:title', 'text'),
+      'dc_description'          => new RDFField('dc_description', 'dc:description', 'dc:description', 'text'),
     );
 
     $config['rdf_resources'] = array();
@@ -201,6 +221,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_theme'],
         $config['rdf_fields']['hc_time_period'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
         $config['rdf_fields']['hc_smr_record_id'],
         $config['rdf_fields']['hc_soundex_name'],
@@ -269,11 +290,12 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_gaelic_name'],
         $config['rdf_fields']['hc_also_known_as'],
 
+        $config['rdf_fields']['hc_type_of_boat'],
         $config['rdf_fields']['hc_date_launched'],
         $config['rdf_fields']['hc_date_of_registration'],
         $config['rdf_fields']['hc_registration'],
-        //$config['rdf_fields']['hc_type_of_boat'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -362,7 +384,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
-        //$config['rdf_fields']['hc_business_type'],
+        $config['rdf_fields']['hc_type_of_building_public_ameni'],
         $config['rdf_fields']['hc_date_built'],
         $config['rdf_fields']['hc_date_established'],
         $config['rdf_fields']['hc_date_founded'],
@@ -376,6 +398,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -443,11 +466,13 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
+        $config['rdf_fields']['hc_type_of_business'],
         $config['rdf_fields']['hc_date_founded'],
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -515,17 +540,18 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
+        $config['rdf_fields']['hc_type_of_location'],
         $config['rdf_fields']['hc_date_built'],
         $config['rdf_fields']['hc_date_demolished'],
         $config['rdf_fields']['hc_date_founded'],
         $config['rdf_fields']['hc_date_lotted'],
         $config['rdf_fields']['hc_geo_ref'],
-        //$config['rdf_fields']['hc_location_type'],
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_period_of_construction_use'],
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -583,6 +609,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -616,6 +643,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
+        $config['rdf_fields']['hc_type_of_event'],
         $config['rdf_fields']['hc_date'],
         $config['rdf_fields']['hc_date_established'],
         $config['rdf_fields']['hc_geo_ref'],
@@ -626,6 +654,7 @@ function _curios_configuration() {
         //$config['rdf_fields']['hc_type'],
         //$config['rdf_fields']['hc_type_of_organisation'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -676,7 +705,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
-        //$config['rdf_fields']['hc_location_type'],
+        $config['rdf_fields']['hc_type_of_site'],
         //$config['rdf_fields']['hc_natural_landmark_type'],
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_period_of_construction_use'],
@@ -685,6 +714,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_smr_record_id'],
         $config['rdf_fields']['hc_subject_id'],
       ),
@@ -915,11 +945,13 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_gaelic_name'],
         $config['rdf_fields']['hc_also_known_as'],
 
+        $config['rdf_fields']['hc_type_of_location'],
         $config['rdf_fields']['hc_geo_ref'],
         $config['rdf_fields']['hc_period_of_construction_use'],
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -1010,10 +1042,12 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_gaelic_name'],
         $config['rdf_fields']['hc_also_known_as'],
 
+        $config['rdf_fields']['hc_type_of_natural_landscape_fea'],
         $config['rdf_fields']['hc_geo_ref'],
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -1081,11 +1115,12 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
-        //$config['rdf_fields']['hc_object_type'],
+        $config['rdf_fields']['hc_type_of_object_artefact'],
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_smr_record_id'],
         $config['rdf_fields']['hc_subject_id'],
       ),
@@ -1216,31 +1251,6 @@ function _curios_configuration() {
       )
     );
 
-    $config['rdf_resources']['hc_oral_traditionbeul_aithris'] = new RDFResource('hc_oral_traditionbeul_aithris', 'OralTraditionbeulAithris', 'hc:OralTraditionbeulAithris',
-      array( // Data fields.
-        $config['rdf_fields']['dc_title'],
-        $config['rdf_fields']['dc_description'],
-
-        $config['rdf_fields']['hc_english_name'],
-        $config['rdf_fields']['hc_gaelic_name'],
-
-        $config['rdf_fields']['hc_born'],
-        $config['rdf_fields']['hc_date_of_death'],
-        $config['rdf_fields']['hc_sex'],
-
-        $config['rdf_fields']['hc_bk_reference'],
-        $config['rdf_fields']['hc_subject_id'],
-      ),
-      array( // Object fields.
-        $config['rdf_fields']['hc_associated_with'],
-        $config['rdf_fields']['hc_information_obtained_from'],
-      ),
-      array( // Object field ranges.
-//        'hc_associated_with'
-        'hc_information_obtained_from' => 'hc_organisation',
-      )
-    );
-
     $config['rdf_resources']['hc_organisation'] = new RDFResource('hc_organisation', 'Organisation', 'hc:Organisation',
       array( // Data fields.
         $config['rdf_fields']['dc_title'],
@@ -1249,14 +1259,15 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
+        $config['rdf_fields']['hc_type_of_organisation'],
         $config['rdf_fields']['hc_date_established'],
         $config['rdf_fields']['hc_date_of_source'],
         $config['rdf_fields']['hc_geo_ref'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
         //$config['rdf_fields']['hc_source_type'],
         //$config['rdf_fields']['hc_type_of_building_public_amty'],
-        //$config['rdf_fields']['hc_type_of_organisation'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_associated_with'],
@@ -1325,8 +1336,9 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_northing'],
         $config['rdf_fields']['hc_easting'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
       	$config['rdf_fields']['hc_bk_reference'],
-	$config['rdf_fields']['hc_subject_id'],
+        $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_adopted_by'],
@@ -1423,7 +1435,8 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_period'],
         $config['rdf_fields']['hc_sex'],
         $config['rdf_fields']['hc_source_type'],
-          
+
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_bk_reference'],
         $config['rdf_fields']['hc_subject_id'],
       ),
@@ -1464,19 +1477,15 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
-        //$config['rdf_fields']['hc_business_type'],
+        $config['rdf_fields']['hc_type_of_story_report_traditio'],
         $config['rdf_fields']['hc_date'],
         $config['rdf_fields']['hc_date_established'],
         $config['rdf_fields']['hc_date_of_source'],
         $config['rdf_fields']['hc_geo_ref'],
         $config['rdf_fields']['hc_period_of_construction_use'],
-        //$config['rdf_fields']['hc_source_type'],
-        //$config['rdf_fields']['hc_subject'],
         $config['rdf_fields']['hc_theme'],
-        //$config['rdf_fields']['hc_type'],
-        //$config['rdf_fields']['hc_type_of_building_public_amty'],
-        //$config['rdf_fields']['hc_type_of_organisation'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -1551,10 +1560,11 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_english_name'],
         $config['rdf_fields']['hc_gaelic_name'],
 
+        $config['rdf_fields']['hc_type_of_vehicle'],
         $config['rdf_fields']['hc_chassis'],
         $config['rdf_fields']['hc_registration'],
-        //$config['rdf_fields']['hc_type_of_vehicle'],
 
+        $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
@@ -1573,15 +1583,22 @@ function _curios_configuration() {
 
     $config['rdf_resources']['hc_image_file'] = new RDFResource('hc_image_file', 'Imagefile', 'hc:Imagefile',
       array( // Data fields.
+        $config['rdf_fields']['dc_title'],
+        $config['rdf_fields']['dc_description'],
+
+        //$config['rdf_fields']['hc_title'],
+        //$config['rdf_fields']['hc_description'],
+
         $config['rdf_fields']['hc_copyright'],
-        $config['rdf_fields']['hc_fid'],
         $config['rdf_fields']['hc_file'],
         $config['rdf_fields']['hc_file_name'],
-        $config['rdf_fields']['hc_lochistsoc'],
-        $config['rdf_fields']['hc_lochistsocref'],
-        $config['rdf_fields']['hc_originator'],
         $config['rdf_fields']['hc_origin_date'],
-        $config['rdf_fields']['hc_title'],
+
+        $config['rdf_fields']['hc_owned_by_society'],
+        $config['rdf_fields']['hc_subject_id'],
+      ),
+      array( // Object fields.
+        $config['rdf_fields']['hc_is_shown_here'],
       )
     );
 
@@ -1672,6 +1689,10 @@ function _curios_configuration() {
     $config['rdf_views']['hc_stories_reports_and_traditions'] = new RDFView('hc_stories_reports_and_traditions', 'Stories, Reports and Traditions', 'stories-reports-and-traditions', NULL,
       $config['rdf_resources']['hc_story_report_or_tradition'], NULL, NULL);
     $config['rdf_views']['hc_stories_reports_and_traditions']->setOptionalAll();
+
+    $config['rdf_views']['hc_images'] = new RDFView('hc_images', 'Images', 'images', NULL,
+      $config['rdf_resources']['hc_image_file'], NULL, NULL);
+    $config['rdf_views']['hc_images']->setOptionalAll();
 
     // DEBUG: remove unused resources.
     // $keep = array('hc_image_file', 'hc_person', 'hc_organisation', 'hc_resource', 'hc_vehicle');
