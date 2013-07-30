@@ -55,7 +55,7 @@ function _curios_configuration() {
       'hc_file_name'            => new RDFField('hc_file_name', 'Filename', 'hc:fileName', 'text'),
 
       // TypeOf.
-      'hc_type_of_boat'                     => new RDFField('hc_type_of_boat', 'TypeOfBoat', 'hc:typeOfBoat', 'text'),
+      'hc_type_of_boat'                     => new RDFField('hc_type_of_boat', 'Type', 'hc:typeOfBoat', 'text'),
       'hc_type_of_building_public_ameni'    => new RDFField('hc_type_of_building_public_ameni', 'Type', 'hc:typeOfBuildingPublicAmenity', 'text'),
       'hc_type_of_business'                 => new RDFField('hc_type_of_business', 'Type', 'hc:typeOfBusiness', 'text'),
       'hc_type_of_event'                    => new RDFField('hc_type_of_event', 'Type', 'hc:typeOfEvent', 'text'),
