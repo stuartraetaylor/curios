@@ -1136,6 +1136,7 @@ function __curios_rdf_type_filter(&$handler, $view, $view_spec) {
 }
 
 function __curios_uri_filter(&$handler, $view, $view_spec) {
+  $config = _curios_configuration();
   $resource_name = $view_spec->getResource()->getMachineName();
   $handler->display->display_options['arguments'][$resource_name]['id'] = $resource_name;
   $handler->display->display_options['arguments'][$resource_name]['table'] = $view->base_table;
@@ -1149,8 +1150,8 @@ function __curios_uri_filter(&$handler, $view, $view_spec) {
   $handler->display->display_options['arguments'][$resource_name]['sparql_options'] = array(
     'value_type' => 'uri',
     'language' => '0',
-    'code' => 'return \'http://www.csd.abdn.ac.uk/~cmellish/ontologies/hebridean.owl#\'.$this->argument;',
-  ); // TODO replace namespace URI with value from config.
+    'code' => 'return \'' . $config['namespaces']['hc'] . '\'.$this->argument;',
+  );
 }
 
 function __curios_field_newline(&$handler) {

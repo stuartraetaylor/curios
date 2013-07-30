@@ -1,7 +1,6 @@
 <?php
 
 // TODO better caching
-// TODO store with Entity/Field API
 function _curios_configuration() {
   $config = &drupal_static(__FUNCTION__);
 
@@ -9,7 +8,7 @@ function _curios_configuration() {
     $config = array();
 
     $config['namespaces'] = array(
-      'hc' => 'http://www.csd.abdn.ac.uk/~cmellish/ontologies/hebridean.owl#',
+      'hc' => 'http://www.hebrideanconnections.com/hebridean.owl#',
       'dc' => 'http://purl.org/dc/elements/1.1/',
     );
 
