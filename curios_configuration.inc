@@ -1635,7 +1635,7 @@ function _curios_configuration() {
     $config['rdf_views']['hc_crofts_and_residences']->setOptionalAll();
 
     // GaelicVersebRdachd
-    $config['rdf_views']['hc_gaelic_verses'] = new RDFView('hc_gaelic_verses', 'Gaelic Verses', 'gaelic-verses', NULL,
+    $config['rdf_views']['hc_gaelic_verses'] = new RDFView('hc_gaelic_verses', 'Gaelic Verse', 'gaelic-verses', NULL,
       $config['rdf_resources']['hc_gaelic_verse'], NULL, NULL);
     $config['rdf_views']['hc_gaelic_verses']->setOptionalAll();
 
@@ -1670,9 +1670,9 @@ function _curios_configuration() {
 //    $config['rdf_views']['hc_oral_traditionbeul_aithrises']->setOptionalAll();
 
     // Story Reports and Traditions
-    $config['rdf_views']['hc_story_reports_and_traditions'] = new RDFView('hc_story_reports_and_traditions', 'Story Reports and Traditions', 'story-reports-and-traditions', NULL,
+    $config['rdf_views']['hc_stories_reports_and_traditions'] = new RDFView('hc_stories_reports_and_traditions', 'Stories, Reports and Traditions', 'stories-reports-and-traditions', NULL,
       $config['rdf_resources']['hc_story_report_or_tradition'], NULL, NULL);
-    $config['rdf_views']['hc_story_reports_and_traditions']->setOptionalAll();
+    $config['rdf_views']['hc_stories_reports_and_traditions']->setOptionalAll();
 
     // DEBUG: remove unused resources.
     // $keep = array('hc_image_file', 'hc_person', 'hc_organisation', 'hc_resource', 'hc_vehicle');
@@ -1701,7 +1701,7 @@ function _curios_configuration() {
     'hc_location' => 'hc_locations',
     'hc_natural_landscape_feature' => 'hc_natural_landscape_features',
     'hc_object_or_artefact' => 'hc_objects_and_artefacts',
-    'hc_story_report_or_tradition' => 'hc_story_reports_and_traditions',
+    'hc_story_report_or_tradition' => 'hc_stories_reports_and_traditions',
   );
 
 
