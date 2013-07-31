@@ -1,16 +1,25 @@
 <?php
+require_once('curios_ldcms.inc');
 
-// TODO better caching
+//function _curios_configuration_spec() {
 function _curios_configuration() {
   $config = &drupal_static(__FUNCTION__);
+
+  _curios_configuration_TEST(); exit;
 
   if (!isset($config)) {
     $config = array();
 
     $config['namespaces'] = array(
-      'hc' => 'http://www.hebrideanconnections.com/hebridean.owl#',
-      'dc' => 'http://purl.org/dc/terms/',
+      'cms' => 'http://www.abdn.ac.uk/~csc363/ldcms.owl#',
+      'hc'  => 'http://www.hebrideanconnections.com/hebridean.owl#',
+      'dc'  => 'http://purl.org/dc/terms/',
     );
+
+    // Namespace shortcuts.
+    $cms = $config['namespaces']['cms'];
+    $hc  = $config['namespaces']['hc'];
+    $dc  = $config['namespaces']['dc'];
 
     $config['image_relationship_field'] = 'hc_has_file';
 
@@ -1429,7 +1438,7 @@ function _curios_configuration() {
             'hc_building_or_public_amenity',
             'hc_historical_event',
             'hc_landmark_or_archaeological_site',
-            'hc_storyreport_or_tradition',
+            'hc_story_report_or_tradition',
             'hc_croft_or_residence',
             'hc_boat',
             'hc_location',
@@ -1592,6 +1601,7 @@ function _curios_configuration() {
     );
 
 
+
     $config['rdf_views'] = array();
 
     // General Subject
@@ -1691,6 +1701,136 @@ function _curios_configuration() {
     //   }
     // }
     //print($config['rdf_resources']);
+
+
+/*
+echo <<<EOT
+\$namespaces = array(
+  'cms' => 'http://www.abdn.ac.uk/~csc363/ldcms.owl#',
+  'hc'  => 'http://www.hebrideanconnections.com/hebridean.owl#',
+  'dc'  => 'http://purl.org/dc/terms/',
+);
+
+\$cms = \$namespaces['cms'];
+\$hc  = \$namespaces['hc'];
+\$dc  = \$namespaces['dc'];
+EOT;
+echo "\n\n";
+
+foreach ($config['rdf_fields'] as $field) {
+  $curie = $field->getRDFPredicate();
+  $uri = '';
+  if (startsWith('hc:', $curie)) {
+    $uri = str_replace('hc:','$hc.\'',$curie) . '\'';
+  } else {
+    $uri = str_replace('dc:','$dc.\'',$curie) . '\'';
+  }
+
+  echo "\$fields[] = array(\n";
+  echo "  'property' => $uri,\n";
+  echo "  'label'    => '{$field->getLabel()}',\n";
+  echo "  'type'     => '{$field->getType()}',\n";
+  echo ");\n";
+}
+echo "\n";
+
+
+foreach ($config['rdf_resources'] as $resource) {
+  $view = _curios_get_view($resource->getId());
+  $id = str_replace('hc_','',$view->getId());
+  $label = $view->getLabel();
+  $base = $uri = str_replace('hc:','',$resource->getRDFType());
+
+  echo <<<EOT
+\$browsing_classes[] = array(
+  'uri'   => \$cms.'$id',
+  'label' => '$label',
+  'base'  => \$hc.'$base',
+);
+EOT;
+  echo "\n";
+}
+echo "\n";
+
+
+foreach ($config['rdf_resources'] as $resource) {
+  $view = _curios_get_view($resource->getId());
+  $id = str_replace('hc_','',$view->getId());
+  $label = $view->getLabel();
+  $base = $uri = str_replace('hc:','',$resource->getRDFType());
+
+  echo "\$field_assignments['cms:$id'][] = array(\n";
+
+  foreach ($resource->getDataFields() as $field) {
+    $curie = $field->getRDFPredicate();
+    $uri = '';
+    if (startsWith('hc:', $curie)) {
+      $uri = str_replace('hc:','$hc.\'',$curie) . '\'';
+    } else {
+      $uri = str_replace('dc:','$dc.\'',$curie) . '\'';
+    }
+
+  echo '    ' . $uri . ",\n";
+
+  }
+
+  echo ");\n";
+}
+echo "\n";
+
+foreach ($config['rdf_resources'] as $resource) {
+  $view = _curios_get_view($resource->getId());
+  $id = str_replace('hc_','',$view->getId());
+  $label = $view->getLabel();
+  $base = str_replace('hc:','',$resource->getRDFType());
+  $targets = $resource->getRelationshipTargets();
+  
+  echo "\$relationship_assignments['cms:$id'][] = array(\n";
+
+  foreach ($resource->getObjectFields() as $field) {
+    $propUri = $uri = str_replace('hc:','',$field->getRDFPredicate());
+    $target_resource = $targets[$field->getId()];
+    
+    $rel_targets = '';
+    if (!isset($target_resource)) {
+       $uri = $config['rdf_resources']['hc_subject']->getRDFType();
+      $target_class =  str_replace('hc:','',$uri);
+      $rel_targets = "\$hc.'$target_class',";
+    } elseif (!is_array($target_resource)) {
+      $uri = $config['rdf_resources'][$target_resource]->getRDFType();
+      $target_class =  str_replace('hc:','',$uri);
+      $rel_targets = "\$hc.'$target_class',";
+    } else {
+      $rel_targets = "array(\n";
+      $count = 0;
+      foreach ($target_resource as $item) {
+        if ($config['rdf_resources'][$item] == NULL) { echo "\n $item : " . $resource->getId() . '    ' . $field->getId() . "\n"; exit; }
+        $uri = $config['rdf_resources'][$item]->getRDFType();
+        $target_class =  str_replace('hc:','',$uri);
+        $rel_targets .= "          \$hc.'$target_class',\n";
+      }
+      $rel_targets .= "      ),";
+    }
+
+
+  echo <<<EOT
+    array(
+      'property'  => \$cms.'$propUri',
+      'target'    => $rel_targets
+    ),
+EOT;
+  echo "\n";
+  }
+
+  echo ");\n";
+}
+echo "\n\n";
+
+exit;
+
+*/
+
+
   }
   
   // Resource to View mapping.
@@ -1750,3 +1890,4 @@ function __curios_resource_name_from_class_uri($rdf_class) {
   $class_name = 'hc:'.str_replace($config['namespaces']['hc'], '', $rdf_class);
   return !empty($config['rdf_class_resources'][$class_name]) ? $config['rdf_class_resources'][$class_name] : FALSE ;
 }
+

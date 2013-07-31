@@ -46,9 +46,10 @@ class RDFResource extends DrupalThing {
 
   public function addField($field) { $this->fields[] = $field; }
   public function addRelationship($relationship) { $this->relationships[] = $relationship; }
-  public function setRelationshipTarget($relationship_id, $target_id) {
-    $this->relationship_targets[$relationship_id] = $target_id;
+  public function setRelationshipTargets($relationship_id, $target_id) {
+    $this->relationship_targets[$relationship_id] = (array)$target_id;
   }
+  public function getRelationshipTargets() { return $this->relationship_targets; }
 
 }
 
@@ -107,8 +108,9 @@ class RDFView extends DrupalThing {
   public function setOptionalAll() {
     // Data fields.
     foreach ($this->resource->getDataFields() as $rdf_field) {
+        // DEBUG:
+        if ($rdf_field == NULL) { echo $this->getId() ."\n"; }
       if (!in_array($rdf_field->getMachineName(), $this->required_data_fields)) {
-        // DEBUG: if ($rdf_field == NULL) { echo $this->getId() ."\n"; }
         $this->optional_data_fields[] = $rdf_field->getMachineName();
       }
     }
