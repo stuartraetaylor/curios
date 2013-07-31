@@ -411,6 +411,33 @@ function __curios_generate_display_properties_default(&$view, &$view_spec, $base
   $handler->display->display_options['fields'][$resource_name]['empty_zero'] = 0;
   $handler->display->display_options['fields'][$resource_name]['hide_alter_empty'] = 0;
 
+  // Field: record type.
+  $field_name = "_record_type";
+  $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
+  $handler->display->display_options['fields'][$field_name]['table'] = 'views';
+  $handler->display->display_options['fields'][$field_name]['field'] = 'nothing';
+  $handler->display->display_options['fields'][$field_name]['label'] = 'Record Type';
+  $handler->display->display_options['fields'][$field_name]['alter']['text'] = $resource->getLabel();
+  $handler->display->display_options['fields'][$field_name]['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['make_link'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['absolute'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['external'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields'][$field_name]['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields'][$field_name]['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['trim'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['html'] = 0;
+  $handler->display->display_options['fields'][$field_name]['alter']['url_encode'] = 0;
+  $handler->display->display_options['fields'][$field_name]['element_label_type'] = 'strong';
+  $handler->display->display_options['fields'][$field_name]['element_label_colon'] = 1;
+  $handler->display->display_options['fields'][$field_name]['element_default_classes'] = 1;
+  $handler->display->display_options['fields'][$field_name]['hide_empty'] = 0;
+  $handler->display->display_options['fields'][$field_name]['empty_zero'] = 0;
+  $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
+
   // Required data fields.
   foreach ($view_spec->getRequiredDataFields() as $field_id) {
     $field_name = $resource_name.'_'.$field_id;
@@ -771,11 +798,11 @@ function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fi
 
   // Pager options.
   $handler->display->display_options['pager']['type'] = 'lite';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page'] = TRUE;
-  $handler->display->display_options['pager']['options']['expose']['items_per_page_options'] = '10, 20, 50';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options'] = '15, 30, 50';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   
   // Table options.
