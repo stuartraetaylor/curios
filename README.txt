@@ -54,5 +54,6 @@ Installation:
   5. Enable CURIOS Theme via admin/appearance (if required).
   6. Enable 'Description Link Filter' for Filtered HTML and Full HTML via admin/config/content/formats.
   7. Download and install the standalone CKEditor to the libraries folder as described in http://docs.cksource.com/CKEditor_for_Drupal/Open_Source/Drupal_7/Installation
-  8. Finally, clear Drupal's cache:
+  8. Optional: enable 'Cache pages for anonymous users' via admin/config/development/performance.
+  9. Finally, clear Drupal's cache:
       $ drush cc all
