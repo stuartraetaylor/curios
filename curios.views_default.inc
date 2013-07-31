@@ -359,6 +359,9 @@ function __curios_generate_display_properties_default(&$view, &$view_spec, $base
   /* Display: Properties */
   $handler = $view->new_display('block', 'Properties', 'properties');
   $handler->display->display_options['query']['type'] = 'views_query';
+  
+  // Combine multi-valued fields.
+  $handler->display->display_options['query']['options']['consolidate'] = TRUE;
 
   // Overrides.
   $handler->display->display_options['defaults']['title'] = FALSE;
