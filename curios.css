@@ -22,6 +22,11 @@
     white-space: nowrap;
 }
 
+/* Properties region. */
+#content .curios-properties img {
+    max-width: 530px;
+}
+
 /* Image gallery region */
 
 #content .curios-image-gallery img {
