@@ -43,7 +43,7 @@ function __curios_create_configuration() {
 }
 
 function __curios_load_configuration_spec() {
-  require_once 'hc-config-spec.inc';
+  require_once 'config/hebridean.inc';
 
   $config_spec = array(
     'namespaces' => $namespaces,
