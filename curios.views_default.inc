@@ -1,6 +1,7 @@
 <?php
 require_once('curios_entities.inc');
 require_once('curios_configuration.inc');
+require_once('curios.views_custom.inc');
 
 function curios_views_default_views() {
   $config = _curios_configuration();
@@ -65,15 +66,15 @@ function __curios_generate_default_view(&$view_spec) {
   $view->curios_options['resource_name'] = $resource_name; // Not used currently, config has mapping view_name => resource_name
 
   // Primary views.
-  __curios_generate_view_master($view, $view_spec, $base_fields);
-  __curios_generate_view_listing($view, $view_spec, $base_fields);
-  __curios_generate_view_summary($view, $view_spec, $base_fields);
-  __curios_generate_view_properties($view, $view_spec, $base_fields);
-  __curios_generate_view_images($view, $view_spec, $base_fields);
+  __curios_generate_display('master', $view, $view_spec, $base_fields);
+  __curios_generate_display('listing', $view, $view_spec, $base_fields);
+  __curios_generate_display('summary', $view, $view_spec, $base_fields);
+  __curios_generate_display('properties', $view, $view_spec, $base_fields);
+  __curios_generate_display('images', $view, $view_spec, $base_fields);
 
   // Relatiionship blocks.
   foreach ($view_spec->getObjectFields() as $field_id) {
-    if ($field_id == 'hc_file')
+    if ($field_id == $config['image_relationship_field'])
       continue;
 
     __curios_generate_object_block($view, $view_spec, $base_fields, $field_id);
@@ -82,7 +83,20 @@ function __curios_generate_default_view(&$view_spec) {
   return $view;
 }
 
-function __curios_generate_view_master(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display($view_name, &$view, &$view_spec, $base_fields, $default = FALSE) {
+    $resource_name = $view_spec->getResource()->getMachineName();
+
+    $override_function = "__curios_generate_display_{$view_name}_{$resource_name}";
+    $default_function = "__curios_generate_display_{$view_name}_default";
+
+    if (!$default && function_exists($override_function)) {
+      return call_user_func($override_function, $view, $view_spec, $base_fields);
+    } else {
+      return call_user_func($default_function, $view, $view_spec, $base_fields);
+    }
+}
+
+function __curios_generate_display_master_default(&$view, &$view_spec, $base_fields) {
   $config = _curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
@@ -167,10 +181,11 @@ function __curios_generate_view_master(&$view, &$view_spec, $base_fields) {
   // Global contextual filters.
   __curios_uri_filter($handler, $view, $view_spec);
   __curios_rdf_type_filter($handler, $view, $view_spec);
-  
+
+  return $handler;
 }
 
-function __curios_generate_view_summary(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_summary_default(&$view, &$view_spec, $base_fields) {
   $config = _curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
@@ -333,9 +348,10 @@ function __curios_generate_view_summary(&$view, &$view_spec, $base_fields) {
   __curios_uri_filter($handler, $view, $view_spec);
   __curios_rdf_type_filter($handler, $view, $view_spec);
 
+  return $handler;
 }
 
-function __curios_generate_view_properties(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_properties_default(&$view, &$view_spec, $base_fields) {
   $config = _curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
@@ -465,6 +481,7 @@ function __curios_generate_view_properties(&$view, &$view_spec, $base_fields) {
   __curios_uri_filter($handler, $view, $view_spec);
   __curios_rdf_type_filter($handler, $view, $view_spec);
 
+  return $handler;
 }
 
 function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $field_id) {
@@ -719,7 +736,7 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   return TRUE;
 }
 
-function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $image_file = $resource_name.'_hc_has_file';
@@ -919,7 +936,7 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['fields'][$image_file]['id'] = $image_file;
   $handler->display->display_options['fields'][$image_file]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$image_file]['field'] = $image_file;
-  $handler->display->display_options['fields'][$image_file]['label'] = 'Files';
+  $handler->display->display_options['fields'][$image_file]['label'] = 'Images';
   $handler->display->display_options['fields'][$image_file]['alter']['alter_text'] = 0;
   $handler->display->display_options['fields'][$image_file]['alter']['text'] = 'Yes';
   $handler->display->display_options['fields'][$image_file]['alter']['make_link'] = 0;
@@ -994,12 +1011,16 @@ function __curios_generate_view_listing(&$view, &$view_spec, $base_fields) {
   }
   */
 
+  return $handler;
 }
 
-function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_images_default(&$view, &$view_spec, $base_fields) {
+  $config = _curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  
+  $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
+  $image_view_spec = _curios_get_view('hc_image_file');
+
   /* Display: Images */
   $handler = $view->new_display('block', 'Images', 'images');
   
@@ -1036,8 +1057,33 @@ function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['relationships'][$relationship_field]['field'] = $relationship_field;
   $handler->display->display_options['relationships'][$relationship_field]['required'] = 0;
 
+  // Field: subject id.
+  $handler->display->display_options['fields'][$subject_id_field]['id'] = $subject_id_field;
+  $handler->display->display_options['fields'][$subject_id_field]['table'] = $view->base_table;
+  $handler->display->display_options['fields'][$subject_id_field]['field'] = $subject_id_field;
+  $handler->display->display_options['fields'][$subject_id_field]['relationship'] = $relationship_field;
+  $handler->display->display_options['fields'][$subject_id_field]['exclude'] = TRUE;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['make_link'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['absolute'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['external'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['trim'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['html'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['alter']['url_encode'] = 1;
+  $handler->display->display_options['fields'][$subject_id_field]['element_label_colon'] = 1;
+  $handler->display->display_options['fields'][$subject_id_field]['element_default_classes'] = 1;
+  $handler->display->display_options['fields'][$subject_id_field]['hide_empty'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['empty_zero'] = 0;
+  $handler->display->display_options['fields'][$subject_id_field]['hide_alter_empty'] = 0;
+
   // Field: file.
-  $field_name = 'hc_image_file_hc_file';
+  $field_name = 'hc_image_file_hc_url';
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
   $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
@@ -1063,6 +1109,33 @@ function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$field_name]['required'] = 1;
   
+  // Field: title
+  $handler->display->display_options['fields'][$base_fields['title']]['id'] = $base_fields['title'];
+  $handler->display->display_options['fields'][$base_fields['title']]['table'] = $view->base_table;
+  $handler->display->display_options['fields'][$base_fields['title']]['field'] = $base_fields['title'];
+  $handler->display->display_options['fields'][$base_fields['title']]['relationship'] = $relationship_field;
+  $handler->display->display_options['fields'][$base_fields['title']]['label'] = '';
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['make_link'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['path'] = $image_view_spec->getPath().'/['.$subject_id_field.']';
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['absolute'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['external'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['trim'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['html'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['url_encode'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['element_label_colon'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['element_default_classes'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['hide_empty'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['empty_zero'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['required'] = 1;
+
   /* Field: PHP Image Output */
   $field_name = 'hc_image_php_output';
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
@@ -1089,12 +1162,13 @@ function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
   $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$field_name]['use_php_setup'] = 0;
   $handler->display->display_options['fields'][$field_name]['php_value'] = '';
-  $handler->display->display_options['fields'][$field_name]['php_output'] = '<?php 
-  $image_path = $GLOBALS[\'base_path\'].\'images/\'.str_replace("\\\\", \'/\', $row->hc_image_file_hc_file);
+  $handler->display->display_options['fields'][$field_name]['php_output'] = '<?php
+  $image_path = str_replace(\'http://www.hebrideanconnections.com/\', \'http://www.dotrural.ac.uk/curiosdemo/images/\', $row->hc_image_file_hc_url);
   $output = \'\';
-  $output .= \'<a href="\'.$image_path.\'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
+  $output .= \'<a href="\'.$image_path.\'" alt="$row->'. $base_fields['title'] .'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
   echo $output;
   ?>';
+  //var_dump($handler->display->display_options['fields'][$field_name]['php_output']); exit;
   $handler->display->display_options['fields'][$field_name]['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields'][$field_name]['php_click_sortable'] = '';
   $handler->display->display_options['displays'] = array(
@@ -1102,8 +1176,7 @@ function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
     'default' => 0,
     'page' => 0,
   );
-  
-  
+
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -1115,6 +1188,8 @@ function __curios_generate_view_images(&$view, &$view_spec, $base_fields) {
 
   __curios_uri_filter($handler, $view, $view_spec);
   __curios_rdf_type_filter($handler, $view, $view_spec);
+
+  return $handler;
 }
 
 

@@ -108,7 +108,8 @@ class RDFView extends DrupalThing {
     // Data fields.
     foreach ($this->resource->getDataFields() as $rdf_field) {
       if (!in_array($rdf_field->getMachineName(), $this->required_data_fields)) {
-          $this->optional_data_fields[] = $rdf_field->getMachineName();
+        // DEBUG: if ($rdf_field == NULL) { echo $this->getId() ."\n"; }
+        $this->optional_data_fields[] = $rdf_field->getMachineName();
       }
     }
 
@@ -119,7 +120,7 @@ class RDFView extends DrupalThing {
   }
 
   public function getPageDescription() {
-    return 'From this page you can both browse and search the Hebridean Connections repository.';
+    return 'From this page you can browse and search the Hebridean Connections repository.';
   }
 
 }

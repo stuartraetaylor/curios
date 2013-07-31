@@ -12,6 +12,8 @@ function _curios_configuration() {
       'dc' => 'http://purl.org/dc/terms/',
     );
 
+    $config['image_relationship_field'] = 'hc_has_file';
+
     $config['rdf_fields'] = array(
       // Data properties.
       'hc_also_known_as'        => new RDFField('hc_also_known_as', 'AlsoKnownAs', 'hc:alsoKnownAs', 'text'),
@@ -51,7 +53,7 @@ function _curios_configuration() {
 
        // Images.
       'hc_title'                => new RDFField('hc_title', 'Title', 'hc:title', 'text'),
-      'hc_file'                 => new RDFField('hc_file', 'File', 'hc:file', 'text'),
+      'hc_url'                  => new RDFField('hc_url', 'ImageURL', 'hc:URL', 'text'),
       'hc_file_name'            => new RDFField('hc_file_name', 'Filename', 'hc:fileName', 'text'),
 
       // TypeOf.
@@ -150,38 +152,7 @@ function _curios_configuration() {
       'dc_description'          => new RDFField('dc_description', 'dc:description', 'dc:description', 'text'),
     );
 
-    $config['rdf_resources'] = array();
-
-    // TODO move these to each resource type
-  //  $config['rdf_resources']['hc_annotations'] = new RDFResource('hc_annotations', 'Annotations', NULL, array(
-  //    $config['rdf_fields']['hc_approved'],
-  //    $config['rdf_fields']['hc_approved_by'],
-  //    $config['rdf_fields']['hc_approved_date'],
-  //    $config['rdf_fields']['hc_approved_for_pub'],
-  //    $config['rdf_fields']['hc_caption'],
-  //    $config['rdf_fields']['hc_compiler_notes'],
-  //    $config['rdf_fields']['hc_copyright'],
-  //    $config['rdf_fields']['hc_created_by'],
-  //    $config['rdf_fields']['hc_description'],
-  //    $config['rdf_fields']['hc_edited_by'],
-  //    $config['rdf_fields']['hc_extra_info'],
-  //    $config['rdf_fields']['hc_fid'],
-  //    $config['rdf_fields']['hc_file'],
-  //    $config['rdf_fields']['hc_file_name'],
-  //    $config['rdf_fields']['hc_internal_summary'],
-  //    $config['rdf_fields']['hc_inverse_caption'],
-  //    $config['rdf_fields']['hc_is_primary'],
-  //    $config['rdf_fields']['hc_lochistsoc'],
-  //    $config['rdf_fields']['hc_lochistsocref'],
-  //    $config['rdf_fields']['hc_originator'],
-  //    $config['rdf_fields']['hc_origin_date'],
-  //    $config['rdf_fields']['hc_soundex_name'],
-  //    $config['rdf_fields']['hc_subject_id'],
-  //    $config['rdf_fields']['hc_title'],
-  //    $config['rdf_fields']['hc_to_be_published'],
-  //    $config['rdf_fields']['hc_when_created'],
-  //    $config['rdf_fields']['hc_when_edited'],
-  //  ));
+  $config['rdf_resources'] = array();
 
   $config['rdf_resources']['hc_subject'] = new RDFResource('hc_subject', 'Subject', 'hc:Subject',
       array( // Data fields.
@@ -208,7 +179,7 @@ function _curios_configuration() {
         $config['rdf_fields']['hc_date_of_registration'],
         $config['rdf_fields']['hc_date_of_source'],
         //$config['rdf_fields']['hc_easting'],
-        $config['rdf_fields']['hc_file'],
+        $config['rdf_fields']['hc_url'],
         $config['rdf_fields']['hc_file_name'],
         $config['rdf_fields']['hc_geo_ref'],
         $config['rdf_fields']['hc_northing'],
@@ -1589,17 +1560,35 @@ function _curios_configuration() {
         //$config['rdf_fields']['hc_title'],
         //$config['rdf_fields']['hc_description'],
 
-        $config['rdf_fields']['hc_copyright'],
-        $config['rdf_fields']['hc_file'],
-        $config['rdf_fields']['hc_file_name'],
-        $config['rdf_fields']['hc_origin_date'],
+        //$config['rdf_fields']['hc_copyright'],
+        $config['rdf_fields']['hc_url'],
+        //$config['rdf_fields']['hc_file_name'],
+        //$config['rdf_fields']['hc_origin_date'],
 
         $config['rdf_fields']['hc_owned_by_society'],
         $config['rdf_fields']['hc_subject_id'],
       ),
       array( // Object fields.
         $config['rdf_fields']['hc_is_shown_here'],
-      )
+      ),
+      array( // Object field ranges.
+        'hc_is_shown_here' => array(
+          'hc_landmark_or_archaeological_site',
+          'hc_business',
+          'hc_historical_event',
+          'hc_location',
+          'hc_gaelic_verse',
+          'hc_object_or_artefact',
+          'hc_natural_landscape_feature',
+          'hc_story_report_or_tradition',
+          'hc_boat',
+          'hc_person',
+          'hc_croft_or_residence',
+          'hc_organisation',
+          'hc_person',
+          'hc_building_or_public_amenity',
+          'hc_resource',
+      ))
     );
 
 
@@ -1690,9 +1679,9 @@ function _curios_configuration() {
       $config['rdf_resources']['hc_story_report_or_tradition'], NULL, NULL);
     $config['rdf_views']['hc_stories_reports_and_traditions']->setOptionalAll();
 
-    $config['rdf_views']['hc_images'] = new RDFView('hc_images', 'Images', 'images', NULL,
+    $config['rdf_views']['hc_image_details'] = new RDFView('hc_image_details', 'Image Details', 'images-details', NULL,
       $config['rdf_resources']['hc_image_file'], NULL, NULL);
-    $config['rdf_views']['hc_images']->setOptionalAll();
+    $config['rdf_views']['hc_image_details']->setOptionalAll();
 
     // DEBUG: remove unused resources.
     // $keep = array('hc_image_file', 'hc_person', 'hc_organisation', 'hc_resource', 'hc_vehicle');
@@ -1722,6 +1711,7 @@ function _curios_configuration() {
     'hc_natural_landscape_feature' => 'hc_natural_landscape_features',
     'hc_object_or_artefact' => 'hc_objects_and_artefacts',
     'hc_story_report_or_tradition' => 'hc_stories_reports_and_traditions',
+    'hc_image_file' => 'hc_image_details',
   );
 
 
@@ -1743,6 +1733,7 @@ function _curios_configuration() {
     'hc:NaturalLandscapeFeature' => 'hc_natural_landscape_feature',
     'hc:ObjectOrArtefact' => 'hc_object_or_artefact',
     'hc:StoryReportOrTradition' => 'hc_story_report_or_tradition',
+    'hc:Imagefile' => 'hc_image_file',
   );
  
   return $config;

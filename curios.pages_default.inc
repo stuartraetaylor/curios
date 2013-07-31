@@ -4,7 +4,6 @@
  * Implements hook_default_page_manager_pages()
  */
 function curios_default_page_manager_pages() {
-  //__curios_create_exported_boats();
   $config = _curios_configuration();
   $pages = array();
 
@@ -21,8 +20,6 @@ function __panel_page_id($view_name) { return $view_name.'_panel_page'; }
 function __panel_varient_id($view_name, $varient_name) { return 'page_'.__panel_page_id($view_name).'_panel_context_'.$varient_name; }
 
 function __curios_generate_panel_page(&$view_spec) {
-  $config = _curios_configuration();
-
   $page = new stdClass;
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
@@ -160,6 +157,9 @@ function _curios_generate_listing_panel(&$view_spec, $handler_id) {
 }
 
 function _curios_generate_details_panel(&$view_spec, $hander_id) {
+  $config = _curios_configuration();
+  $view = views_get_view($view_spec->getMachineName());
+  
   $handler = new stdClass;
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
@@ -283,43 +283,48 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
   $display->panels['properties_region'][0] = 'properties_pane';
 
   // Image Gallery Region.
-  $pane = new stdClass;
-  $pane->pid = 'image_gallery_pane';
-  $pane->panel = 'image_gallery_region';
-  $pane->type = 'views';
-  $pane->subtype = $view_spec->getMachineName();
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '10',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 1,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'images',
-    'override_title' => 0,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $display->content['image_gallery_pane'] = $pane;
-  $display->panels['image_gallery_region'][0] = 'image_gallery_pane';
+  if (isset($view->display['images'])) {
+    $pane = new stdClass;
+    $pane->pid = 'image_gallery_pane';
+    $pane->panel = 'image_gallery_region';
+    $pane->type = 'views';
+    $pane->subtype = $view_spec->getMachineName();
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 1,
+      'nodes_per_page' => '10',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 1,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'images',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $display->content['image_gallery_pane'] = $pane;
+    $display->panels['image_gallery_region'][0] = 'image_gallery_pane';
+  }
 
   // Relationships Region.
   $pane_index = 0;
   foreach ($view_spec->getObjectFields() as $field_id) {
+    if ($field_id == $config['image_relationship_field'])
+      continue;
+
     $resource = $view_spec->getResource();
     $resource_name = $resource->getMachineName();
     $field_name = $resource_name.'_'.$field_id;
