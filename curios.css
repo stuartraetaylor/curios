@@ -22,6 +22,10 @@
     white-space: nowrap;
 }
 
+#content .curios-relationships .field-content {
+    font-size: 1em;
+}
+
 /* Properties region. */
 #content .curios-properties img {
     max-width: 530px;

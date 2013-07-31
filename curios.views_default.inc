@@ -1123,10 +1123,11 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['replace_spaces'] = 0;
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['trim_whitespace'] = 0;
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['trim'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['max_length'] = '40';
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['word_boundary'] = 1;
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['ellipsis'] = 1;
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields'][$base_fields['title']]['alter']['trim'] = 0;
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['html'] = 0;
   $handler->display->display_options['fields'][$base_fields['title']]['alter']['url_encode'] = 0;
   $handler->display->display_options['fields'][$base_fields['title']]['element_label_colon'] = 1;
