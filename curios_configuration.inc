@@ -1,11 +1,8 @@
 <?php
 require_once('curios_ldcms.inc');
 
-//function _curios_configuration_spec() {
-function _curios_configuration() {
+function _curios_configuration_OLD() {
   $config = &drupal_static(__FUNCTION__);
-
-  //_curios_configuration_TEST(); exit;
 
   if (!isset($config)) {
     $config = array();

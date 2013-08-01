@@ -21,10 +21,11 @@ function __curios_valid_id($id) {
 }
 
 function _curios_split_camel_case($text, $delimiter = ' ') {
-  return join($delimiter, array_filter(preg_split('/(?=[A-Z])/', $text)));
+  $f = function($match) use (&$delimiter) { return $delimiter. $match[0]; };
+  return preg_replace_callback('/(?<!\b)[A-Z][a-z]+|(?<=[a-z])[A-Z]/', $f, $text);
 }
 
-function __curios_split_uri($uri, $config) {
+function __curios_split_uri_to_curie($uri, $config) {
   $prefixes = $config->getNamespaceToPrefixMap();
 
   // Find namespace and local name.
@@ -42,38 +43,81 @@ function __curios_split_uri($uri, $config) {
   }
 }
 
+function __curios_split_curie($curie) {
+  return split(':', $curie); }
+
 function __curios_curie_from_uri($uri, $config) {
-  return join(':', __curios_split_uri($uri, $config));
+  return join(':', __curios_split_uri_to_curie($uri, $config));
 }
 
-function __curios_id_from_uri($uri, $config) {
-  $uri_parts = __curios_split_uri($uri, $config);
+function __curios_uri_from_curie($curie, $config) {
+  list($prefix, $lname) = __curios_split_curie($curie, $config);
+  $namespace = $config->getNamespace($prefix);
+  
+  return $namespace . $lname;
+}
 
-  // Format identifier.
-  $prefix = $uri_parts[0];
-  $lname = $uri_parts[1];
+function __curios_id_from_curie_parts($prefix, $lname) {
+  $prefix = _curios_split_camel_case($prefix, '_');
+  $prefix = strtolower($prefix);
+  
   $lname = _curios_split_camel_case($lname, '_');
   $lname = strtolower($lname);
 
   return $prefix.'_'.$lname;
 }
 
-function __curios_path_from_uri($uri, $config) {
-  $uri_parts = __curios_split_uri($uri, $config);
+function __curios_id_from_curie($curie, $config) {
+  list($prefix, $lname) = __curios_split_curie($curie, $config);
+  return __curios_id_from_curie_parts($prefix, $lname);
+}
 
-  $prefix = $uri_parts[0];
-  $lname = $uri_parts[1];
+function __curios_id_from_uri($uri, $config) {
+  list($prefix, $lname) = __curios_split_uri_to_curie($uri, $config);
+  return __curios_id_from_curie_parts($prefix, $lname);
+}
+
+function __curios_path_from_id($id) {
+  $path = $id;
+  $path = preg_replace('/^ldcms_/', '', $path);
+  $path = str_replace('_', '-', $path);
+  
+  return $path;
+}
+
+function __curios_path_from_curie_parts($prefix, $lname) {
+  $prefix = _curios_split_camel_case($prefix, '-');
+  $prefix = strtolower($prefix);
+
   $lname = _curios_split_camel_case($lname, '-');
   $lname = strtolower($lname);
 
   return $prefix.'/'.$lname;
 }
 
+function __curios_path_from_curie($uri, $config) {
+  list($prefix, $lname) = __curios_split_curie($uri, $config);
+  return __curios_path_from_curie_parts($prefix, $lname);
+}
+
+function __curios_path_from_uri($uri, $config) {
+  list($prefix, $lname) = __curios_split_uri_to_curie($uri, $config);
+  return __curios_path_from_curie_parts($prefix, $lname);
+}
+
+function __curios_label_from_curie($uri, $config) {
+  list( , $lname) = __curios_split_curie($uri, $config);
+
+  $label = _curios_split_camel_case($lname);
+  $label = ucfirst($label);
+
+  return $label;
+}
 
 function __curios_label_from_uri($uri, $config) {
-  $uri_parts = __curios_split_uri($uri, $config);
+  list( , $lname) = __curios_split_uri_to_curie($uri, $config);
 
-  $label = _curios_split_camel_case($uri_parts[1]);
+  $label = _curios_split_camel_case($lname);
   $label = ucfirst($label);
 
   return $label;

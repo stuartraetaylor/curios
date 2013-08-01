@@ -96,6 +96,7 @@ class RDFView extends DrupalThing {
   }
 
   public function getBrowsingClassCURIE() { return $this->browsing_class_curie; }
+  public function getBrowsingClassName() { return preg_replace('/^ldcms_/', '', $this->getId()); }
   public function getPath() { return $this->path; }
   public function getTitleField() { return $this->title_field; }
   public function getDescriptionField() { return $this->description_field; }
@@ -139,9 +140,10 @@ class LDCMSConfiguration {
   private $views = array();
   private $resourceToViewMap = array();
 
-  function getCMSID($ontology_entity) {
-    // id function
-    return __curios_id_from_uri($ontology_entity, $this);
+  function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
+    return $is_curie ? 
+      __curios_id_from_curie($ontology_entity, $this) :
+      __curios_id_from_uri($ontology_entity, $this);
   }
 
   function setEndpoints(array $endpoints) { $this->endpoints = $endpoints; }
@@ -157,6 +159,9 @@ class LDCMSConfiguration {
   function getEndpoints() { return $this->endpoints; }
   function getPrefixToNamespaceMap() { return $this->prefixToNamespaceMap; }
   function getNamespaceToPrefixMap() { return $this->namespaceToPrefixMap; }
+
+  function getNamespace($prefix) { return $this->prefixToNamespaceMap[$prefix]; }
+  function getPrefix($namespace) { return $this->namespaceToPrefixMap[$namespace]; }
 
   //function setFields(array $fields) { $this->fields = $fields; }
   //function setResources(array $resources) { $this->resources = $resources; }

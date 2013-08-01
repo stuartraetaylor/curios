@@ -1,6 +1,6 @@
 <?php
 
-function _curios_configuration_TEST($use_cache = FALSE) {
+function _curios_configuration($use_cache = FALSE) {
   $config = &drupal_static(__FUNCTION__);
 
   // Get the configuration from the cache.
@@ -57,17 +57,31 @@ function __curios_load_configuration_spec() {
 }
 
 function __curios_configuration_fields($config, $config_spec) {
-  //$rs = __curios_sparql_fetch_unique_fields_relationships($config);
+  // __curios_sparql_fetch_unique_fields_relationships($config);
   foreach ($config_spec['fields'] as $row) {
     $property = $row['property'];
 
     $id = $config->getCMSID($property);
-    $predicate = __curios_curie_from_uri($property, $config);
-    $label = isset($row['label']) ? $row['label'] : __curios_label_from_uri($property, $config);
+    $label = isset($row['label']) ? $row['label'] : __curios_label_from_curie($property, $config);
+    $type = __curios_translate_field_type($row['type']);
 
-    $config->addField(new RDFField($id, $label, $predicate, $row['type']));
+    $config->addField(new RDFField($id, $label, $property, $type));
   }
 }
+
+function __curios_translate_field_type($field_type) {
+  switch ($field_type) {
+    case 'relationship':
+      return 'sparql_views_related_resource';
+      break;
+    case 'text':
+    default:
+      return 'text';
+  }
+}
+
+function __curios_browsing_class_id_from_name($name) {
+  return 'ldcms_'.$name; }
 
 function __curios_configuration_resources_views($config, $config_spec) {
   $resourceToViewMap = array();
@@ -76,22 +90,21 @@ function __curios_configuration_resources_views($config, $config_spec) {
   $dc_description_uri = $config->getPrefixToNamespaceMap('dc').'description';
 
   // Create resources and views for all browsing classes.
-  //$rs = __curios_sparql_fetch_browsing_classes($config);
+  // __curios_sparql_fetch_browsing_classes($config);
   foreach ($config_spec['browsing_classes'] as $row) {
     // View corresponding to browsing class.
-    $browsing_class_uri = $row['uri'];
-    $browsing_class_curie = __curios_curie_from_uri($browsing_class_uri, $config);
-    $view_label = $row['label'];
-    $view_id = $config->getCMSID($browsing_class_uri);
-    $view_path = __curios_path_from_uri($browsing_class_uri, $config);
+    $browsing_class_name = $row['name'];
+    $browsing_class_id = __curios_browsing_class_id_from_name($browsing_class_name);
+    $browsing_class_label = $row['label'];
+    $view_path = __curios_path_from_id($browsing_class_id);
 
     // Resource corresponding to base class.
     $base_resource = $row['base'];
     $resource_id = $config->getCMSID($base_resource);
-    $resource_label =  __curios_label_from_uri($base_resource, $config);
-    $resource_type = __curios_curie_from_uri($base_resource , $config);
-    $resourceToViewMap[$resource_id] = $view_id;
+    $resource_label =  __curios_label_from_curie($base_resource, $config);
+    $resourceToViewMap[$resource_id] = $browsing_class_id;
 
+    // FIXME add these to config spec.
     // Title field.
     $title_property = $dc_title_uri;//$row['titleField'];
     $title_field_id = $config->getCMSID($title_property);
@@ -102,8 +115,8 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $description_field_id = $config->getCMSID($description_property);
     $description_field = $config->getField($description_field_id);
 
-    $config->addResource(new RDFResource($resource_id, $resource_label, $resource_type));
-    $config->addView(new RDFView($view_id, $view_label, $view_path, $browsing_class_curie, $config->getResource($resource_id), $title_field, $description_field));
+    $config->addResource(new RDFResource($resource_id, $resource_label, $base_resource));
+    $config->addView(new RDFView($browsing_class_id, $browsing_class_label, $view_path, NULL, $config->getResource($resource_id), $title_field, $description_field));
   }
   $config->setResourceToViewMap($resourceToViewMap);
 
@@ -111,11 +124,11 @@ function __curios_configuration_resources_views($config, $config_spec) {
   foreach ($config->getResources() as $resource) {
     $view_id = $config->getViewForResource($resource->getId());
     $view = $config->getView($view_id);
-    $browsing_class = $view->getBrowsingClassCURIE();
+    $browsing_class_name = $view->getBrowsingClassName();
 
     // Add fields.
-    //$rs = __curios_sparql_fetch_fields($browsing_class, $config);
-    foreach ($config_spec['field_assignments'][$browsing_class] as $row) {
+    // __curios_sparql_fetch_fields($browsing_class, $config);
+    foreach ($config_spec['field_assignments'][$browsing_class_name] as $row) {
       $property = $row; //$row['p'];
 
       $field_id = $config->getCMSID($property);
@@ -125,19 +138,17 @@ function __curios_configuration_resources_views($config, $config_spec) {
     }
 
     // Add relationships.
-    //$rs = __curios_sparql_fetch_relationships($browsing_class, $config);
-    foreach ($config_spec['relationship_assignments'][$browsing_class] as $row) {
+    // __curios_sparql_fetch_relationships($browsing_class, $config);
+    foreach ($config_spec['relationship_assignments'][$browsing_class_name] as $row) {
       $property = $row['property'];
       $target = (array)$row['target'];
 
       $relationship_id = $config->getCMSID($property);
       $relationship = $config->getField($relationship_id); // TODO should be $config->getRelationship
       $resource->addRelationship($relationship);
-
-      $targets = array();
-      foreach ($target as $t) {
-        $targets[] = $config->getCMSID($t);
-      }
+      
+      $target_id_function = function($t) use (&$config) { return $config->getCMSID($t); };
+      $targets = array_map($target_id_function, $target);
 
       $resource->setRelationshipTargets($relationship_id, $targets);
     }
@@ -145,6 +156,5 @@ function __curios_configuration_resources_views($config, $config_spec) {
     // Set field/relationship preferences.
     $view->setOptionalAll();
   }
-
-  dpr($config);
+  
 }

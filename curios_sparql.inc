@@ -186,3 +186,80 @@ function __curios_fetch_property_values($class, $property) {
 
     return __curios_sparql_query($query, 'dataset');
 }
+
+
+
+
+// -- CONFIGURATION --
+
+function __curios_sparql_fetch_browsing_classes($config) {
+  $sparql = <<<EOT
+# Get all Browsing Classes
+select ?b ?base ?label ?titleField ?descriptionField where {
+  ?b a cms:BrowsingClass ;
+    cms:baseClass ?base ;
+    rdfs:label ?label ;
+    cms:field [
+      a cms:Title ;
+      cms:property ?titleField ] ;
+    cms:field [
+      a cms:Description ;
+      cms:property ?descriptionField ] .
+}
+EOT;
+
+  return __curios_sparql_query($sparql, 'config', $config);
+}
+
+function __curios_sparql_fetch_unique_fields_relationships($config) {
+  $sparql = <<<EOT
+# Fetch all UNIQUE fields and relationships.
+select distinct ?p ?label ?type where {
+  {
+    [] a cms:Field ;
+      cms:property ?p .
+    BIND('text' AS ?type)
+    #optional { ?p rdfs:label ?label  }
+  } UNION {
+    [] a cms:Relationship ;
+      cms:property ?p .
+    BIND('sparql_views_related_resource' AS ?type)
+    #optional { ?p rdfs:label ?label  }
+  }
+}
+EOT;
+
+  return __curios_sparql_query($sparql, 'config', $config);
+}
+
+
+function __curios_sparql_fetch_fields($browsing_class, $config) {
+  $sparql = <<<EOT
+# Fetch distinct fields for a specific browsing class.
+select distinct ?p ?label where {
+  $browsing_class a cms:BrowsingClass ;
+    cms:field _:f .
+  _:f a cms:Field ;
+      cms:property ?p ;
+      rdfs:label ?label .
+}
+EOT;
+
+  return __curios_sparql_query($sparql, 'config', $config);
+}
+
+function __curios_sparql_fetch_relationships($browsing_class, $config) {
+  $sparql = <<<EOT
+# Fetch distinct relationships for a specific browsing class.
+select distinct ?p ?target ?label where {
+  $browsing_class a cms:BrowsingClass ;
+    cms:relationship _:r .
+  _:r a cms:Relationship ;
+    rdfs:label ?label ;
+    cms:property ?p ;
+    cms:target ?target .
+}
+EOT;
+
+  return __curios_sparql_query($sparql, 'config', $config);
+}
