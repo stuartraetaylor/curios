@@ -1115,7 +1115,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields'][$subject_id_field]['hide_alter_empty'] = 0;
 
   // Field: file.
-  $field_name = 'hc_image_file_hc_url';
+  $field_name = 'hc_imagefile_hc_url';
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
   $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
@@ -1196,7 +1196,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields'][$field_name]['use_php_setup'] = 0;
   $handler->display->display_options['fields'][$field_name]['php_value'] = '';
   $handler->display->display_options['fields'][$field_name]['php_output'] = '<?php
-  $image_path = str_replace(\'http://www.hebrideanconnections.com/\', \'http://www.dotrural.ac.uk/curiosdemo/images/\', $row->hc_image_file_hc_url);
+  $image_path = str_replace(\'http://www.hebrideanconnections.com/\', \'http://www.dotrural.ac.uk/curiosdemo/images/\', $row->hc_imagefile_hc_url);
   $output = \'\';
   $output .= \'<a href="\'.$image_path.\'" alt="$row->'. $base_fields['title'] .'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
   echo $output;

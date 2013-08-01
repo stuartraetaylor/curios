@@ -1,8 +1,8 @@
 <?php
 
-function __curios_sparql_query($query, $endpoint, $config = NULL) {
+function __curios_sparql_query($query, $endpoint) {
   $endpoints = __curios_endpoints();
-  $query = __curios_sparql_append_prefixes($query, $config);
+  $query = __curios_sparql_append_prefixes($query);
   $rs = sparql_request($query, (object)array('uri' => $endpoints[$endpoint]['query']));
 
   if ($rs != NULL) {
@@ -14,25 +14,28 @@ function __curios_sparql_query($query, $endpoint, $config = NULL) {
 
 function __curios_sparql_update($query) {
   $endpoints = __curios_endpoints();
+  $query = __curios_sparql_append_prefixes($query);
   $rs = sparql_request($query, (object)array('uri' => $endpoints['dataset']['update']));
 
   return ($rs != NULL);
 }
 
-function __curios_sparql_prefixes($config = NULL) {
-  $prefixes = "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n";
+function __curios_sparql_prefixes() {
+  $config = _curios_configuration();
+  
+  $prefixes = '';
+  $prefixes .= "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n";
+  $prefixes .= "prefix owl:<http://www.w3.org/2002/07/owl#>\n";
 
-  if (isset($config)) {
-    foreach ($config->getPrefixToNamespaceMap() as $prefix=>$ns) {
-      $prefixes .= "prefix $prefix: <$ns>\n";
-    }
+  foreach ($config->getPrefixToNamespaceMap() as $prefix=>$ns) {
+    $prefixes .= "prefix $prefix: <$ns>\n";
   }
 
   return $prefixes;
 }
 
-function __curios_sparql_append_prefixes($query, $config) {
-  return __curios_sparql_prefixes($config) . $query;
+function __curios_sparql_append_prefixes($query) {
+  return __curios_sparql_prefixes() . $query;
 }
 
 function __curios_escape_sparql($s) {
@@ -55,10 +58,7 @@ function __curios_endpoints() {
 }
 
 function __curios_subject_update($subject_id, $triples_insert, $triples_delete) {
-  $config = _curios_configuration();
-
   $query = '';
-  $query .= "PREFIX hc:<". $config['namespaces']['hc'] .">\n";
 
   if (!empty ($triples_delete)) {
     $query .= "DELETE {\n";
@@ -82,10 +82,7 @@ function __curios_subject_update($subject_id, $triples_insert, $triples_delete) 
 }
 
 function __curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
-  $config = _curios_configuration();
-
   $query = '';
-  $query .= "PREFIX hc:<". $config['namespaces']['hc'] .">\n";
   $query .= "INSERT DATA {\n";
   $query .= "  hc:$subject_id a ". $rdf_type .";\n";
   //$query .= "      hc:subjectID \"$identifier\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
@@ -96,12 +93,10 @@ function __curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
 }
 
 function __curios_subject_delete($subject_id) {
-  $config = _curios_configuration();
   // TODO should use subject id field.
   $subject_id = __curios_escape_sparql($subject_id);
 
   $query = '';
-  $query .= "PREFIX hc:<". $config['namespaces']['hc'] .">\n";
   $query .= "DELETE { ?subject ?p ?o }\n";
   $query .= "WHERE {\n";
   $query .= "  ?subject ?p ?o .\n";
@@ -111,10 +106,7 @@ function __curios_subject_delete($subject_id) {
 }
 
 function __curios_fetch_max_identifier() {
-  $config = _curios_configuration();
-
   $query = '';
-  $query .= "PREFIX hc:<". $config['namespaces']['hc'] .">\n";
   $query .= "select ?id where {\n";
   $query .= "  [] hc:subjectID ?id .}\n";
   $query .= "order by desc(strlen(?id)) desc(?id)\n";
@@ -129,10 +121,7 @@ function __curios_fetch_max_identifier() {
 }
 
 function __curios_latest_record_identifiers($n = 10) {
-  $config = _curios_configuration();
-
   $query = <<<EOT
-PREFIX hc:<{$config['namespaces']['hc']}>
 select ?id ?title where {
   [] hc:subjectID ?id ;
      hc:englishName ?title .
@@ -154,13 +143,8 @@ EOT;
 }
 
 function __curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
-  $config = _curios_configuration();
-
   $query = <<<EOT
 # Check individual is in the range of the specified property for the specified class.
-prefix owl:<http://www.w3.org/2002/07/owl#>
-prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#>
-PREFIX hc:<{$config['namespaces']['hc']}>
 select ?range where  {
   [] a owl:ObjectProperty ;
       rdfs:subPropertyOf $property ;
@@ -175,10 +159,7 @@ EOT;
 }
 
 function __curios_fetch_property_values($class, $property) {
-  $config = _curios_configuration();
-
   $query = '';
-  $query .= "PREFIX hc:<". $config['namespaces']['hc'] .">\n";
   $query .= "select distinct ?value where { \n";
   $query .= "[] a $class ; \n";
   $query .= "  $property ?value . \n";
@@ -192,7 +173,7 @@ function __curios_fetch_property_values($class, $property) {
 
 // -- CONFIGURATION --
 
-function __curios_sparql_fetch_browsing_classes($config) {
+function __curios_sparql_fetch_browsing_classes() {
   $sparql = <<<EOT
 # Get all Browsing Classes
 select ?b ?base ?label ?titleField ?descriptionField where {
@@ -208,10 +189,10 @@ select ?b ?base ?label ?titleField ?descriptionField where {
 }
 EOT;
 
-  return __curios_sparql_query($sparql, 'config', $config);
+  return __curios_sparql_query($sparql, 'config');
 }
 
-function __curios_sparql_fetch_unique_fields_relationships($config) {
+function __curios_sparql_fetch_unique_fields_relationships() {
   $sparql = <<<EOT
 # Fetch all UNIQUE fields and relationships.
 select distinct ?p ?label ?type where {
@@ -229,11 +210,11 @@ select distinct ?p ?label ?type where {
 }
 EOT;
 
-  return __curios_sparql_query($sparql, 'config', $config);
+  return __curios_sparql_query($sparql, 'config');
 }
 
 
-function __curios_sparql_fetch_fields($browsing_class, $config) {
+function __curios_sparql_fetch_fields($browsing_class) {
   $sparql = <<<EOT
 # Fetch distinct fields for a specific browsing class.
 select distinct ?p ?label where {
@@ -245,10 +226,10 @@ select distinct ?p ?label where {
 }
 EOT;
 
-  return __curios_sparql_query($sparql, 'config', $config);
+  return __curios_sparql_query($sparql, 'config');
 }
 
-function __curios_sparql_fetch_relationships($browsing_class, $config) {
+function __curios_sparql_fetch_relationships($browsing_class) {
   $sparql = <<<EOT
 # Fetch distinct relationships for a specific browsing class.
 select distinct ?p ?target ?label where {
@@ -261,5 +242,5 @@ select distinct ?p ?target ?label where {
 }
 EOT;
 
-  return __curios_sparql_query($sparql, 'config', $config);
+  return __curios_sparql_query($sparql, 'config');
 }

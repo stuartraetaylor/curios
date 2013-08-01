@@ -94,7 +94,7 @@ function _curios_installed_resource_types($uninstall = FALSE) {
   }
   
   // Define the SPARQL Views resource type.
-  foreach ($config['rdf_resources'] as $entity) {
+  foreach ($config->getResources() as $entity) {
     $resource_types[$entity->getMachineName()] = array(
       'name' => $entity->getMachineName(),
       'label' => $t($entity->getLabel()),
@@ -116,9 +116,9 @@ function _curios_installed_fields() {
   $fields = array();
   $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
   
-  foreach ($config['rdf_fields'] as $field) {
+  foreach ($config->getFields() as $field) {
     // TODO integrate formatter into field object
-    $settings = ($field->getMachineName() == 'dc_description') ? $description_settings : array('default_formatter' => 'filtered_html');
+    $settings = ($field->getMachineName() == $config->getDescriptionField()) ? $description_settings : array('default_formatter' => 'filtered_html');
 
     $fields[$field->getMachineName()] = array(
       'field_name' => $field->getMachineName(),
@@ -138,12 +138,12 @@ function _curios_installed_instances() {
   $resource_instances = array();
   $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
 
-  foreach ($config['rdf_resources'] as $entity) {
+  foreach ($config->getResources() as $entity) {
     $field_instances = array();
     
     foreach ($entity->getFields() as $field) {
       // TODO integrate formatter into field object
-      $settings = ($field->getMachineName() == 'dc_description') ? $description_settings : array('default_formatter' => 'filtered_html');
+      $settings = ($field->getMachineName() == $config->getDescriptionField()) ? $description_settings : array('default_formatter' => 'filtered_html');
 
       $field_instances[] = array(
         'field_name' => $field->getMachineName(), 
@@ -158,5 +158,3 @@ function _curios_installed_instances() {
 
   return $resource_instances;
 }
-
-

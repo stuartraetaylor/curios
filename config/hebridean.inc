@@ -1,8 +1,8 @@
 <?php
 
 $namespaces = array(
-  'hc'  => 'http://www.hebrideanconnections.com/hebridean.owl#',
-  'dc'  => 'http://purl.org/dc/terms/',
+  'hc' => 'http://www.hebrideanconnections.com/hebridean.owl#',
+  'dc' => 'http://purl.org/dc/terms/',
 );
 
 $options = array(
@@ -10,6 +10,9 @@ $options = array(
   'description_property' => 'dc:description',
   'image_relationship_property' => 'hc:hasFile',
 );
+
+
+/* Literal value fields. */
 
 $fields[] = array(
   'property' => 'hc:alsoKnownAs',
@@ -251,6 +254,9 @@ $fields[] = array(
   'label'    => 'Type',
   'type'     => 'text',
 );
+
+/* Relationship fields. */
+
 $fields[] = array(
   'property' => 'hc:adoptedBy',
   'label'    => 'AdoptedBy',
@@ -496,6 +502,9 @@ $fields[] = array(
   'label'    => 'WrittenCompiledBy',
   'type'     => 'relationship',
 );
+
+/* Annotations */
+
 $fields[] = array(
   'property' => 'hc:Approvedby',
   'label'    => 'Approvedby',
@@ -606,6 +615,9 @@ $fields[] = array(
   'label'    => 'Whenedited',
   'type'     => 'text',
 );
+
+/* Dublin Core fields. */
+
 $fields[] = array(
   'property' => 'dc:title',
   'label'    => 'dc:title',
@@ -616,6 +628,9 @@ $fields[] = array(
   'label'    => 'dc:description',
   'type'     => 'text',
 );
+
+
+/* Browsing class definitions. */
 
 $browsing_classes[] = array(
   'name'  => 'subjects',
@@ -963,6 +978,10 @@ $field_assignments['image_details'] = array(
     'hc:subjectID',
 );
 
+
+/* Relationship assignments. */
+
+/* Subjects */
 $relationship_assignments['subjects'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => 'hc:Subject',
@@ -976,6 +995,7 @@ $relationship_assignments['subjects'][] = array(
     'target'    => 'hc:Resource',
 );
 
+/* Boats */
 $relationship_assignments['boats'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1011,6 +1031,7 @@ $relationship_assignments['boats'][] = array(
     'target'    => 'hc:Person',
 );
 
+/* Buildings and public amenities */
 $relationship_assignments['buildings_and_public_amenities'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1049,6 +1070,7 @@ $relationship_assignments['buildings_and_public_amenities'][] = array(
     'target'    => 'hc:Subject',
 );
 
+/* Businesses */
 $relationship_assignments['businesses'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1078,6 +1100,7 @@ $relationship_assignments['businesses'][] = array(
     'target'    => 'hc:Person',
 );
 
+/* Crofts and residences */
 $relationship_assignments['crofts_and_residences'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1114,6 +1137,7 @@ $relationship_assignments['crofts_and_residences'][] = array(
       ),
 );
 
+/* Gaelic verse */
 $relationship_assignments['gaelic_verses'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1141,6 +1165,7 @@ $relationship_assignments['gaelic_verses'][] = array(
     'target'    => 'hc:Subject',
 );
 
+/* Historical events */
 $relationship_assignments['historical_events'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1175,6 +1200,7 @@ $relationship_assignments['historical_events'][] = array(
     'target'    => 'hc:Subject',
 );
 
+/* Landmarks and archaeological sites */
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1225,6 +1251,7 @@ $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'target'    => 'hc:Subject',
 );
 
+/* Locations */
 $relationship_assignments['locations'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1282,6 +1309,7 @@ $relationship_assignments['locations'][] = array(
     'target'    => 'hc:Person',
 );
 
+/* Natural landscape features */
 $relationship_assignments['natural_landscape_features'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1324,6 +1352,7 @@ $relationship_assignments['natural_landscape_features'][] = array(
       ),
 );
 
+/* Objects and artefacts */
 $relationship_assignments['objects_and_artefacts'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1355,6 +1384,7 @@ $relationship_assignments['objects_and_artefacts'][] = array(
       ),
 );
 
+/* Organisations */
 $relationship_assignments['organisations'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1396,6 +1426,7 @@ $relationship_assignments['organisations'][] = array(
       ),
 );
 
+/* People */
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:adoptedBy',
     'target'    => 'hc:Person',
@@ -1539,6 +1570,7 @@ $relationship_assignments['people'][] = array(
     'target'    => 'hc:ObjectOrArtefact',
 );
 
+/* Resources */
 $relationship_assignments['resources'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1582,6 +1614,7 @@ $relationship_assignments['resources'][] = array(
     'target'    => 'hc:Person',
 );
 
+/* Stories reports and traditions */
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1622,6 +1655,7 @@ $relationship_assignments['stories_reports_and_traditions'][] = array(
     'target'    => 'hc:Subject',
 );
 
+/* Vehicles */
 $relationship_assignments['vehicles'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
@@ -1636,6 +1670,7 @@ $relationship_assignments['vehicles'][] = array(
     'target'    => 'hc:Subject',
 );
 
+/* Images */
 $relationship_assignments['image_details'][] = array(
     'property'  => 'hc:isShownHere',
     'target'    => array(

@@ -57,14 +57,21 @@ function __curios_uri_from_curie($curie, $config) {
   return $namespace . $lname;
 }
 
-function __curios_id_from_curie_parts($prefix, $lname) {
+function __curios_id_from_curie_parts($prefix, $lname, $trim = TRUE) {
   $prefix = _curios_split_camel_case($prefix, '_');
   $prefix = strtolower($prefix);
   
   $lname = _curios_split_camel_case($lname, '_');
   $lname = strtolower($lname);
 
-  return $prefix.'_'.$lname;
+  $id = $prefix.'_'.$lname;
+
+  // Drupal has a 32 character limit for field names.
+  if ($trim && strlen($id) > 32) {
+    $id = substr($id, 0, 32);
+  }
+
+  return $id;
 }
 
 function __curios_id_from_curie($curie) {

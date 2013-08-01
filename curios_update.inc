@@ -289,16 +289,18 @@ function curios_update_form_page($resource_type, $subject_id = NULL) {
 
 function _curios_execute_details_view($resource_name, $subject_id) {
   $config = _curios_configuration();
-  $resource_config = $config['rdf_resources'][$resource_name];
-  $view_config = _curios_get_view($resource_name);
+  $resource_config = $config->getResource($resource_name);
+  $view_config_id = $config->getViewForResource($resource_name);
+  $view_config = $config->getView($view_config_id);
   
   return views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
 }
 
 function _curios_execute_relationship_view($resource_name, $relationship_name, $subject_id) {
   $config = _curios_configuration();
-  $resource_config = $config['rdf_resources'][$resource_name];
-  $view_config = _curios_get_view($resource_name);
+  $resource_config = $config->getResource($resource_name);
+  $view_config_id = $config->getViewForResource($resource_name);
+  $view_config = $config->getView($view_config_id);
 
   return views_get_view_result($view_config->getMachineName(), 'object_'.$resource_name.'_'.$relationship_name,
       $subject_id, $resource_config->getRDFType());
@@ -323,6 +325,7 @@ function curios_update_page() {
 }
 
 function curios_update_form($form, $form_state, $resource_type, $subject_id, $view_result) {
+  $config = _curios_configuration();
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
   $field_instances = field_read_instances(array(
@@ -382,7 +385,8 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   foreach ($field_instances as $instance) {
     if (__is_identifier_field($instance) ||
         __is_title_field($instance) ||
-        __is_description_field($instance)) {
+        __is_description_field($instance) ||
+        __is_special_field($instance, $config)) {
         //__is_resource_field($instance)) {
       continue;
     }
@@ -721,7 +725,7 @@ function curios_update_form_submit($form, &$form_state) {
   }
   
   // Remove existing relationships.
-  $relationships = $form_state['values']['relationship_listing_fieldset'];
+  $relationships = isset($form_state['values']['relationship_listing_fieldset']) ? $form_state['values']['relationship_listing_fieldset'] : array();
   
   foreach ($relationships as $relationship) {
     if (isset($relationship['remove-relationship'])) {
@@ -794,3 +798,4 @@ function __is_resource_field($field_instance) { return $field_instance['widget']
 function __is_identifier_field($field_instance) { return $field_instance['field_name'] == 'hc_subject_id'; }
 function __is_title_field($field_instance) { return ($field_instance['field_name'] == 'dc_title' || $field_instance['field_name'] == 'hc_english_name'); }
 function __is_description_field($field_instance) { return $field_instance['field_name'] == 'dc_description'; }
+function __is_special_field($field_instance, $config) { return $field_instance['field_name'] == $config->getImageRelationshipField(); }

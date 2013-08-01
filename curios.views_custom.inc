@@ -8,7 +8,7 @@
  * @param type $base_fields
  * @return type
  */
-function __curios_generate_display_listing_hc_image_file(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_listing_hc_imagefile(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $image_file = $resource_name.'_hc_has_file';
@@ -30,7 +30,7 @@ function __curios_generate_display_listing_hc_image_file(&$view, &$view_spec, $b
  * @param type $base_fields
  * @return type
  */
-function __curios_generate_display_summary_hc_image_file(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_summary_hc_imagefile(&$view, &$view_spec, $base_fields) {
   // Remove searchlink.
   $handler = __curios_generate_display('summary', $view, $view_spec, $base_fields, TRUE);
   unset($handler->display->display_options['fields']['searchlink']);
@@ -45,11 +45,11 @@ function __curios_generate_display_summary_hc_image_file(&$view, &$view_spec, $b
  * @param type $base_fields
  * @return type
  */
-function __curios_generate_display_images_hc_image_file(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_images_hc_imagefile(&$view, &$view_spec, $base_fields) {
   return FALSE;
 }
 
-function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
 
@@ -106,7 +106,7 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $handler->display->display_options['fields'][$resource_name]['hide_alter_empty'] = 0;
 
     // Field: file.
-  $field_name = 'hc_image_file_hc_url';
+  $field_name = 'hc_imagefile_hc_url';
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
   $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
@@ -158,7 +158,7 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $handler->display->display_options['fields'][$field_name]['use_php_setup'] = 0;
   $handler->display->display_options['fields'][$field_name]['php_value'] = '';
   $handler->display->display_options['fields'][$field_name]['php_output'] = '<?php
-  $image_path = str_replace(\'http://www.hebrideanconnections.com/\', \'http://www.dotrural.ac.uk/curiosdemo/images/\', $row->hc_image_file_hc_url);
+  $image_path = str_replace(\'http://www.hebrideanconnections.com/\', \'http://www.dotrural.ac.uk/curiosdemo/images/\', $row->hc_imagefile_hc_url);
   $output = \'<a href="\'.$image_path.\'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
   echo $output;
   ?>';

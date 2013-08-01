@@ -41,6 +41,7 @@ Special Requirements:
   * CURIOS module from BitBucket:
       $ cd sites/all/modules
       $ git clone https://bitbucket.org/stuartraetaylor/curios.git
+      $ git checkout tags/current-release
   * CURIOS Hebridean Connections theme from BitBucket (optional):
       $ cd sites/all/themes
       $ git clone https://bitbucket.org/stuartraetaylor/curios_theme.git
