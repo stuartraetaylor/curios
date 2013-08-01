@@ -113,7 +113,7 @@ function _curios_generate_listing_panel(&$view_spec, $handler_id) {
   $display->title = '';
   $display->content = array();
   $display->panels = array();
-  $display->hide_title = PANELS_TITLE_PANE;
+  $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
     $pane = new stdClass;
     $pane->pid = 'listing_pane';
@@ -208,7 +208,7 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
   $display->title = '';
   $display->content = array();
   $display->panels = array();
-  $display->hide_title = PANELS_TITLE_PANE;
+  $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
 

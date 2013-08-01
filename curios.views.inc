@@ -19,7 +19,38 @@ function curios_views_data() {
   return $data;
 }
 
+
 function curios_views_pre_render(&$view) {
+  _curios_views_link_target_rewriter($view);
+  _curios_view_rewrite_title($view);
+}
+
+function _curios_view_rewrite_title(&$view) {
+  if (startsWith('ldcms_', $view->name)) {
+    switch ($view->current_display) {
+      case 'listing':
+        drupal_set_title($view->human_name);
+        break;
+      case 'summary':
+        $config = _curios_configuration();
+        $view_spec = $config->getView($view->name);
+        $resource_id = $view_spec->getResource()->getId();
+        $title_field = $config->getTitleField();
+        $field = $resource_id.'_'.$title_field;
+        drupal_set_title($view->result[0]->{$field});
+        break;
+    }
+  }
+}
+
+function curios_views_pre_view(&$view, &$display_id, &$args) {
+  if ($view->name == "foo" && $view->current_display == "bar") {
+    //$view->display[$view->current_display]->display_options["title"] = "THE TITLE";
+    //$view->display[$view->current_display]->handler->options["title"] = "The New Title";
+  }
+}
+
+function _curios_views_link_target_rewriter(&$view) {
   $display_name = $view->current_display;
   $display = $view->display[$display_name];
 
