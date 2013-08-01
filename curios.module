@@ -182,7 +182,7 @@ function curios_search_engine_form($form, $form_state) {
     '#type' => 'select',
     '#title' => t('Record Type'),
     '#options' => $options,
-    '#default_value' => 'hc_people',
+    '#default_value' => 'ldcms_people',
   );
   $form['submit'] = array('#type' => 'submit', '#value' => t('Search'));
   return $form;
@@ -195,7 +195,7 @@ function curios_search_engine_form_submit($form, &$form_state) {
   $query = $form_state['values']['query'];
   $view_name = $form_state['values']['type'];
   // TODO get path from panels.
-  $view_spec = $config['rdf_views'][$view_name];
+  $view_spec = $config->getView($view_name);
   //$path = $base_path . $view_spec->getPath();
   $path = $view_spec->getPath();
 
