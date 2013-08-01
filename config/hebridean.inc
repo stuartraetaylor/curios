@@ -983,14 +983,33 @@ $field_assignments['image_details'] = array(
 
 /* Relationship assignments. */
 
+$all_classes = array(
+    'hc:LandmarkOrArchaeologicalSite',
+    'hc:Business',
+    'hc:HistoricalEvent',
+    'hc:Location',
+    'hc:GaelicVersebRdachd',
+    'hc:ObjectOrArtefact',
+    'hc:NaturalLandscapeFeature',
+    'hc:StoryReportOrTradition',
+    'hc:Boat',
+    'hc:Person',
+    'hc:CroftOrResidence',
+    'hc:Organisation',
+    'hc:Person',
+    'hc:BuildingOrPublicAmenity',
+    'hc:Resource',
+    'hc:Vehicle',
+);
+
 /* Subjects */
 $relationship_assignments['subjects'][] = array(
     'property'  => 'hc:associatedWith',
-    'target'    => 'hc:Subject',
+    'target'    => $all_classes,
 );
 $relationship_assignments['subjects'][] = array(
     'property'  => 'hc:hasFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:Imagefile',
 );
 $relationship_assignments['subjects'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1439,23 +1458,7 @@ $relationship_assignments['people'][] = array(
 );
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:associatedWith',
-    'target'    => array(
-          'hc:LandmarkOrArchaeologicalSite',
-          'hc:Business',
-          'hc:HistoricalEvent',
-          'hc:Location',
-          'hc:GaelicVersebRdachd',
-          'hc:ObjectOrArtefact',
-          'hc:NaturalLandscapeFeature',
-          'hc:StoryReportOrTradition',
-          'hc:Boat',
-          'hc:Person',
-          'hc:CroftOrResidence',
-          'hc:Organisation',
-          'hc:Person',
-          'hc:BuildingOrPublicAmenity',
-          'hc:Resource',
-      ),
+    'target'    => $all_classes,
 );
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:authorOriginatorOf',
@@ -1619,22 +1622,7 @@ $relationship_assignments['resources'][] = array(
 /* Stories reports and traditions */
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:associatedWith',
-    'target'    => array(
-          'hc:LandmarkOrArchaeologicalSite',
-          'hc:Location',
-          'hc:Business',
-          'hc:NaturalLandscapeFeature',
-          'hc:ObjectOrArtefact',
-          'hc:Organisation',
-          'hc:GaelicVersebRdachd',
-          'hc:Person',
-          'hc:Boat',
-          'hc:CroftOrResidence',
-          'hc:StoryReportOrTradition',
-          'hc:HistoricalEvent',
-          'hc:BuildingOrPublicAmenity',
-          'hc:CroftOrResidence',
-      ),
+    'target'    => $all_classes,
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:composedBy',
@@ -1675,22 +1663,6 @@ $relationship_assignments['vehicles'][] = array(
 /* Images */
 $relationship_assignments['image_details'][] = array(
     'property'  => 'hc:isShownHere',
-    'target'    => array(
-          'hc:LandmarkOrArchaeologicalSite',
-          'hc:Business',
-          'hc:HistoricalEvent',
-          'hc:Location',
-          'hc:GaelicVersebRdachd',
-          'hc:ObjectOrArtefact',
-          'hc:NaturalLandscapeFeature',
-          'hc:StoryReportOrTradition',
-          'hc:Boat',
-          'hc:Person',
-          'hc:CroftOrResidence',
-          'hc:Organisation',
-          'hc:Person',
-          'hc:BuildingOrPublicAmenity',
-          'hc:Resource',
-      ),
+    'target'    => $all_classes,
 );
 
