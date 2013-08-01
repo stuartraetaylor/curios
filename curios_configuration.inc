@@ -1872,15 +1872,15 @@ exit;
   return $config;
 }
 
-function _curios_get_view($resource_name) {
-  $config = _curios_configuration();
-  $view_name = $config['resource_views'][$resource_name];
-  return $config['rdf_views'][$view_name];
-}
+//function _curios_get_view($resource_name) {
+//  $config = _curios_configuration();
+//  $view_name = $config['resource_views'][$resource_name];
+//  return $config['rdf_views'][$view_name];
+//}
 
-function __curios_resource_name_from_class_uri($rdf_class) {
-  $config = _curios_configuration();
-  $class_name = 'hc:'.str_replace($config['namespaces']['hc'], '', $rdf_class);
-  return !empty($config['rdf_class_resources'][$class_name]) ? $config['rdf_class_resources'][$class_name] : FALSE ;
-}
+//function __curios_resource_name_from_class_uri($rdf_class) {
+//  $config = _curios_configuration();
+//  $class_name = 'hc:'.str_replace($config['namespaces']['hc'], '', $rdf_class);
+//  return !empty($config['rdf_class_resources'][$class_name]) ? $config['rdf_class_resources'][$class_name] : FALSE ;
+//}
 

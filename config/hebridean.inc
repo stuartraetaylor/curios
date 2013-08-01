@@ -277,7 +277,7 @@ $fields[] = array(
   'type'     => 'relationship',
 );
 $fields[] = array(
-  'property' => 'hc:hasBuilder',
+  'property' => 'hc:builder',
   'label'    => 'Builder',
   'type'     => 'relationship',
 );
@@ -1433,7 +1433,7 @@ $relationship_assignments['people'][] = array(
     'target'    => 'hc:Location',
 );
 $relationship_assignments['people'][] = array(
-    'property'  => 'hc:hasBuilder',
+    'property'  => 'hc:builder',
     'target'    => 'hc:Boat',
 );
 $relationship_assignments['people'][] = array(

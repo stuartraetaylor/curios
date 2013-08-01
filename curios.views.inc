@@ -26,7 +26,7 @@ function curios_views_pre_render(&$view) {
   if (!empty($view->result) && startsWith('object_', $display_name) && $display->display_options['curios']['rewrite_object_target'] == TRUE) {
     // Get resource for this view.
     $config = _curios_configuration();
-    $view_spec = $config['rdf_views'][$view->name];
+    $view_spec = $config->getView($view->name);
     $resource = $view_spec->getResource();
     $resource_name = $resource->getMachineName();
 
@@ -45,7 +45,7 @@ function curios_views_pre_render(&$view) {
       // Find resource names for each class from query.
       $candidate_targets = array();
       foreach ($individual_types as $rdf_class) {
-        $candidate_resource = __curios_resource_name_from_class_uri($rdf_class);
+        $candidate_resource = __curios_resource_id_from_class_uri($rdf_class, $config);
 
         if ($candidate_resource) {
           $candidate_targets[] = $candidate_resource;
@@ -57,7 +57,7 @@ function curios_views_pre_render(&$view) {
       $target_resource = !empty($intersect) ? reset($intersect) : 'hc_subject'; // pick one or fall back to subject.
 
       // Rewrite link using target resource path.
-      $target_view = _curios_get_view($target_resource);
+      $target_view = $config->getViewForResource($target_resource);
 
       // Remove extra results.
       $duplicates = count($types[$target_individual])-1;

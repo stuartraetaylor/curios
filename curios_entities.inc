@@ -139,6 +139,7 @@ class LDCMSConfiguration {
   private $resources = array();
   private $views = array();
   private $resourceToViewMap = array();
+  private $baseClassToResourceMap = array();
 
   private $title_field = NULL;
   private $description_field = NULL;
@@ -186,6 +187,12 @@ class LDCMSConfiguration {
   function setResourceToViewMap(array $resourceToViewMap) { $this->resourceToViewMap = $resourceToViewMap; }
   function getResourceToViewMap() { return $this->resourceToViewMap; }
   function getViewForResource($resource_id) { return $this->resourceToViewMap[$resource_id]; }
+
+  function setBaseClassToResourceMap(array $baseClassToResourceMap) { $this->baseClassToResourceMap = $baseClassToResourceMap; }
+  function getBaseClassToResourceMap() { return $this->baseClassToResourceMap; }
+  function getResourceForBaseClass($base_class_curie) {
+    return isset($this->baseClassToResourceMap[$base_class_curie]) ? $this->baseClassToResourceMap[$base_class_curie] : NULL;
+  }
   
   function setTitleField($title_field) { $this->title_field = $title_field; }
   function getTitleField() { return $this->title_field; }

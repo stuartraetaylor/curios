@@ -123,6 +123,13 @@ function __curios_label_from_uri($uri, $config) {
   return $label;
 }
 
+function __curios_resource_id_from_class_uri($base_class, $config) {
+  $base_class_curie = __curios_curie_from_uri($base_class, $config);
+  $resource_id = $config->getResourceForBaseClass($base_class_curie);
+  
+  return $resource_id ? $resource_id : FALSE ;
+}
+
 function __curios_activate_block($module, $block, $region, $theme, $pages, $visibility) {
   db_merge('block')
   ->key(array('theme' => $theme, 'delta' => $block, 'module' => $module))
