@@ -40,17 +40,9 @@ function _curios_view_rewrite_title(&$view) {
         $view_spec = $config->getView($view->name);
         $resource_id = $view_spec->getResource()->getId();
         $title_field = $config->getTitleField();
-        $field = $resource_id.'_'.$title_field;
-        drupal_set_title($view->result[0]->{$field});
+        drupal_set_title($view->result[0]->{$resource_id.'_'.$title_field});
         break;
     }
-  }
-}
-
-function curios_views_pre_view(&$view, &$display_id, &$args) {
-  if ($view->name == "foo" && $view->current_display == "bar") {
-    //$view->display[$view->current_display]->display_options["title"] = "THE TITLE";
-    //$view->display[$view->current_display]->handler->options["title"] = "The New Title";
   }
 }
 
