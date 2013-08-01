@@ -272,7 +272,7 @@ $fields[] = array(
   'type'     => 'relationship',
 );
 $fields[] = array(
-  'property' => 'hc:hasPlaceOfBirth',
+  'property' => 'hc:bornIn',
   'label'    => 'BornIn',
   'type'     => 'relationship',
 );
@@ -322,7 +322,7 @@ $fields[] = array(
   'type'     => 'relationship',
 );
 $fields[] = array(
-  'property' => 'hc:hasPlaceOfDeath',
+  'property' => 'hc:diedIn',
   'label'    => 'DiedIn',
   'type'     => 'relationship',
 );
@@ -467,7 +467,7 @@ $fields[] = array(
   'type'     => 'relationship',
 );
 $fields[] = array(
-  'property' => 'hc:hasPersonWhoDiedHere',
+  'property' => 'hc:personWhoDiedHere',
   'label'    => 'PersonWhoDiedHere',
   'type'     => 'relationship',
 );
@@ -1278,7 +1278,7 @@ $relationship_assignments['locations'][] = array(
     'target'    => 'hc:Person',
 );
 $relationship_assignments['locations'][] = array(
-    'property'  => 'hc:hasPersonWhoDiedHere',
+    'property'  => 'hc:personWhoDiedHere',
     'target'    => 'hc:Person',
 );
 
@@ -1429,7 +1429,7 @@ $relationship_assignments['people'][] = array(
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['people'][] = array(
-    'property'  => 'hc:hasPlaceOfBirth',
+    'property'  => 'hc:bornIn',
     'target'    => 'hc:Location',
 );
 $relationship_assignments['people'][] = array(
@@ -1445,7 +1445,7 @@ $relationship_assignments['people'][] = array(
     'target'    => 'hc:GaelicVersebRdachd',
 );
 $relationship_assignments['people'][] = array(
-    'property'  => 'hc:hasPlaceOfDeath',
+    'property'  => 'hc:diedIn',
     'target'    => 'hc:Location',
 );
 $relationship_assignments['people'][] = array(
