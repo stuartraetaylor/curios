@@ -1,6 +1,6 @@
 <?php
 require_once('curios_entities.inc');
-require_once('curios_configuration.inc');
+require_once('curios_ldcms.inc');
 require_once('curios.views_custom.inc');
 
 function curios_views_default_views() {
