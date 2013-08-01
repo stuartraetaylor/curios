@@ -31,7 +31,7 @@ Special Requirements:
   * arc2-sparql11 from github:
       $ mkdir -p sites/all/libraries/ARC2
       $ cd sites/all/libraries/ARC2
-      $ git clone https://github.com/staylor-abdn/arc2-sparql11.git arc
+      $ git clone https://github.com/stuartraetaylor/arc2-sparql11.git arc
   * Patch SPARQL module:
       $ cd sites/all/modules/sparql
       $ wget http://www.abdn.ac.uk/~csc363/curios/sparql-module-arc2-sparql11.patch
