@@ -658,9 +658,9 @@ $browsing_classes[] = array(
   'base'  => 'hc:CroftOrResidence',
 );
 $browsing_classes[] = array(
-  'name'  => 'gaelic_verses',
+  'name'  => 'gaelic_verse',
   'label' => 'Gaelic Verse',
-  'base'  => 'hc:GaelicVersebRdachd',
+  'base'  => 'hc:GaelicVerse',
 );
 $browsing_classes[] = array(
   'name'  => 'historical_events',
@@ -717,6 +717,8 @@ $browsing_classes[] = array(
   'label' => 'Image Details',
   'base'  => 'hc:Imagefile',
 );
+
+/* Field assignments. */
 
 $field_assignments['subjects'] = array(
     'dc:title',
@@ -817,7 +819,7 @@ $field_assignments['crofts_and_residences'] = array(
     'hc:ownedBySociety',
     'hc:subjectID',
 );
-$field_assignments['gaelic_verses'] = array(
+$field_assignments['gaelic_verse'] = array(
     'dc:title',
     'dc:description',
     'hc:englishName',
@@ -1138,7 +1140,7 @@ $relationship_assignments['crofts_and_residences'][] = array(
 );
 
 /* Gaelic verse */
-$relationship_assignments['gaelic_verses'][] = array(
+$relationship_assignments['gaelic_verse'][] = array(
     'property'  => 'hc:associatedWith',
     'target'    => array(
           'hc:Person',
@@ -1152,15 +1154,15 @@ $relationship_assignments['gaelic_verses'][] = array(
           'hc:Location',
       ),
 );
-$relationship_assignments['gaelic_verses'][] = array(
+$relationship_assignments['gaelic_verse'][] = array(
     'property'  => 'hc:composedBy',
     'target'    => 'hc:Person',
 );
-$relationship_assignments['gaelic_verses'][] = array(
+$relationship_assignments['gaelic_verse'][] = array(
     'property'  => 'hc:informationObtainedFrom',
     'target'    => 'hc:Resource',
 );
-$relationship_assignments['gaelic_verses'][] = array(
+$relationship_assignments['gaelic_verse'][] = array(
     'property'  => 'hc:hasFile',
     'target'    => 'hc:Subject',
 );
