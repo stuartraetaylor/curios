@@ -171,7 +171,7 @@ function curios_search_engine_form($form, $form_state) {
   $config = _curios_configuration();
   
   $options = array();
-  foreach ($config['rdf_views'] as $view_name => $view_spec) {
+  foreach ($config->getViews() as $view_name => $view_spec) {
     $view = views_get_view($view_name);
     $options[$view_name] = t($view->human_name);
   }
@@ -216,7 +216,7 @@ function curios_rdf_mapping() {
   $config = _curios_configuration();
   $mappings = array();
 
-  foreach ($config['rdf_resources'] as $entity) {
+  foreach ($config->getResources() as $entity) {
     $rdf_mapping = array();    
     $rdf_mapping['rdftype'] = array($entity->getRDFType());
 
@@ -243,5 +243,5 @@ function curios_rdf_mapping() {
  */
 function curios_rdf_namespaces() {
   $config = _curios_configuration();
-  return $config['namespaces'];
+  return $config->getPrefixToNamespaceMap();
 }

@@ -8,7 +8,7 @@ function curios_default_page_manager_pages() {
   $pages = array();
 
   // For each view, create its panel page.
-  foreach ($config['rdf_views'] as $view_name=>$view_spec) {
+  foreach ($config->getViews() as $view_name=>$view_spec) {
     //dpr($view_name);
     $pages[__panel_page_id($view_spec->getMachineName())] = __curios_generate_panel_page($view_spec);
   }
@@ -322,7 +322,7 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
   // Relationships Region.
   $pane_index = 0;
   foreach ($view_spec->getObjectFields() as $field_id) {
-    if ($field_id == $config['image_relationship_field'])
+    if ($field_id == $config->getImageRelationshipField())
       continue;
 
     $resource = $view_spec->getResource();

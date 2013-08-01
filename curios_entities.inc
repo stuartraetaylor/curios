@@ -140,6 +140,10 @@ class LDCMSConfiguration {
   private $views = array();
   private $resourceToViewMap = array();
 
+  private $title_field = NULL;
+  private $description_field = NULL;
+  private $image_relationship_field = NULL;
+
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
     return $is_curie ? 
       __curios_id_from_curie($ontology_entity, $this) :
@@ -182,6 +186,15 @@ class LDCMSConfiguration {
   function setResourceToViewMap(array $resourceToViewMap) { $this->resourceToViewMap = $resourceToViewMap; }
   function getResourceToViewMap() { return $this->resourceToViewMap; }
   function getViewForResource($resource_id) { return $this->resourceToViewMap[$resource_id]; }
+  
+  function setTitleField($title_field) { $this->title_field = $title_field; }
+  function getTitleField() { return $this->title_field; }
+
+  function setDescriptionField($description_field) { $this->description_field = $description_field; }
+  function getDescriptionField() { return $this->description_field; }
+
+  function setImageRelationshipField($image_relationship_field) { $this->image_relationship_field = $image_relationship_field; }
+  function getImageRelationshipField() { return $this->image_relationship_field; }
 
   function toString_dump() {
     var_dump($this->resourceToViewMap);

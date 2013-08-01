@@ -7,8 +7,9 @@ function _curios_configuration($use_cache = FALSE) {
   if (!isset($config)) {
     $cache = cache_get('curios-config');
     $config = ($cache && $use_cache) ? $cache->data : __curios_renew_cache_configuration();
-    //dpr($config);
   }
+
+  //dpr($config); exit;
 
   return $config;
 }
@@ -39,6 +40,19 @@ function __curios_create_configuration() {
   __curios_configuration_fields($config, $config_spec);
   __curios_configuration_resources_views($config, $config_spec);
 
+  // Title field.
+  $title_field_id = $config->getCMSID($config_spec['options']['title_property']);
+  $config->setTitleField($title_field_id);
+
+  // Description field.
+  $description_field_id = $config->getCMSID($config_spec['options']['description_property']);
+  $config->setDescriptionField($description_field_id);
+  
+  // Image relationship field.
+  $image_relationship_id = $config->getCMSID($config_spec['options']['image_relationship_property']);
+  $config->setImageRelationshipField($image_relationship_id);
+
+
   return $config;
 }
 
@@ -47,6 +61,7 @@ function __curios_load_configuration_spec() {
 
   $config_spec = array(
     'namespaces' => $namespaces,
+    'options' => $options,
     'fields' => $fields,
     'browsing_classes' => $browsing_classes,
     'field_assignments' => $field_assignments,
@@ -86,9 +101,6 @@ function __curios_browsing_class_id_from_name($name) {
 function __curios_configuration_resources_views($config, $config_spec) {
   $resourceToViewMap = array();
 
-  $dc_title_uri = $config->getPrefixToNamespaceMap('dc').'title';
-  $dc_description_uri = $config->getPrefixToNamespaceMap('dc').'description';
-
   // Create resources and views for all browsing classes.
   // __curios_sparql_fetch_browsing_classes($config);
   foreach ($config_spec['browsing_classes'] as $row) {
@@ -106,13 +118,11 @@ function __curios_configuration_resources_views($config, $config_spec) {
 
     // FIXME add these to config spec.
     // Title field.
-    $title_property = $dc_title_uri;//$row['titleField'];
-    $title_field_id = $config->getCMSID($title_property);
+    $title_field_id = $config->getCMSID('dc:title');
     $title_field = $config->getField($title_field_id);
 
     // Description field.
-    $description_property = $dc_description_uri;//$row['descriptionField'];
-    $description_field_id = $config->getCMSID($description_property);
+    $description_field_id = $config->getCMSID('dc:description');
     $description_field = $config->getField($description_field_id);
 
     $config->addResource(new RDFResource($resource_id, $resource_label, $base_resource));

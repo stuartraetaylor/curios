@@ -44,14 +44,14 @@ function __curios_split_uri_to_curie($uri, $config) {
 }
 
 function __curios_split_curie($curie) {
-  return split(':', $curie); }
+  return explode(':', $curie); }
 
 function __curios_curie_from_uri($uri, $config) {
   return join(':', __curios_split_uri_to_curie($uri, $config));
 }
 
 function __curios_uri_from_curie($curie, $config) {
-  list($prefix, $lname) = __curios_split_curie($curie, $config);
+  list($prefix, $lname) = __curios_split_curie($curie);
   $namespace = $config->getNamespace($prefix);
   
   return $namespace . $lname;
@@ -67,8 +67,8 @@ function __curios_id_from_curie_parts($prefix, $lname) {
   return $prefix.'_'.$lname;
 }
 
-function __curios_id_from_curie($curie, $config) {
-  list($prefix, $lname) = __curios_split_curie($curie, $config);
+function __curios_id_from_curie($curie) {
+  list($prefix, $lname) = __curios_split_curie($curie);
   return __curios_id_from_curie_parts($prefix, $lname);
 }
 

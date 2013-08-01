@@ -5,6 +5,12 @@ $namespaces = array(
   'dc'  => 'http://purl.org/dc/terms/',
 );
 
+$options = array(
+  'title_property' => 'dc:title',
+  'description_property' => 'dc:description',
+  'image_relationship_property' => 'hc:hasFile',
+);
+
 $fields[] = array(
   'property' => 'hc:alsoKnownAs',
   'label'    => 'AlsoKnownAs',

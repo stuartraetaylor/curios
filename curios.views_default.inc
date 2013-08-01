@@ -9,7 +9,7 @@ function curios_views_default_views() {
   $exports_path = drupal_get_path('module', 'curios') . '/views';
   $use_exports = FALSE;
 
-  foreach ($config['rdf_views'] as $view_name=>$view_spec) {
+  foreach ($config->getViews() as $view_name=>$view_spec) {
     $view_file = $view_spec->getMachineName().'.view.inc';
     $view_path = $exports_path.'/'.$view_file;
     
@@ -74,7 +74,7 @@ function __curios_generate_default_view(&$view_spec) {
 
   // Relatiionship blocks.
   foreach ($view_spec->getObjectFields() as $field_id) {
-    if ($field_id == $config['image_relationship_field'])
+    if ($field_id == $config->getImageRelationshipField())
       continue;
 
     __curios_generate_object_block($view, $view_spec, $base_fields, $field_id);
@@ -472,7 +472,7 @@ function __curios_generate_display_properties_default(&$view, &$view_spec, $base
   // Optional data fields.
   foreach ($view_spec->getOptionalDataFields() as $field_id) {
     $field_name = $resource_name.'_'.$field_id;
-    $field = $config['rdf_fields'][$field_id];
+    $field = $config->getField($field_id);
 
     // Remove base fields.
     if (in_array($field_name, $base_fields)) {
@@ -520,7 +520,7 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   $resource_name = $resource->getMachineName();
 
   $ranges = $resource->getObjectFieldRanges();
-  $field = $config['rdf_fields'][$field_id];
+  $field = $config->getField($field_id);
   $field_name = $resource_name.'_'.$field_id;
 
   // Default.
@@ -600,7 +600,8 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   $title_field_name = /*$field_name.'_'.*/$ranges[$field_id].'_dc_title'; // TODO use $base_fields
   $identifier_field_name = /*$field_name.'_'.*/$ranges[$field_id].'_hc_subject_id'; // TODO use $base_fields
   $type_field_name = /*$field_name.'_'.*/$ranges[$field_id].'_type'; // TODO use $base_fields
-  $target_view = _curios_get_view($ranges[$field_id]);
+  $target_view_id = $config->getViewForResource($ranges[$field_id]);
+  $target_view = $config->getView($target_view_id);
 
   // Identifier.
   $handler->display->display_options['fields'][$identifier_field_name]['id'] = $identifier_field_name;
@@ -1049,7 +1050,8 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
-  $image_view_spec = _curios_get_view('hc_image_file');
+  $image_view_id = $config->getViewForResource('hc_imagefile');
+  $image_view_spec = $config->getView($image_view_id);
 
   /* Display: Images */
   $handler = $view->new_display('block', 'Images', 'images');
@@ -1259,7 +1261,7 @@ function __curios_uri_filter(&$handler, $view, $view_spec) {
   $handler->display->display_options['arguments'][$resource_name]['sparql_options'] = array(
     'value_type' => 'uri',
     'language' => '0',
-    'code' => 'return \'' . $config['namespaces']['hc'] . '\'.$this->argument;',
+    'code' => 'return \'' . $config->getNamespace('hc') . '\'.$this->argument;',
   );
 }
 
