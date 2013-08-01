@@ -1,7 +1,7 @@
 <?php
 require_once('curios_functions.inc');
 require_once('curios_entities.inc');
-require_once('curios_configuration.inc');
+require_once('curios_ldcms.inc');
 
 
 /**

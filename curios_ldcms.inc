@@ -1,4 +1,6 @@
 <?php
+require_once('curios_functions.inc');
+require_once('curios_entities.inc');
 
 function _curios_configuration($use_cache = FALSE) {
   $config = &drupal_static(__FUNCTION__);
@@ -57,7 +59,7 @@ function __curios_create_configuration() {
 }
 
 function __curios_load_configuration_spec() {
-  require_once 'config/hebridean.inc';
+  require 'config/hebridean.inc';
 
   $config_spec = array(
     'namespaces' => $namespaces,
