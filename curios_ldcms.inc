@@ -50,7 +50,7 @@ function __curios_load_configuration_spec() {
     'fields' => $fields,
     'browsing_classes' => $browsing_classes,
     'field_assignments' => $field_assignments,
-    'relationship_assignment' => $relationship_assignments,
+    'relationship_assignments' => $relationship_assignments,
   );
 
   return $config_spec;
@@ -139,11 +139,12 @@ function __curios_configuration_resources_views($config, $config_spec) {
         $targets[] = $config->getCMSID($t);
       }
 
-      $resource->setRelationshipTarget($relationship_id, $targets);
+      $resource->setRelationshipTargets($relationship_id, $targets);
     }
-dpr($config); return;
+
     // Set field/relationship preferences.
     $view->setOptionalAll();
   }
 
+  dpr($config);
 }

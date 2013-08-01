@@ -46,8 +46,8 @@ class RDFResource extends DrupalThing {
 
   public function addField($field) { $this->fields[] = $field; }
   public function addRelationship($relationship) { $this->relationships[] = $relationship; }
-  public function setRelationshipTargets($relationship_id, $target_id) {
-    $this->relationship_targets[$relationship_id] = (array)$target_id;
+  public function setRelationshipTargets($relationship_id, array $targets) {
+    $this->relationship_targets[$relationship_id] = $targets;
   }
   public function getRelationshipTargets() { return $this->relationship_targets; }
 

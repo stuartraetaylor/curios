@@ -5,7 +5,7 @@ require_once('curios_ldcms.inc');
 function _curios_configuration() {
   $config = &drupal_static(__FUNCTION__);
 
-  _curios_configuration_TEST(); exit;
+  //_curios_configuration_TEST(); exit;
 
   if (!isset($config)) {
     $config = array();
@@ -1702,7 +1702,6 @@ function _curios_configuration() {
     // }
     //print($config['rdf_resources']);
 
-
 /*
 echo <<<EOT
 \$namespaces = array(
@@ -1759,7 +1758,7 @@ foreach ($config['rdf_resources'] as $resource) {
   $label = $view->getLabel();
   $base = $uri = str_replace('hc:','',$resource->getRDFType());
 
-  echo "\$field_assignments['cms:$id'][] = array(\n";
+  echo "\$field_assignments['cms:$id'] = array(\n";
 
   foreach ($resource->getDataFields() as $field) {
     $curie = $field->getRDFPredicate();
@@ -1784,13 +1783,13 @@ foreach ($config['rdf_resources'] as $resource) {
   $label = $view->getLabel();
   $base = str_replace('hc:','',$resource->getRDFType());
   $targets = $resource->getRelationshipTargets();
-  
-  echo "\$relationship_assignments['cms:$id'][] = array(\n";
 
   foreach ($resource->getObjectFields() as $field) {
     $propUri = $uri = str_replace('hc:','',$field->getRDFPredicate());
     $target_resource = $targets[$field->getId()];
-    
+
+    echo "\$relationship_assignments['cms:$id'][] = array(\n";
+
     $rel_targets = '';
     if (!isset($target_resource)) {
        $uri = $config['rdf_resources']['hc_subject']->getRDFType();
@@ -1814,21 +1813,18 @@ foreach ($config['rdf_resources'] as $resource) {
 
 
   echo <<<EOT
-    array(
-      'property'  => \$cms.'$propUri',
-      'target'    => $rel_targets
-    ),
+    'property'  => \$hc.'$propUri',
+    'target'    => $rel_targets
 EOT;
-  echo "\n";
+  echo "\n);\n";
   }
 
-  echo ");\n";
+  echo "\n";
 }
-echo "\n\n";
 
 exit;
-
 */
+
 
 
   }

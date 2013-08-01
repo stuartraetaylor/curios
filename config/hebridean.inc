@@ -702,7 +702,7 @@ $browsing_classes[] = array(
   'base'  => $hc.'Imagefile',
 );
 
-$field_assignments['cms:subjects'][] = array(
+$field_assignments['cms:subjects'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -739,7 +739,7 @@ $field_assignments['cms:subjects'][] = array(
     $hc.'SMRRecordID',
     $hc.'soundexName',
 );
-$field_assignments['cms:boats'][] = array(
+$field_assignments['cms:boats'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -752,7 +752,7 @@ $field_assignments['cms:boats'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:buildings_and_public_amenities'][] = array(
+$field_assignments['cms:buildings_and_public_amenities'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -770,7 +770,7 @@ $field_assignments['cms:buildings_and_public_amenities'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:businesses'][] = array(
+$field_assignments['cms:businesses'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -783,7 +783,7 @@ $field_assignments['cms:businesses'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:crofts_and_residences'][] = array(
+$field_assignments['cms:crofts_and_residences'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -801,7 +801,7 @@ $field_assignments['cms:crofts_and_residences'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:gaelic_verses'][] = array(
+$field_assignments['cms:gaelic_verses'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -813,7 +813,7 @@ $field_assignments['cms:gaelic_verses'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:historical_events'][] = array(
+$field_assignments['cms:historical_events'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -826,7 +826,7 @@ $field_assignments['cms:historical_events'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+$field_assignments['cms:landmarks_and_archaeological_sites'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -840,7 +840,7 @@ $field_assignments['cms:landmarks_and_archaeological_sites'][] = array(
     $hc.'SMRRecordID',
     $hc.'subjectID',
 );
-$field_assignments['cms:locations'][] = array(
+$field_assignments['cms:locations'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -854,7 +854,7 @@ $field_assignments['cms:locations'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:natural_landscape_features'][] = array(
+$field_assignments['cms:natural_landscape_features'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -867,7 +867,7 @@ $field_assignments['cms:natural_landscape_features'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:objects_and_artefacts'][] = array(
+$field_assignments['cms:objects_and_artefacts'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -880,7 +880,7 @@ $field_assignments['cms:objects_and_artefacts'][] = array(
     $hc.'SMRRecordID',
     $hc.'subjectID',
 );
-$field_assignments['cms:organisations'][] = array(
+$field_assignments['cms:organisations'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -892,7 +892,7 @@ $field_assignments['cms:organisations'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:people'][] = array(
+$field_assignments['cms:people'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -911,7 +911,7 @@ $field_assignments['cms:people'][] = array(
     $hc.'bkReference',
     $hc.'subjectID',
 );
-$field_assignments['cms:resources'][] = array(
+$field_assignments['cms:resources'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -928,7 +928,7 @@ $field_assignments['cms:resources'][] = array(
     $hc.'bkReference',
     $hc.'subjectID',
 );
-$field_assignments['cms:stories_reports_and_traditions'][] = array(
+$field_assignments['cms:stories_reports_and_traditions'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -943,7 +943,7 @@ $field_assignments['cms:stories_reports_and_traditions'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:vehicles'][] = array(
+$field_assignments['cms:vehicles'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'englishName',
@@ -954,7 +954,7 @@ $field_assignments['cms:vehicles'][] = array(
     $hc.'ownedBySociety',
     $hc.'subjectID',
 );
-$field_assignments['cms:image_details'][] = array(
+$field_assignments['cms:image_details'] = array(
     $dc.'title',
     $dc.'description',
     $hc.'URL',
@@ -963,716 +963,697 @@ $field_assignments['cms:image_details'][] = array(
 );
 
 $relationship_assignments['cms:subjects'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
+    'property'  => $hc.'associatedWith',
+    'target'    => $hc.'Subject',
 );
-$relationship_assignments['cms:boats'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'HistoricalEvent',
-          $hc.'Location',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'Organisation',
-          $hc.'Person',
-          $hc.'Business',
-          $hc.'StoryReportOrTradition',
-          $hc.'Boat',
-          $hc.'CroftOrResidence',
-      ),
-    ),
-    array(
-      'property'  => $cms.'builtBy',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'crewedBy',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'ownedBy',
-      'target'    => $hc.'Person',
-    ),
+$relationship_assignments['cms:subjects'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
 );
-$relationship_assignments['cms:buildings_and_public_amenities'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'HistoricalEvent',
-          $hc.'ObjectOrArtefact',
-          $hc.'Organisation',
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'CroftOrResidence',
-          $hc.'Location',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'Person',
-          $hc.'StoryReportOrTradition',
-      ),
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'livedHere',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => array(
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'Location',
-      ),
-    ),
-    array(
-      'property'  => $cms.'locatedHere',
-      'target'    => $hc.'Subject',
-    ),
-);
-$relationship_assignments['cms:businesses'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'StoryReportOrTradition',
-          $hc.'Person',
-          $hc.'Business',
-          $hc.'Business',
-          $hc.'Organisation',
-          $hc.'Location',
-          $hc.'Boat',
-      ),
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'ownedBy',
-      'target'    => $hc.'Person',
-    ),
-);
-$relationship_assignments['cms:crofts_and_residences'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'HistoricalEvent',
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'Business',
-          $hc.'Person',
-          $hc.'StoryReportOrTradition',
-          $hc.'CroftOrResidence',
-          $hc.'ObjectOrArtefact',
-      ),
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Organisation',
-    ),
-    array(
-      'property'  => $cms.'livedHere',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'locatedHere',
-      'target'    => array(
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'LandmarkOrArchaeologicalSite',
-      ),
-    ),
-);
-$relationship_assignments['cms:gaelic_verses'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'Person',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'StoryReportOrTradition',
-          $hc.'CroftOrResidence',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'HistoricalEvent',
-          $hc.'CroftOrResidence',
-          $hc.'Boat',
-          $hc.'Location',
-      ),
-    ),
-    array(
-      'property'  => $cms.'composedBy',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-);
-$relationship_assignments['cms:historical_events'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'CroftOrResidence',
-          $hc.'Boat',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'Person',
-          $hc.'Business',
-          $hc.'Organisation',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'HistoricalEvent',
-          $hc.'HistoricalEvent',
-          $hc.'Location',
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'StoryReportOrTradition',
-      ),
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'sourceOfInformationOn',
-      'target'    => $hc.'Subject',
-    ),
-);
-$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'StoryReportOrTradition',
-          $hc.'Person',
-          $hc.'CroftOrResidence',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'Location',
-          $hc.'HistoricalEvent',
-      ),
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'sourceOfInformationOn',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'comprisesSubSite',
-      'target'    => $hc.'LandmarkOrArchaeologicalSite',
-    ),
-    array(
-      'property'  => $cms.'isPartOfSite',
-      'target'    => $hc.'LandmarkOrArchaeologicalSite',
-    ),
-    array(
-      'property'  => $cms.'livedHere',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => array(
-          $hc.'CroftOrResidence',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'Location',
-      ),
-    ),
-    array(
-      'property'  => $cms.'locatedHere',
-      'target'    => $hc.'Subject',
-    ),
-);
-$relationship_assignments['cms:locations'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'StoryReportOrTradition',
-          $hc.'Organisation',
-          $hc.'Boat',
-          $hc.'Person',
-          $hc.'Business',
-          $hc.'Location',
-          $hc.'ObjectOrArtefact',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'HistoricalEvent',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'LandmarkOrArchaeologicalSite',
-      ),
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'foundHere',
-      'target'    => $hc.'ObjectOrArtefact',
-    ),
-    array(
-      'property'  => $cms.'livedHere',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'locatedHere',
-      'target'    => array(
-          $hc.'Business',
-          $hc.'CroftOrResidence',
-          $hc.'LandmarkOrArchaeologicalSite',
-      ),
-    ),
-    array(
-      'property'  => $cms.'locatedNear',
-      'target'    => $hc.'NaturalLandscapeFeature',
-    ),
-    array(
-      'property'  => $cms.'personBornHere',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'hasPersonWhoDiedHere',
-      'target'    => $hc.'Person',
-    ),
-);
-$relationship_assignments['cms:natural_landscape_features'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'StoryReportOrTradition',
-          $hc.'Boat',
-          $hc.'Person',
-          $hc.'HistoricalEvent',
-          $hc.'CroftOrResidence',
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'GaelicVersebRdachd',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'Location',
-      ),
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'foundHere',
-      'target'    => $hc.'ObjectOrArtefact',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'locatedHere',
-      'target'    => $hc.'LandmarkOrArchaeologicalSite',
-    ),
-    array(
-      'property'  => $cms.'locatedNear',
-      'target'    => array(
-          $hc.'Location',
-          $hc.'NaturalLandscapeFeature',
-      ),
-    ),
-);
-$relationship_assignments['cms:objects_and_artefacts'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'Boat',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'StoryReportOrTradition',
-          $hc.'Person',
-          $hc.'Location',
-          $hc.'HistoricalEvent',
-          $hc.'Resource',
-          $hc.'ObjectOrArtefact',
-          $hc.'CroftOrResidence',
-      ),
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'foundAt',
-      'target'    => array(
-          $hc.'Location',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'LandmarkOrArchaeologicalSite',
-      ),
-    ),
-);
-$relationship_assignments['cms:organisations'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'Location',
-          $hc.'HistoricalEvent',
-          $hc.'StoryReportOrTradition',
-          $hc.'Boat',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'Person',
-          $hc.'CroftOrResidence',
-          $hc.'Organisation',
-      ),
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'compilerOf',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'holds',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'sourceOfInformationOn',
-      'target'    => array(
-          $hc.'Location',
-          $hc.'Person',
-      ),
-    ),
-);
-$relationship_assignments['cms:people'][] = array(
-    array(
-      'property'  => $cms.'adoptedBy',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'adoptedPerson',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'Business',
-          $hc.'HistoricalEvent',
-          $hc.'Location',
-          $hc.'GaelicVersebRdachd',
-          $hc.'ObjectOrArtefact',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'StoryReportOrTradition',
-          $hc.'Boat',
-          $hc.'Person',
-          $hc.'CroftOrResidence',
-          $hc.'Organisation',
-          $hc.'Person',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'Resource',
-      ),
-    ),
-    array(
-      'property'  => $cms.'authorOriginatorOf',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'hasPlaceOfBirth',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'hasBuilder',
-      'target'    => $hc.'Boat',
-    ),
-    array(
-      'property'  => $cms.'childOf',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'composedSong',
-      'target'    => $hc.'GaelicVersebRdachd',
-    ),
-    array(
-      'property'  => $cms.'hasPlaceOfDeath',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'emigratedTo',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'employed',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'employedBy',
-      'target'    => array(
-          $hc.'Person',
-          $hc.'Business',
-      ),
-    ),
-    array(
-      'property'  => $cms.'fosteredBy',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'fosteredPerson',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'immigrantFrom',
-      'target'    => $hc.'Location',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'livedAt',
-      'target'    => array(
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'Location',
-          $hc.'CroftOrResidence',
-      ),
-    ),
-    array(
-      'property'  => $cms.'livedWith',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'married',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'MayBeTheSameAs',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'movedFrom',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'movedTo',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'onCrewOfBoat',
-      'target'    => $hc.'Boat',
-    ),
-    array(
-      'property'  => $cms.'ownedOf',
-      'target'    => array(
-          $hc.'Business',
-          $hc.'Boat',
-      ),
-    ),
-    array(
-      'property'  => $cms.'parentOf',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'relatedTo',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'siblingOf',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'usedObject',
-      'target'    => $hc.'ObjectOrArtefact',
-    ),
-);
-$relationship_assignments['cms:resources'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'Person',
-          $hc.'Resource',
-          $hc.'Location',
-      ),
-    ),
-    array(
-      'property'  => $cms.'CompiledMaintainedBy',
-      'target'    => $hc.'Organisation',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'sourceOfInformationOn',
-      'target'    => array(
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'HistoricalEvent',
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'StoryReportOrTradition',
-          $hc.'CroftOrResidence',
-          $hc.'Boat',
-          $hc.'Location',
-          $hc.'Organisation',
-          $hc.'Person',
-      ),
-    ),
-    array(
-      'property'  => $cms.'writtenCompiledBy',
-      'target'    => $hc.'Person',
-    ),
-);
-$relationship_assignments['cms:stories_reports_and_traditions'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'Location',
-          $hc.'Business',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'ObjectOrArtefact',
-          $hc.'Organisation',
-          $hc.'GaelicVersebRdachd',
-          $hc.'Person',
-          $hc.'Boat',
-          $hc.'CroftOrResidence',
-          $hc.'StoryReportOrTradition',
-          $hc.'HistoricalEvent',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'CroftOrResidence',
-      ),
-    ),
-    array(
-      'property'  => $cms.'composedBy',
-      'target'    => $hc.'Person',
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'informationObtainedFrom',
-      'target'    => $hc.'Resource',
-    ),
-    array(
-      'property'  => $cms.'locatedAt',
-      'target'    => $hc.'Subject',
-    ),
-    array(
-      'property'  => $cms.'sourceOfInformationOn',
-      'target'    => $hc.'Subject',
-    ),
-);
-$relationship_assignments['cms:vehicles'][] = array(
-    array(
-      'property'  => $cms.'associatedWith',
-      'target'    => array(
-          $hc.'Location',
-          $hc.'Business',
-          $hc.'Person',
-          $hc.'CroftOrResidence',
-      ),
-    ),
-    array(
-      'property'  => $cms.'hasFile',
-      'target'    => $hc.'Subject',
-    ),
-);
-$relationship_assignments['cms:image_details'][] = array(
-    array(
-      'property'  => $cms.'isShownHere',
-      'target'    => array(
-          $hc.'LandmarkOrArchaeologicalSite',
-          $hc.'Business',
-          $hc.'HistoricalEvent',
-          $hc.'Location',
-          $hc.'GaelicVersebRdachd',
-          $hc.'ObjectOrArtefact',
-          $hc.'NaturalLandscapeFeature',
-          $hc.'StoryReportOrTradition',
-          $hc.'Boat',
-          $hc.'Person',
-          $hc.'CroftOrResidence',
-          $hc.'Organisation',
-          $hc.'Person',
-          $hc.'BuildingOrPublicAmenity',
-          $hc.'Resource',
-      ),
-    ),
+$relationship_assignments['cms:subjects'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
 );
 
+$relationship_assignments['cms:boats'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'HistoricalEvent',
+          $hc.'Location',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'Organisation',
+          $hc.'Person',
+          $hc.'Business',
+          $hc.'StoryReportOrTradition',
+          $hc.'Boat',
+          $hc.'CroftOrResidence',
+      ),
+);
+$relationship_assignments['cms:boats'][] = array(
+    'property'  => $hc.'builtBy',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:boats'][] = array(
+    'property'  => $hc.'crewedBy',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:boats'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:boats'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:boats'][] = array(
+    'property'  => $hc.'ownedBy',
+    'target'    => $hc.'Person',
+);
+
+$relationship_assignments['cms:buildings_and_public_amenities'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'HistoricalEvent',
+          $hc.'ObjectOrArtefact',
+          $hc.'Organisation',
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'CroftOrResidence',
+          $hc.'Location',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'Person',
+          $hc.'StoryReportOrTradition',
+      ),
+);
+$relationship_assignments['cms:buildings_and_public_amenities'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:buildings_and_public_amenities'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:buildings_and_public_amenities'][] = array(
+    'property'  => $hc.'livedHere',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:buildings_and_public_amenities'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => array(
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'Location',
+      ),
+);
+$relationship_assignments['cms:buildings_and_public_amenities'][] = array(
+    'property'  => $hc.'locatedHere',
+    'target'    => $hc.'Subject',
+);
+
+$relationship_assignments['cms:businesses'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'StoryReportOrTradition',
+          $hc.'Person',
+          $hc.'Business',
+          $hc.'Business',
+          $hc.'Organisation',
+          $hc.'Location',
+          $hc.'Boat',
+      ),
+);
+$relationship_assignments['cms:businesses'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:businesses'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:businesses'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:businesses'][] = array(
+    'property'  => $hc.'ownedBy',
+    'target'    => $hc.'Person',
+);
+
+$relationship_assignments['cms:crofts_and_residences'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'HistoricalEvent',
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'Business',
+          $hc.'Person',
+          $hc.'StoryReportOrTradition',
+          $hc.'CroftOrResidence',
+          $hc.'ObjectOrArtefact',
+      ),
+);
+$relationship_assignments['cms:crofts_and_residences'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:crofts_and_residences'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Organisation',
+);
+$relationship_assignments['cms:crofts_and_residences'][] = array(
+    'property'  => $hc.'livedHere',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:crofts_and_residences'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:crofts_and_residences'][] = array(
+    'property'  => $hc.'locatedHere',
+    'target'    => array(
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'LandmarkOrArchaeologicalSite',
+      ),
+);
+
+$relationship_assignments['cms:gaelic_verses'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'Person',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'StoryReportOrTradition',
+          $hc.'CroftOrResidence',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'HistoricalEvent',
+          $hc.'CroftOrResidence',
+          $hc.'Boat',
+          $hc.'Location',
+      ),
+);
+$relationship_assignments['cms:gaelic_verses'][] = array(
+    'property'  => $hc.'composedBy',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:gaelic_verses'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:gaelic_verses'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+
+$relationship_assignments['cms:historical_events'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'CroftOrResidence',
+          $hc.'Boat',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'Person',
+          $hc.'Business',
+          $hc.'Organisation',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'HistoricalEvent',
+          $hc.'HistoricalEvent',
+          $hc.'Location',
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'StoryReportOrTradition',
+      ),
+);
+$relationship_assignments['cms:historical_events'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:historical_events'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:historical_events'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:historical_events'][] = array(
+    'property'  => $hc.'sourceOfInformationOn',
+    'target'    => $hc.'Subject',
+);
+
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'StoryReportOrTradition',
+          $hc.'Person',
+          $hc.'CroftOrResidence',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'Location',
+          $hc.'HistoricalEvent',
+      ),
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'sourceOfInformationOn',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'comprisesSubSite',
+    'target'    => $hc.'LandmarkOrArchaeologicalSite',
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'isPartOfSite',
+    'target'    => $hc.'LandmarkOrArchaeologicalSite',
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'livedHere',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => array(
+          $hc.'CroftOrResidence',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'Location',
+      ),
+);
+$relationship_assignments['cms:landmarks_and_archaeological_sites'][] = array(
+    'property'  => $hc.'locatedHere',
+    'target'    => $hc.'Subject',
+);
+
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'StoryReportOrTradition',
+          $hc.'Organisation',
+          $hc.'Boat',
+          $hc.'Person',
+          $hc.'Business',
+          $hc.'Location',
+          $hc.'ObjectOrArtefact',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'HistoricalEvent',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'LandmarkOrArchaeologicalSite',
+      ),
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'foundHere',
+    'target'    => $hc.'ObjectOrArtefact',
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'livedHere',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'locatedHere',
+    'target'    => array(
+          $hc.'Business',
+          $hc.'CroftOrResidence',
+          $hc.'LandmarkOrArchaeologicalSite',
+      ),
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'locatedNear',
+    'target'    => $hc.'NaturalLandscapeFeature',
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'personBornHere',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:locations'][] = array(
+    'property'  => $hc.'hasPersonWhoDiedHere',
+    'target'    => $hc.'Person',
+);
+
+$relationship_assignments['cms:natural_landscape_features'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'StoryReportOrTradition',
+          $hc.'Boat',
+          $hc.'Person',
+          $hc.'HistoricalEvent',
+          $hc.'CroftOrResidence',
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'GaelicVersebRdachd',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'Location',
+      ),
+);
+$relationship_assignments['cms:natural_landscape_features'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:natural_landscape_features'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:natural_landscape_features'][] = array(
+    'property'  => $hc.'foundHere',
+    'target'    => $hc.'ObjectOrArtefact',
+);
+$relationship_assignments['cms:natural_landscape_features'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:natural_landscape_features'][] = array(
+    'property'  => $hc.'locatedHere',
+    'target'    => $hc.'LandmarkOrArchaeologicalSite',
+);
+$relationship_assignments['cms:natural_landscape_features'][] = array(
+    'property'  => $hc.'locatedNear',
+    'target'    => array(
+          $hc.'Location',
+          $hc.'NaturalLandscapeFeature',
+      ),
+);
+
+$relationship_assignments['cms:objects_and_artefacts'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'Boat',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'StoryReportOrTradition',
+          $hc.'Person',
+          $hc.'Location',
+          $hc.'HistoricalEvent',
+          $hc.'Resource',
+          $hc.'ObjectOrArtefact',
+          $hc.'CroftOrResidence',
+      ),
+);
+$relationship_assignments['cms:objects_and_artefacts'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:objects_and_artefacts'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:objects_and_artefacts'][] = array(
+    'property'  => $hc.'foundAt',
+    'target'    => array(
+          $hc.'Location',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'LandmarkOrArchaeologicalSite',
+      ),
+);
+
+$relationship_assignments['cms:organisations'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'Location',
+          $hc.'HistoricalEvent',
+          $hc.'StoryReportOrTradition',
+          $hc.'Boat',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'Person',
+          $hc.'CroftOrResidence',
+          $hc.'Organisation',
+      ),
+);
+$relationship_assignments['cms:organisations'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:organisations'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:organisations'][] = array(
+    'property'  => $hc.'compilerOf',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:organisations'][] = array(
+    'property'  => $hc.'holds',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:organisations'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:organisations'][] = array(
+    'property'  => $hc.'sourceOfInformationOn',
+    'target'    => array(
+          $hc.'Location',
+          $hc.'Person',
+      ),
+);
+
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'adoptedBy',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'adoptedPerson',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'Business',
+          $hc.'HistoricalEvent',
+          $hc.'Location',
+          $hc.'GaelicVersebRdachd',
+          $hc.'ObjectOrArtefact',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'StoryReportOrTradition',
+          $hc.'Boat',
+          $hc.'Person',
+          $hc.'CroftOrResidence',
+          $hc.'Organisation',
+          $hc.'Person',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'Resource',
+      ),
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'authorOriginatorOf',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'hasPlaceOfBirth',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'hasBuilder',
+    'target'    => $hc.'Boat',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'childOf',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'composedSong',
+    'target'    => $hc.'GaelicVersebRdachd',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'hasPlaceOfDeath',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'emigratedTo',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'employed',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'employedBy',
+    'target'    => array(
+          $hc.'Person',
+          $hc.'Business',
+      ),
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'fosteredBy',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'fosteredPerson',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'immigrantFrom',
+    'target'    => $hc.'Location',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'livedAt',
+    'target'    => array(
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'Location',
+          $hc.'CroftOrResidence',
+      ),
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'livedWith',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'married',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'MayBeTheSameAs',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'movedFrom',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'movedTo',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'onCrewOfBoat',
+    'target'    => $hc.'Boat',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'ownedOf',
+    'target'    => array(
+          $hc.'Business',
+          $hc.'Boat',
+      ),
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'parentOf',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'relatedTo',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'siblingOf',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:people'][] = array(
+    'property'  => $hc.'usedObject',
+    'target'    => $hc.'ObjectOrArtefact',
+);
+
+$relationship_assignments['cms:resources'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'Person',
+          $hc.'Resource',
+          $hc.'Location',
+      ),
+);
+$relationship_assignments['cms:resources'][] = array(
+    'property'  => $hc.'CompiledMaintainedBy',
+    'target'    => $hc.'Organisation',
+);
+$relationship_assignments['cms:resources'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:resources'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:resources'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:resources'][] = array(
+    'property'  => $hc.'sourceOfInformationOn',
+    'target'    => array(
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'HistoricalEvent',
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'StoryReportOrTradition',
+          $hc.'CroftOrResidence',
+          $hc.'Boat',
+          $hc.'Location',
+          $hc.'Organisation',
+          $hc.'Person',
+      ),
+);
+$relationship_assignments['cms:resources'][] = array(
+    'property'  => $hc.'writtenCompiledBy',
+    'target'    => $hc.'Person',
+);
+
+$relationship_assignments['cms:stories_reports_and_traditions'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'Location',
+          $hc.'Business',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'ObjectOrArtefact',
+          $hc.'Organisation',
+          $hc.'GaelicVersebRdachd',
+          $hc.'Person',
+          $hc.'Boat',
+          $hc.'CroftOrResidence',
+          $hc.'StoryReportOrTradition',
+          $hc.'HistoricalEvent',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'CroftOrResidence',
+      ),
+);
+$relationship_assignments['cms:stories_reports_and_traditions'][] = array(
+    'property'  => $hc.'composedBy',
+    'target'    => $hc.'Person',
+);
+$relationship_assignments['cms:stories_reports_and_traditions'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:stories_reports_and_traditions'][] = array(
+    'property'  => $hc.'informationObtainedFrom',
+    'target'    => $hc.'Resource',
+);
+$relationship_assignments['cms:stories_reports_and_traditions'][] = array(
+    'property'  => $hc.'locatedAt',
+    'target'    => $hc.'Subject',
+);
+$relationship_assignments['cms:stories_reports_and_traditions'][] = array(
+    'property'  => $hc.'sourceOfInformationOn',
+    'target'    => $hc.'Subject',
+);
+
+$relationship_assignments['cms:vehicles'][] = array(
+    'property'  => $hc.'associatedWith',
+    'target'    => array(
+          $hc.'Location',
+          $hc.'Business',
+          $hc.'Person',
+          $hc.'CroftOrResidence',
+      ),
+);
+$relationship_assignments['cms:vehicles'][] = array(
+    'property'  => $hc.'hasFile',
+    'target'    => $hc.'Subject',
+);
+
+$relationship_assignments['cms:image_details'][] = array(
+    'property'  => $hc.'isShownHere',
+    'target'    => array(
+          $hc.'LandmarkOrArchaeologicalSite',
+          $hc.'Business',
+          $hc.'HistoricalEvent',
+          $hc.'Location',
+          $hc.'GaelicVersebRdachd',
+          $hc.'ObjectOrArtefact',
+          $hc.'NaturalLandscapeFeature',
+          $hc.'StoryReportOrTradition',
+          $hc.'Boat',
+          $hc.'Person',
+          $hc.'CroftOrResidence',
+          $hc.'Organisation',
+          $hc.'Person',
+          $hc.'BuildingOrPublicAmenity',
+          $hc.'Resource',
+      ),
+);
 
 
