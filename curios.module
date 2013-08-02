@@ -52,6 +52,15 @@ function curios_subject_id_to_arg() { return ''; }
 function curios_menu() {
   $items = array();
 
+  $items['admin/structure/ldcms'] = array(
+    'title' => 'CURIOS: Linked Data CMS module settings.',
+    'description' => 'Managed LDCMS configuration.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('curios_admin'),
+    'access arguments' => array('administer users'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+
   $items['curios/manage'] = array(
     'title' => t('Manage Records'),
     'page callback' => 'curios_manage_page',
