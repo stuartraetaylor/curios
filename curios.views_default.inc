@@ -4,7 +4,7 @@ require_once('curios_ldcms.inc');
 require_once('curios.views_custom.inc');
 
 function curios_views_default_views() {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $views = array();
   $exports_path = drupal_get_path('module', 'curios') . '/views';
   $use_exports = FALSE;
@@ -42,7 +42,7 @@ function _curios_table_id($resource_name) {
 }
 
 function __curios_generate_default_view(&$view_spec) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
 
   $resource_name = $view_spec->getResource()->getMachineName();
   $table_id = _curios_table_id($resource_name);
@@ -97,7 +97,7 @@ function __curios_generate_display($view_name, &$view, &$view_spec, $base_fields
 }
 
 function __curios_generate_display_master_default(&$view, &$view_spec, $base_fields) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   
@@ -186,7 +186,7 @@ function __curios_generate_display_master_default(&$view, &$view_spec, $base_fie
 }
 
 function __curios_generate_display_summary_default(&$view, &$view_spec, $base_fields) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
 
@@ -352,7 +352,7 @@ function __curios_generate_display_summary_default(&$view, &$view_spec, $base_fi
 }
 
 function __curios_generate_display_properties_default(&$view, &$view_spec, $base_fields) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
 
@@ -515,7 +515,7 @@ function __curios_generate_display_properties_default(&$view, &$view_spec, $base
 }
 
 function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $field_id) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
 
@@ -1046,7 +1046,7 @@ function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fi
 }
 
 function __curios_generate_display_images_default(&$view, &$view_spec, $base_fields) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
@@ -1247,7 +1247,7 @@ function __curios_rdf_type_filter(&$handler, $view, $view_spec) {
 }
 
 function __curios_uri_filter(&$handler, $view, $view_spec) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource_name = $view_spec->getResource()->getMachineName();
   $handler->display->display_options['arguments'][$resource_name]['id'] = $resource_name;
   $handler->display->display_options['arguments'][$resource_name]['table'] = $view->base_table;

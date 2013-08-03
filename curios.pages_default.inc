@@ -4,7 +4,7 @@
  * Implements hook_default_page_manager_pages()
  */
 function curios_default_page_manager_pages() {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $pages = array();
 
   // For each view, create its panel page.
@@ -157,7 +157,7 @@ function _curios_generate_listing_panel(&$view_spec, $handler_id) {
 }
 
 function _curios_generate_details_panel(&$view_spec, $hander_id) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $view = views_get_view($view_spec->getMachineName());
   
   $handler = new stdClass;

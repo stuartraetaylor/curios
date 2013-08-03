@@ -21,7 +21,7 @@ function __curios_sparql_update($query) {
 }
 
 function __curios_sparql_prefixes() {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   
   $prefixes = '';
   $prefixes .= "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n";

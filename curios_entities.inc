@@ -109,8 +109,11 @@ class RDFView extends DrupalThing {
   public function setOptionalAll() {
     // Data fields.
     foreach ($this->resource->getDataFields() as $rdf_field) {
-        // DEBUG:
-        if ($rdf_field == NULL) { echo $this->getId() ."\n"; }
+      if ($rdf_field == NULL) { // DEBUG.
+        echo "Invalid field declaration in {$this->getId()}:\n";
+        var_dump($this->resource->getDataFields());
+      }
+
       if (!in_array($rdf_field->getMachineName(), $this->required_data_fields)) {
         $this->optional_data_fields[] = $rdf_field->getMachineName();
       }
@@ -118,6 +121,11 @@ class RDFView extends DrupalThing {
 
     // Object fields.
     foreach ($this->resource->getObjectFields() as $rdf_field) {
+      if ($rdf_field == NULL) { // DEBUG.
+        echo "Invalid field declaration in {$this->getId()}:\n";
+        var_dump($this->resource->getObjectFields());
+      }
+
       $this->optional_object_fields[] = $rdf_field->getMachineName();
     }
   }

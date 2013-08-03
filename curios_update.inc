@@ -323,7 +323,7 @@ function curios_update_form_page($resource_type, $subject_id = NULL) {
 }
 
 function _curios_execute_details_view($resource_name, $subject_id) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource_config = $config->getResource($resource_name);
   $view_config_id = $config->getViewForResource($resource_name);
   $view_config = $config->getView($view_config_id);
@@ -332,7 +332,7 @@ function _curios_execute_details_view($resource_name, $subject_id) {
 }
 
 function _curios_execute_relationship_view($resource_name, $relationship_name, $subject_id) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $resource_config = $config->getResource($resource_name);
   $view_config_id = $config->getViewForResource($resource_name);
   $view_config = $config->getView($view_config_id);
@@ -360,7 +360,7 @@ function curios_update_page() {
 }
 
 function curios_update_form($form, $form_state, $resource_type, $subject_id, $view_result) {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
   $field_instances = field_read_instances(array(

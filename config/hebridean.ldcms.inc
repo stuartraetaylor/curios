@@ -6,8 +6,11 @@ $namespaces = array(
 );
 
 $options = array(
+  'default_class' => 'hc:Subject',
+  'id_property' => 'hc:subjectID',
   'title_property' => 'dc:title',
   'description_property' => 'dc:description',
+  'image_class' => 'hc:Imagefile',
   'image_relationship_property' => 'hc:hasFile',
 );
 

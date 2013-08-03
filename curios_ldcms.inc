@@ -2,30 +2,19 @@
 require_once('curios_functions.inc');
 require_once('curios_entities.inc');
 
-function _curios_configuration($use_cache = FALSE) {
+function curios_configuration($config_file = NULL) {
   $config = &drupal_static(__FUNCTION__);
 
-  // Get the configuration from the cache.
   if (!isset($config)) {
-    $cache = cache_get('curios-config');
-    $config = ($cache && $use_cache) ? $cache->data : __curios_renew_cache_configuration();
+    $config_spec = curios_load_configuration_spec($config_file);
+    $config = curios_create_configuration($config_spec);
   }
 
-  //dpr($config); exit;
-
   return $config;
 }
 
-function __curios_renew_cache_configuration() {
-  $config = __curios_create_configuration();
-  cache_set('curios-config', $config, 'cache', CACHE_PERMANENT);
-
-  return $config;
-}
-
-function __curios_create_configuration() {
+function curios_create_configuration($config_spec) {
   $config = new LDCMSConfiguration();
-  $config_spec = __curios_load_configuration_spec();
   $config->setPrefixToNamespaceMap($config_spec['namespaces']);
 
   $config->setEndpoints(array(
@@ -56,21 +45,6 @@ function __curios_create_configuration() {
 
 
   return $config;
-}
-
-function __curios_load_configuration_spec() {
-  require 'config/hebridean.inc';
-
-  $config_spec = array(
-    'namespaces' => $namespaces,
-    'options' => $options,
-    'fields' => $fields,
-    'browsing_classes' => $browsing_classes,
-    'field_assignments' => $field_assignments,
-    'relationship_assignments' => $relationship_assignments,
-  );
-
-  return $config_spec;
 }
 
 function __curios_configuration_fields($config, $config_spec) {
@@ -172,4 +146,60 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $view->setOptionalAll();
   }
   
+}
+
+function curios_load_configuration_spec($config_file = NULL) {
+  $force_renew = ($config_file != NULL);
+  $config_file = _curios_check_config_file($config_file);
+
+  $config_spec = NULL;
+  if (!$force_renew) { // Attempt to read existing config spec.
+    $config_spec = curios_load_configuration_spec_from_database($config_file);
+  }
+
+  if ($config_spec == NULL) { // Renew configuration.
+    $config_spec = curios_load_configuration_from_file($config_file);
+
+    // Update database.
+    db_merge('curios_config')
+      ->key(array('file' => $config_file))
+      ->fields(array('data' => serialize($config_spec)))
+      ->execute();
+  }
+
+  return $config_spec;
+}
+
+function curios_load_configuration_from_file($config_file) {
+  require "config/$config_file";
+
+  $config_spec = array(
+    'namespaces' => $namespaces,
+    'options' => $options,
+    'fields' => $fields,
+    'browsing_classes' => $browsing_classes,
+    'field_assignments' => $field_assignments,
+    'relationship_assignments' => $relationship_assignments,
+  );
+
+  return $config_spec;
+}
+
+function curios_load_configuration_spec_from_database($config_file) {
+  $results = db_select('curios_config', 'c')
+    ->fields('c')
+    ->condition('file', $config_file, '=')
+    ->execute()
+    ->fetchAssoc();
+
+  return empty($results) ? NULL : unserialize($results['data']);
+}
+
+function _curios_check_config_file($config_file) {
+  if ($config_file == NULL) {
+    $current_config_file = variable_get('ldcms_config');
+    $config_file = ($current_config_file == NULL) ? 'sample.ldcms.inc' : $current_config_file;
+  }
+
+  return $config_file;
 }

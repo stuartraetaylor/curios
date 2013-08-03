@@ -1,34 +1,39 @@
 <?php
 require_once('curios_functions.inc');
-require_once('curios_entities.inc');
 require_once('curios_ldcms.inc');
 
+function curios_schema() {
+  $schema = array();
+  
+  $schema['curios_config'] = array(
+    'description' => 'The current loaded LDCMS configuration',
+    'fields' => array(
+      'file' => array(
+        'description' => 'Configuration file name.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'data' => array(
+        'description' => 'The serialised config spec.',
+        'type' => 'text',
+        'serialize' => TRUE,
+      ),
+    ),
+    'primary key' => array('file'),
+  );
+  
+  return $schema;
+}
 
-/**
- * Implements hook_install().
- */
 function curios_install() {
-  // Create the SPARQL Views resource type(s).
-  foreach (_curios_installed_resource_types() as $resource_type) {
-    sparql_views_resource_type_save((object)$resource_type);
-  }
-
-  // Create all the fields we are adding.
-  foreach (_curios_installed_fields() as $field) {
-    try {
-     field_create_field($field);
-    } catch (Exception $e) {
-      echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
-  }
-
-  // Attach instances of the fields to the resource type and node type.
-  foreach (_curios_installed_instances() as $bundle_name => $bundle) {
-    foreach ($bundle as $instance) {
-      $instance['bundle'] = $bundle_name;
-      field_create_instance($instance);
-    }
-  }
+  // Register end point.
+  $endpoints = array();
+  $endpoints['curios_query_endpoint'] = (object)array(
+    'title' => 'CURIOS: query endpoint',
+    'uri' => $config_endpoints['dataset']['query'],
+  );
+  sparql_views_register_endpoints($endpoints);
   
   // Create record types menu.
   $menu = array(
@@ -49,112 +54,5 @@ function curios_install() {
  * Implements hook_uninstall().
  */
 function curios_uninstall() {
-  // Delete the fields.
-  foreach (_curios_installed_fields() as $field) {
-    try {
-      field_delete_field($field['field_name']);
-    } catch (Exception $e) {
-      echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
-
-  }
-
-  // Delete the resource type.
-  foreach (_curios_installed_resource_types(TRUE) as $resource_type) {
-    try {
-      sparql_views_resource_type_delete($resource_type['name']);
-    } catch (Exception $e) {
-      echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
-  }
-  
   // TODO delete menu, endpoint etc.
-}
-
-/**
- * Return a structured array defining the SPARQL Views resource types.
- */
-function _curios_installed_resource_types($uninstall = FALSE) {
-  $config = _curios_configuration();
-  // Use get_t() to get the name of our localization function for translation
-  // during install, when t() is not available.
-  $t = get_t();
-  $resource_types = array();
-
-  // Create an array of endpoints.
-  $endpoints = array();
-  $endpoints['curios_query_endpoint'] = (object)array(
-    'title' => 'CURIOS: query endpoint',
-    'uri' => 'http://localhost:3030/dataset/query',
-  );
-
-  // Save the endpoints to the database.
-  if (!$uninstall) {
-    sparql_views_register_endpoints($endpoints);
-  }
-  
-  // Define the SPARQL Views resource type.
-  foreach ($config->getResources() as $entity) {
-    $resource_types[$entity->getMachineName()] = array(
-      'name' => $entity->getMachineName(),
-      'label' => $t($entity->getLabel()),
-      'base' => 'sparql_views_resource',
-      'description' => $t($entity->getLabel()),
-      'endpoints' => array($endpoints['curios_query_endpoint']->uri => TRUE),
-    );
-  }
-
-  return $resource_types;
-}
-
-/**
- * Return a structured array defining the fields created by this resource type.
- * Note that field names must be shorter than 32 characters.
- */
-function _curios_installed_fields() {
-  $config = _curios_configuration();
-  $fields = array();
-  $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
-  
-  foreach ($config->getFields() as $field) {
-    // TODO integrate formatter into field object
-    $settings = ($field->getMachineName() == $config->getDescriptionField()) ? $description_settings : array('default_formatter' => 'filtered_html');
-
-    $fields[$field->getMachineName()] = array(
-      'field_name' => $field->getMachineName(),
-      'type' => $field->getType(),
-      'settings' => $settings,
-    );
-  }
-      
-  return $fields;
-}
-
-/**
- * Return a structured array defining the instances for this content type.
- */
-function _curios_installed_instances() {
-  $config = _curios_configuration();
-  $resource_instances = array();
-  $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
-
-  foreach ($config->getResources() as $entity) {
-    $field_instances = array();
-    
-    foreach ($entity->getFields() as $field) {
-      // TODO integrate formatter into field object
-      $settings = ($field->getMachineName() == $config->getDescriptionField()) ? $description_settings : array('default_formatter' => 'filtered_html');
-
-      $field_instances[] = array(
-        'field_name' => $field->getMachineName(), 
-        'label' => t($field->getLabel()), 
-        'entity_type' => 'sparql_views_resource',
-        'settings' => $settings,
-      );
-    }
-    
-    $resource_instances[$entity->getMachineName()] = $field_instances;
-  }
-
-  return $resource_instances;
 }

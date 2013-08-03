@@ -53,7 +53,7 @@ function curios_menu() {
   $items = array();
 
   $items['admin/structure/ldcms'] = array(
-    'title' => 'CURIOS: Linked Data CMS module settings.',
+    'title' => 'Linked Data CMS settings',
     'description' => 'Managed LDCMS configuration.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('curios_admin'),
@@ -177,7 +177,7 @@ function curios_search_engine_form_page() {
 
 function curios_search_engine_form($form, $form_state) {
   $form = array();
-  $config = _curios_configuration();
+  $config = curios_configuration();
   
   $options = array();
   foreach ($config->getViews() as $view_name => $view_spec) {
@@ -199,7 +199,7 @@ function curios_search_engine_form($form, $form_state) {
 
 function curios_search_engine_form_submit($form, &$form_state) {
   $base_path = base_path();
-  $config = _curios_configuration();
+  $config = curios_configuration();
 
   $query = $form_state['values']['query'];
   $view_name = $form_state['values']['type'];
@@ -222,7 +222,7 @@ function curios_search_engine_form_submit($form, &$form_state) {
  * functions should be used.
  */
 function curios_rdf_mapping() {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   $mappings = array();
 
   foreach ($config->getResources() as $entity) {
@@ -251,6 +251,6 @@ function curios_rdf_mapping() {
  * @see http://api.drupal.org/api/drupal/modules--rdf--rdf.api.php/function/hook_rdf_namespaces/7
  */
 function curios_rdf_namespaces() {
-  $config = _curios_configuration();
+  $config = curios_configuration();
   return $config->getPrefixToNamespaceMap();
 }

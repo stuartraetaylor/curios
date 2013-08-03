@@ -14,7 +14,7 @@ class curios_handler_field extends views_handler_field {
    */
   function render($values) {
     // Replace the link target path.
-    $config = _curios_configuration();
+    $config = curios_configuration();
     $display = $this->view->display[$this->view->current_display];
     $targets = $display->display_options['curios']['relationship_targets'];
     $subject_id = $values->{'hc_subject_hc_subject_id'};

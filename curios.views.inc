@@ -36,7 +36,7 @@ function _curios_view_rewrite_title(&$view) {
         drupal_set_title($view->human_name);
         break;
       case 'summary':
-        $config = _curios_configuration();
+        $config = curios_configuration();
         $view_spec = $config->getView($view->name);
         $resource_id = $view_spec->getResource()->getId();
         $title_field = $config->getTitleField();
@@ -52,7 +52,7 @@ function _curios_views_link_target_rewriter(&$view) {
 
   if (!empty($view->result) && startsWith('object_', $display_name) && $display->display_options['curios']['rewrite_object_target'] == TRUE) {
     // Get resource for this view.
-    $config = _curios_configuration();
+    $config = curios_configuration();
     $view_spec = $config->getView($view->name);
     $resource = $view_spec->getResource();
     $resource_name = $resource->getMachineName();
