@@ -4,6 +4,10 @@
  * Implements hook_default_page_manager_pages()
  */
 function curios_default_page_manager_pages() {
+  if (!variable_get('ldcms_installed')) {
+    return;
+  }
+
   $config = curios_configuration();
   $pages = array();
 

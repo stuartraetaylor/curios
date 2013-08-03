@@ -44,6 +44,9 @@ function curios_install() {
   menu_save($menu);
   __curios_activate_block('menu', 'menu-curios', 'sidebar_first', 'bartik', '', '0');
 
+  // Default to Hebridean Connections configuration.
+  variable_set('ldcms_config', 'hebridean.ldcms.inc');
+
    // Clear caches.
   cache_clear_all(NULL, 'cache_views', TRUE);
   menu_rebuild();

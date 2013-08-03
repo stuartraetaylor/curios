@@ -4,6 +4,10 @@ require_once('curios_ldcms.inc');
 require_once('curios.views_custom.inc');
 
 function curios_views_default_views() {
+  if (!variable_get('ldcms_installed')) {
+    return;
+  }
+
   $config = curios_configuration();
   $views = array();
   $exports_path = drupal_get_path('module', 'curios') . '/views';

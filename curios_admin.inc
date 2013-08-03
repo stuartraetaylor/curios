@@ -47,6 +47,8 @@ function curios_admin_submit($form, &$form_state) {
   $config_data_new = curios_load_configuration_spec($config_file_new);
   $config_new = curios_create_configuration($config_data_new);
 
+  variable_set('ldcms_installed', TRUE);
+
   // Add/remove fields.
   _curios_update_entity_batch_start($config_previous, $config_new, $form_state['values']['quick']);
 }
