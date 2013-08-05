@@ -16,6 +16,9 @@ function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mod
     }
   }
 
+  // Disable views, pages, etc.
+  variable_set('ldcms_installed', FALSE);
+
   batch_set(array(
     'title' => t('Updating LDCMS Entities'),
     'operations' => array(
@@ -37,6 +40,7 @@ function _curios_install_config_batch_finished($success, $results, $operations) 
   if ($success) {
     drupal_set_message('Entity update successful: ' . number_format(count($results)) . ' entities updated.');
     cache_clear_all('*', 'cache_views', TRUE);
+    variable_set('ldcms_installed', TRUE);
   } else {
     drupal_set_message('Entity installation failed.', 'error');
   }
