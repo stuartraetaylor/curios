@@ -1,6 +1,6 @@
 <?php
 
-function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mode) {
+function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mode = FALSE) {
   $install_fields = $config_new->getFields();
   $install_resources = $config_new->getResources();
 
@@ -126,7 +126,7 @@ function _curios_create_fields($fields, &$context) {
     try {
       field_create_field($field);
     } catch (Exception $e) {
-      dd($e);
+      dd($e->getMessage());
     }
 
     unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
@@ -161,7 +161,7 @@ function _curios_remove_fields($fields, &$context) {
     try {
       field_delete_field($field->getId());
     } catch (Exception $e) {
-      dd($e);
+      dd($e->getMessage());
     }
 
     unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
@@ -196,7 +196,7 @@ function _curios_create_field_instances($field_instances, &$context) {
     try {
       field_create_instance($instance);
     } catch (Exception $e) {
-      dd($e);
+      dd($e->getMessage());
     }
 
     unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
@@ -231,7 +231,7 @@ function _curios_remove_field_instances($field_instances, &$context) {
     try {
       field_create_instance($instance);
     } catch (Exception $e) {
-      dd($e);
+      dd($e->getMessage());
     }
 
     unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
