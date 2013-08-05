@@ -22,7 +22,7 @@ Required modules from Drupal.org version control:
   * Libraries     7.x-2.x    https://drupal.org/project/libraries
   * Views PHP     7.x-1.x    https://drupal.org/project/views_php
   * Views Litepager 7.x-3.x  https://drupal.org/project/views_litepager
-  * Devel     latest-version (optional)
+  * Devel                    https://drupal.org/project/devel
 
 Special Requirements:
   * SPARQL Views CURIOS branch from github:

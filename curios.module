@@ -168,14 +168,11 @@ function curios_filter_description_links($text, $filter, $format, $langcode, $ca
   return preg_replace($subject_link, $replacement, $text);
 }
 
-function curios_search_engine_form_page() {
-  $page = array();
-  $page[] = array('#markup' => '<h2>TEST SEARCH ENGINE From!!!</h2>');
-  $page[] = drupal_get_form('curios_search_engine_form');
-  return $page;
-}
-
 function curios_search_engine_form($form, $form_state) {
+  if (!variable_get('ldcms_installed')) {
+    return;
+  }
+
   $form = array();
   $config = curios_configuration();
   

@@ -110,7 +110,7 @@ class RDFView extends DrupalThing {
     // Data fields.
     foreach ($this->resource->getDataFields() as $rdf_field) {
       if ($rdf_field == NULL) { // DEBUG.
-        echo "Invalid field declaration in {$this->getId()}:\n";
+        dd("Error: Invalid field declaration in {$this->getId()}.");
         var_dump($this->resource->getDataFields());
       }
 
@@ -122,7 +122,7 @@ class RDFView extends DrupalThing {
     // Object fields.
     foreach ($this->resource->getObjectFields() as $rdf_field) {
       if ($rdf_field == NULL) { // DEBUG.
-        echo "Invalid field declaration in {$this->getId()}:\n";
+        dd("Error: Invalid field declaration in {$this->getId()}.");;
         var_dump($this->resource->getObjectFields());
       }
 
