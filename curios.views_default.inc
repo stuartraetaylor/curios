@@ -1173,46 +1173,17 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields'][$base_fields['title']]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$base_fields['title']]['required'] = 1;
 
-  /* Field: PHP Image Output */
-  $field_name = 'hc_image_php_output';
-  $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
-  $handler->display->display_options['fields'][$field_name]['table'] = 'views';
-  $handler->display->display_options['fields'][$field_name]['field'] = 'php';
-  $handler->display->display_options['fields'][$field_name]['label'] = '';
-  $handler->display->display_options['fields'][$field_name]['ui_name'] = 'PHP Image Output';
-  $handler->display->display_options['fields'][$field_name]['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['make_link'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['absolute'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['external'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields'][$field_name]['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields'][$field_name]['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['trim'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['html'] = 0;
-  $handler->display->display_options['fields'][$field_name]['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields'][$field_name]['element_default_classes'] = 1;
-  $handler->display->display_options['fields'][$field_name]['hide_empty'] = 0;
-  $handler->display->display_options['fields'][$field_name]['empty_zero'] = 0;
-  $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields'][$field_name]['use_php_setup'] = 0;
-  $handler->display->display_options['fields'][$field_name]['php_value'] = '';
-  $handler->display->display_options['fields'][$field_name]['php_output'] = '<?php
-  $image_path = str_replace(\'http://www.hebrideanconnections.com/\', \'http://www.dotrural.ac.uk/curiosdemo/images/\', $row->hc_imagefile_hc_url);
-  $output = \'\';
-  $output .= \'<a href="\'.$image_path.\'" alt="$row->'. $base_fields['title'] .'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
-  echo $output;
-  ?>';
-  //var_dump($handler->display->display_options['fields'][$field_name]['php_output']); exit;
-  $handler->display->display_options['fields'][$field_name]['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields'][$field_name]['php_click_sortable'] = '';
-  $handler->display->display_options['displays'] = array(
-    'details' => 'details',
-    'default' => 0,
-    'page' => 0,
-  );
+  // Rewrite URL and output html.
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['id'] = 'curios_image_thumbnail_field';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_image_thumbnail_field';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_imagefile_hc_url]';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = FALSE;
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['title_field'] = $base_fields['title'];
+
 
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';

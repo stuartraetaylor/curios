@@ -12,8 +12,16 @@ function curios_views_data() {
     'title' => t('Link Target Rewriter'),
     'help' => t('Rewrites link target based on the ontology.'),
     'field' => array(
-      'help' => t('CURIOS custom field handler.'),
-      'handler' => 'curios_handler_field',
+      'help' => t('CURIOS link target rewriter.'),
+      'handler' => 'curios_link_target_rewriter',
+    ),
+  );
+  $data['views']['curios_image_thumbnail_field'] = array(
+    'title' => t('Image thumbnail field'),
+    'help' => t('Displays images with thumbnails using Timthumb.'),
+    'field' => array(
+      'help' => t('CURIOS image thumbnail field.'),
+      'handler' => 'curios_image_thumbnail_field',
     ),
   );
   return $data;
