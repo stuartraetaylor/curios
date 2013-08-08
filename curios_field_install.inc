@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Batch API start handler.
+ *
+ * Removes old fields and resources using the previously loaded configuration (if any), and then installs new ones
+ * using the current configuration. The batch is triggered from the submit handler for the admin settings page.
+ */
 function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mode = FALSE) {
   $install_fields = $config_new->getFields();
   $install_resources = $config_new->getResources();
@@ -36,6 +42,9 @@ function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mod
    
 }
 
+/**
+ * Batch fininshed handler.
+ */
 function _curios_install_config_batch_finished($success, $results, $operations) {
   if ($success) {
     drupal_set_message('Entity update successful: ' . number_format(count($results)) . ' entities updated.');
@@ -46,6 +55,9 @@ function _curios_install_config_batch_finished($success, $results, $operations) 
   }
 }
 
+/**
+ * Creates SPARQL Views resource types.
+ */
 function _curios_create_resource_types($resource_types, &$context) {
   $limit = 5;
 
@@ -79,6 +91,9 @@ function _curios_create_resource_types($resource_types, &$context) {
 
 }
 
+/**
+ * Removes SPARQL Views resource types.
+ */
 function _curios_remove_resource_types($resource_types, &$context) {
   $limit = 5;
 
@@ -110,6 +125,9 @@ function _curios_remove_resource_types($resource_types, &$context) {
 
 }
 
+/**
+ * Creates fields via the Field API.
+ */
 function _curios_create_fields($fields, &$context) {
   $limit = 10;
 
@@ -145,6 +163,9 @@ function _curios_create_fields($fields, &$context) {
   }
 }
 
+/**
+ * Removes fields via the Field API.
+ */
 function _curios_remove_fields($fields, &$context) {
   $limit = 10;
 
@@ -180,6 +201,9 @@ function _curios_remove_fields($fields, &$context) {
   }
 }
 
+/**
+ * Creates field instances for each resource type.
+ */
 function _curios_create_field_instances($field_instances, &$context) {
   $limit = 10;
 
@@ -215,6 +239,9 @@ function _curios_create_field_instances($field_instances, &$context) {
   }
 }
 
+/**
+ * Removes all field instances.
+ */
 function _curios_remove_field_instances($field_instances, &$context) {
   $limit = 10;
 
@@ -250,6 +277,10 @@ function _curios_remove_field_instances($field_instances, &$context) {
   }
 }
 
+/**
+ * Calculates a diff between the previous and current configurations to reduce the number of entities being
+ * created/removed in the Drupal database.
+ */
 function _curios_config_diff($config_old, $config_new) {
   $remove_fields = array_diff_key($config_old->getFields(), $config_new->getFields());
   $install_fields = array_diff_key($config_new->getFields(), $config_old->getFields());
@@ -283,6 +314,9 @@ function _curios_config_diff($config_old, $config_new) {
   return array($remove_fields, $install_fields, $remove_resources, $install_resources);
 }
 
+/**
+ * Creates to input array to install resource types using a configuration.
+ */
 function _curios_installed_resource_types($resources, $config) {
   $config_endpoints = $config->getEndpoints();
 
@@ -302,6 +336,9 @@ function _curios_installed_resource_types($resources, $config) {
   return $resource_types;
 }
 
+/**
+ * Creates to input array to install fields using a configuration.
+ */
 function _curios_installed_fields($install_fields, $config) {
   $fields = array();
   $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
@@ -320,6 +357,9 @@ function _curios_installed_fields($install_fields, $config) {
   return $fields;
 }
 
+/**
+ * Creates to input array to install field instances using a configuration.
+ */
 function _curios_installed_instances($resources, $config) {
   $field_instances = array();
   $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');

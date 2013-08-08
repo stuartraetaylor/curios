@@ -1,6 +1,11 @@
 <?php
 require_once('scripts/php_fast_cache.php');
 
+/**
+ * Page callback.
+ *
+ * Displays the main 'Manage Repository' page.
+ */
 function curios_manage_page() {
   $page = array();
 
@@ -21,6 +26,11 @@ EOT;
   return $page;
 }
 
+/**
+ * Page callback.
+ *
+ * Displays the 'Admin Tools' page.
+ */
 function curios_admin_tools_page() {
   $latest_records = _curios_latest_record_identifiers(15);
   $content = '';
@@ -36,6 +46,9 @@ function curios_admin_tools_page() {
   return array('#markup' => $content);
 }
 
+/**
+ * Loads a SPARQL Views resource type.
+ */
 function curios_resource_type_load($resource_name) {
   if (!empty($resource_name)) {
     $resource_type = sparql_views_resource_type_load($resource_name);
@@ -50,6 +63,11 @@ function curios_resource_type_load($resource_name) {
   return $resource_name;
 }
 
+/**
+ * Form callback.
+ *
+ * Lists the resources that can be created,
+ */
 function curios_manage_insert_form($form, &$form_state) {
   $form = array();
 
@@ -66,6 +84,11 @@ function curios_manage_insert_form($form, &$form_state) {
   return $form;
 }
 
+/**
+ * Submit handler.
+ *
+ * Redirect the insert form to the appropriate insert form page.
+ */
 function curios_manage_insert_form_submit($form, &$form_state) {
   $type = $form_state['values']['type'];
   $path = "curios/manage/create/$type";
@@ -73,6 +96,11 @@ function curios_manage_insert_form_submit($form, &$form_state) {
   $form_state['redirect'] = array($path, array(), 302);
 }
 
+/**
+ * Form callback.
+ *
+ * Gets the browsing class and subject id of the reocrd to be updated.
+ */
 function curios_manage_update_form($form, &$form_state) {
   $form = array();
 
@@ -88,6 +116,11 @@ function curios_manage_update_form($form, &$form_state) {
   return $form;
 }
 
+/**
+ * Submit handler.
+ *
+ * Redirects to the appropriate update page.
+ */
 function curios_manage_update_form_submit($form, &$form_state) {
   $type = $form_state['values']['type'];
   $id = $form_state['values']['subject_id'];
@@ -96,13 +129,11 @@ function curios_manage_update_form_submit($form, &$form_state) {
   $form_state['redirect'] = array($path, array(), 302);
 }
 
-function curios_delete_page() {
-  $page = array();
-  $page[] = array('#markup' => "<p>Enter the SubjectId below then click 'Delete Record' to delete the record.</p>");
-  $page[] = drupal_get_form('curios_manage_delete_form');
-  return $page;
-}
-
+/**
+ * Submit handler.
+ *
+ * Removes a record from the triple store.
+ */
 function curios_delete_form_submit($form, &$form_state) {
   // TODO add confirm form
   $subject_id = $form_state['values']['identifier'];
@@ -116,6 +147,9 @@ function curios_delete_form_submit($form, &$form_state) {
   }
 }
 
+/**
+ * Generates a form select element from the browsing classes in the configuration.
+ */
 function __curios_resources_form_select() {
   $options = array();
   $resources = entity_load('sparql_views_resource_type');
@@ -138,6 +172,11 @@ function __curios_resources_form_select() {
 
 // ------ INSERT -------
 
+/**
+ * Page callback.
+ *
+ * Insert Record form page.
+ */
 function curios_insert_form_page($resource_type) {
   $page = array();
   $page[] = array('#markup' => "<p>Complete the form below to create a new record.</p>");
@@ -145,6 +184,11 @@ function curios_insert_form_page($resource_type) {
   return $page;
 }
 
+/**
+ * Page callback.
+ *
+ * Page to select to resource type to be created.
+ */
 function curios_insert_page() {
   $page = array();
   $page[] = array('#markup' => "<p>Select the record type below then click 'Next' to continue.</p>");
@@ -153,6 +197,11 @@ function curios_insert_page() {
   return $page;
 }
 
+/**
+ * Form callback.
+ *
+ * Insert record form. This form accepts title, description and literal fields.
+ */
 function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_state);
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
@@ -225,6 +274,11 @@ function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_sta
   return $form;
 }
 
+/**
+ * Submit handler.
+ *
+ * Processes the insert form and builds the set of triples to be inserted.
+ */
 function curios_insert_form_submit($form, &$form_state) {
   $resource_name = $form_state['values']['resource'];
   //$resource_type = sparql_views_resource_type_load($resource_name);
@@ -288,6 +342,12 @@ function curios_insert_form_submit($form, &$form_state) {
 // ------------
 
 /* Update */
+
+/**
+ * Page callback.
+ *
+ * Displays the update form.
+ */
 function curios_update_form_page($resource_type, $subject_id = NULL) {
   $view_result = _curios_execute_details_view($resource_type->name, $subject_id);
 
@@ -303,6 +363,9 @@ function curios_update_form_page($resource_type, $subject_id = NULL) {
   }
 }
 
+/**
+ * Executes the details view for a specified record, used to display the current values on the update form.
+ */
 function _curios_execute_details_view($resource_name, $subject_id) {
   $config = curios_configuration();
   $resource_config = $config->getResource($resource_name);
@@ -312,6 +375,9 @@ function _curios_execute_details_view($resource_name, $subject_id) {
   return views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
 }
 
+/**
+ * Executes a relationship view, used to display the current relationships in the delete relationships fieldset.
+ */
 function _curios_execute_relationship_view($resource_name, $relationship_name, $subject_id) {
   $config = curios_configuration();
   $resource_config = $config->getResource($resource_name);
@@ -332,6 +398,11 @@ function _curios_execute_relationship_view($resource_name, $relationship_name, $
   //echo $view->render('block_view');
 }
 
+/**
+ * Page callback.
+ *
+ * Get the resource type and id to be updated.
+ */
 function curios_update_page() {
   $page = array();
   $page[] = array('#markup' => "<p>Select the record type and enter the SubjectId below then click 'Next' to continue.</p>");
@@ -340,6 +411,13 @@ function curios_update_page() {
   return $page;
 }
 
+/**
+ * Form callback.
+ *
+ * The update form. This displays the existing values for a record by executing the appropriate views and using them
+ * to render a form. Title, description and literal fields are single value. Relationships can be added or removed, these
+ * are multivalued.
+ */
 function curios_update_form($form, $form_state, $resource_type, $subject_id, $view_result) {
   $config = curios_configuration();
   $entity_info = entity_get_info('sparql_views_resource');
@@ -617,31 +695,31 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   return $form;
 }
 
+/** Ajax callback. */
 function curios_update_relationship_listing_callback($form, $form_state) {
   return $form['relationship_listing_fieldset'];
 }
-
+/** Ajax callback. */
 function curios_update_relationship_listing_remove($form, &$form_state) {
   $form_state['storage']['relationship_listing_group_remove'][] = $form_state['triggering_element']['#name'];
   $form_state['rebuild'] = TRUE;
 }
-
+/** Ajax callback. */
 function curios_update_relationship_listing_undo($form, &$form_state) {
   $remove = function($value) use (&$form_state) { return $value != $form_state['triggering_element']['#name']; };
   $form_state['storage']['relationship_listing_group_remove'] = array_filter($form_state['storage']['relationship_listing_group_remove'], $remove);
   $form_state['rebuild'] = TRUE;
 }
-
-
+/** Ajax callback. */
 function curios_update_relationship_input_add($form, &$form_state) {
   $form_state['storage']['relationship_group_count'] += 1;
   $form_state['rebuild'] = TRUE;
 }
-
+/** Ajax callback. */
 function curios_update_relationship_input_callback($form, $form_state) {
   return $form['relationship_fieldset'];
 }
-
+/** Ajax callback. */
 function curios_update_relationship_input_remove($form, &$form_state) {
   $form_state['storage']['relationship_group_remove'][] = $form_state['triggering_element']['#name'];
   $form_state['rebuild'] = TRUE;
@@ -650,6 +728,12 @@ function curios_update_relationship_input_remove($form, &$form_state) {
 
 // VALIDATION HANDLERS
 
+/**
+ * Form validation handler.
+ *
+ * Validates the relationships in the update form. The relationships value is checked syntactically, and the relationship
+ * is validated against the configuration.
+ */
 function curios_update_form_validate($form, &$form_state) {
   $resource_name = $form_state['values']['resource'];
 
@@ -668,6 +752,9 @@ function curios_update_form_validate($form, &$form_state) {
   }
 }
 
+/**
+ * Uses the relationship targets defined in the configuration to check whether a relationship is valid.
+ */
 function _curios_is_valid_relationship_assertion($resource_name, $relationship_name, $subject_id) {
   $config = curios_configuration();
   $resource = $config->getResource($resource_name);
@@ -690,6 +777,12 @@ function _curios_is_valid_relationship_assertion($resource_name, $relationship_n
 // SUBMIT HANDLERS
 
 /* Update */
+
+/**
+ * Submit handler.
+ *
+ * Processes the update form and generates the tripled to be added/removed.
+ */
 function curios_update_form_submit($form, &$form_state) {
   $resource_name = $form_state['values']['resource'];
   $subject_id = $form_state['values']['identifier'];
@@ -784,7 +877,11 @@ function curios_update_form_submit($form, &$form_state) {
   }
 }
 
-
+/**
+ * Ajax callback.
+ *
+ * Returns a list of matching values for a literal field input autocomplete.
+ */
 function curios_autocomplete_fields($resource_name, $field_name, $q = '') {
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
@@ -815,6 +912,7 @@ function curios_autocomplete_fields($resource_name, $field_name, $q = '') {
   drupal_json_output($matches);
 }
 
+/** Generates a new subject id for the insert page. */
 function __generate_new_subject_id() { return intval(_curios_fetch_max_identifier()) + 1; }
 
 // FIXME the conditions in the below functions should eventually be part of the config.

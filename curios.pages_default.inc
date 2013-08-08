@@ -1,7 +1,13 @@
 <?php
 
 /**
- * Implements hook_default_page_manager_pages()
+ * Implements hook_default_page_manager_pages.
+ *
+ * Generates default panels pages for each browsing class in the configuration.
+ *
+ * Each page has two panel varients - the listings panel and the details panel. The listings panel
+ * displays the listing view. The details panel uses the layout defined in curios.layouts.inc
+ * to display the summary, field listing, gallery and relationships blocks.
  */
 function curios_default_page_manager_pages() {
   if (!variable_get('ldcms_installed')) {
@@ -12,17 +18,26 @@ function curios_default_page_manager_pages() {
   $pages = array();
 
   // For each view, create its panel page.
-  foreach ($config->getViews() as $view_name=>$view_spec) {
-    //dpr($view_name);
+  foreach ($config->getViews() as $view_spec) {
     $pages[__panel_page_id($view_spec->getMachineName())] = __curios_generate_panel_page($view_spec);
   }
   
   return $pages;
 }
 
+/**
+ * View name to panel page name mapping.
+ */
 function __panel_page_id($view_name) { return $view_name.'_panel_page'; }
+
+/**
+ * View name to panel varient name mapping.
+ */
 function __panel_varient_id($view_name, $varient_name) { return 'page_'.__panel_page_id($view_name).'_panel_context_'.$varient_name; }
 
+/**
+ * Generates the panel page for a browsing class.
+ */
 function __curios_generate_panel_page(&$view_spec) {
   $page = new stdClass;
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
@@ -71,6 +86,9 @@ function __curios_generate_panel_page(&$view_spec) {
   return $page;
 }
 
+/**
+ * Generates the listings panel varient.
+ */
 function _curios_generate_listing_panel(&$view_spec, $handler_id) {
   $handler = new stdClass;
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
@@ -160,6 +178,9 @@ function _curios_generate_listing_panel(&$view_spec, $handler_id) {
   return $handler;
 }
 
+/**
+ * Generates the details panel varient.
+ */
 function _curios_generate_details_panel(&$view_spec, $hander_id) {
   $config = curios_configuration();
   $view = views_get_view($view_spec->getMachineName());

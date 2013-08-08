@@ -2,6 +2,11 @@
 require_once('curios_functions.inc');
 require_once('curios_sparql.inc');
 
+/**
+ * Implements hook_schema.
+ *
+ * Database table to cache configuration files.
+ */
 function curios_schema() {
   $schema = array();
   
@@ -26,6 +31,11 @@ function curios_schema() {
   return $schema;
 }
 
+/**
+ * Implements hook_install.
+ *
+ * Registers endpoint, creates menu for record types, sets default configuration file.
+ */
 function curios_install() {
   // Register end point.
   $config_endpoints = curios_endpoints();
@@ -55,8 +65,8 @@ function curios_install() {
 }
 
 /**
- * Implements hook_uninstall().
+ * Implements hook_uninstall.
  */
 function curios_uninstall() {
-  // TODO delete menu, endpoint etc.
+  // TODO clean up.
 }

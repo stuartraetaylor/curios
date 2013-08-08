@@ -2,6 +2,9 @@
 require_once('curios_functions.inc');
 require_once('curios_sparql.inc');
 
+/**
+ * Loads the configuration spec and creates the LDCMSConfiguration.
+ */
 function curios_configuration($config_file = NULL) {
   $config = &drupal_static(__FUNCTION__);
 
@@ -13,6 +16,9 @@ function curios_configuration($config_file = NULL) {
   return $config;
 }
 
+/**
+ * Creates an LDCMSConfiguration from a config spec.
+ */
 function curios_create_configuration($config_spec) {
   $config = new LDCMSConfiguration();
   $config->setPrefixToNamespaceMap($config_spec['namespaces']);
@@ -38,6 +44,9 @@ function curios_create_configuration($config_spec) {
   return $config;
 }
 
+/**
+ * Creates field and relationship objects for each field in the config spec.
+ */
 function __curios_configuration_fields($config, $config_spec) {
   // __curios_sparql_fetch_unique_fields_relationships($config);
   foreach ($config_spec['fields'] as $row) {
@@ -51,6 +60,9 @@ function __curios_configuration_fields($config, $config_spec) {
   }
 }
 
+/**
+ * Mapping between field types used in the config spec and field types in Drupal.
+ */
 function __curios_translate_field_type($field_type) {
   switch ($field_type) {
     case 'relationship':
@@ -65,6 +77,9 @@ function __curios_translate_field_type($field_type) {
 function __curios_browsing_class_id_from_name($name) {
   return 'ldcms_'.$name; }
 
+/**
+ * Creates RDFResource and RDFView instances from the browsing classes defined in the config spec.
+ */
 function __curios_configuration_resources_views($config, $config_spec) {
   $resourceToViewMap = array();
   $baseClassToResourceMap = array();
@@ -76,7 +91,7 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $browsing_class_name = $row['name'];
     $browsing_class_id = __curios_browsing_class_id_from_name($browsing_class_name);
     $browsing_class_label = $row['label'];
-    $view_path = __curios_path_from_id($browsing_class_id);
+    $view_path = __curios_path_from_cmsid($browsing_class_id);
 
     // Resource corresponding to base class.
     $base_resource_curie = $row['base'];
@@ -139,6 +154,11 @@ function __curios_configuration_resources_views($config, $config_spec) {
   
 }
 
+/**
+ * Loads the config spec.
+ *
+ * If the config spec has not be previously loaded, it is read from a file in the config/ directory.
+ */
 function curios_load_configuration_spec($config_file = NULL) {
   $force_renew = ($config_file != NULL);
   $config_file = _curios_check_config_file($config_file);
@@ -161,6 +181,9 @@ function curios_load_configuration_spec($config_file = NULL) {
   return $config_spec;
 }
 
+/**
+ * Loads the config spec from a the specified file.
+ */
 function curios_load_configuration_from_file($config_file) {
   require "config/$config_file";
 
@@ -176,6 +199,9 @@ function curios_load_configuration_from_file($config_file) {
   return $config_spec;
 }
 
+/**
+ * Loads a previously loaded config spec from the database.
+ */
 function curios_load_configuration_spec_from_database($config_file) {
   $results = db_select('curios_config', 'c')
     ->fields('c')
@@ -186,6 +212,9 @@ function curios_load_configuration_spec_from_database($config_file) {
   return empty($results) ? NULL : unserialize($results['data']);
 }
 
+/**
+ * Determines the config file name, falls back to sample.ldcms.inc.
+ */
 function _curios_check_config_file($config_file) {
   if ($config_file == NULL) {
     $current_config_file = variable_get('ldcms_config');

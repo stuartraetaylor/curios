@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Implementation of hook_default_panels_layout()
+ * Implements hook_default_panels_layout.
+ *
+ * Defines the layout used on subject details pages.
  */
 function curios_default_panels_layout() {
   $layouts = array();

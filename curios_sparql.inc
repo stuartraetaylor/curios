@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Global SPARQL rndpoints declaration.
+ */
 function curios_endpoints() {
   $endpoints = array(
     'dataset' => array(
@@ -15,6 +18,9 @@ function curios_endpoints() {
   return $endpoints;
 }
 
+/**
+ * Queries the SPARQL endpoint.
+ */
 function __curios_sparql_query($query, $endpoint) {
   $endpoints = curios_endpoints();
   $query = __curios_sparql_append_prefixes($query);
@@ -27,6 +33,9 @@ function __curios_sparql_query($query, $endpoint) {
   }
 }
 
+/**
+ * Updates the SPARQL endpoint.
+ */
 function __curios_sparql_update($query) {
   $endpoints = curios_endpoints();
   $query = __curios_sparql_append_prefixes($query);
@@ -35,6 +44,9 @@ function __curios_sparql_update($query) {
   return ($rs != NULL);
 }
 
+/**
+ * Appends the prefixes defined in the configuration to a SPARQL query.
+ */
 function __curios_sparql_prefixes() {
   $config = curios_configuration();
   
@@ -57,6 +69,9 @@ function __curios_escape_sparql($s) {
   return trim(addcslashes($s, "\"\r\n"));
 }
 
+/**
+ * Inserts and deletes triples for an individual.
+ */
 function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
   $query = '';
 
@@ -81,6 +96,9 @@ function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
   return __curios_sparql_update($query, 'dataset');
 }
 
+/**
+ * Creates a new individiual.
+ */
 function _curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
   $query = '';
   $query .= "INSERT DATA {\n";
@@ -92,6 +110,9 @@ function _curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
   return __curios_sparql_update($query, 'dataset');
 }
 
+/**
+ * Removes an individual.
+ */
 function _curios_subject_delete($subject_id) {
   // TODO should use subject id field.
   $subject_id = __curios_escape_sparql($subject_id);
@@ -105,6 +126,9 @@ function _curios_subject_delete($subject_id) {
   return __curios_sparql_update($query, 'dataset');
 }
 
+/**
+ * Finds the highest subject_id used in the triple stores.
+ */
 function _curios_fetch_max_identifier() {
   $query = '';
   $query .= "select ?id where {\n";
@@ -120,6 +144,9 @@ function _curios_fetch_max_identifier() {
   }
 }
 
+/**
+ * Returns an array of recently inserted subject_id's.
+ */
 function _curios_latest_record_identifiers($n = 10) {
   $query = <<<EOT
 select ?id ?title where {
@@ -142,6 +169,34 @@ EOT;
   return $identifiers;
 }
 
+/**
+ * Returns all values for the specified property. 
+ */
+function _curios_fetch_property_values($class, $property) {
+  $query = '';
+  $query .= "select distinct ?value where { \n";
+  $query .= "[] a $class ; \n";
+  $query .= "  $property ?value . \n";
+  $query .= "} limit 500";
+
+    return __curios_sparql_query($query, 'dataset');
+}
+
+/**
+ * Returns all types for a specified individual.
+ */
+function _curios_fetch_subject_types($subject_id) {
+  $query = "select ?type where { hc:$subject_id a ?type . ?type a owl:Class }";
+  $rs = __curios_sparql_query($query, 'dataset');
+
+  $classes = array();
+  foreach ($rs['result']['rows'] as $row) {
+    $classes[] = $row['type'];
+  }
+
+  return $classes;
+}
+
 function _curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
   $query = <<<EOT
 # Check individual is in the range of the specified property for the specified class.
@@ -156,28 +211,6 @@ EOT;
 
     $rs = __curios_sparql_query($query, 'dataset');
     return ($rs != NULL && !empty($rs['result']['rows']));
-}
-
-function _curios_fetch_property_values($class, $property) {
-  $query = '';
-  $query .= "select distinct ?value where { \n";
-  $query .= "[] a $class ; \n";
-  $query .= "  $property ?value . \n";
-  $query .= "} limit 500";
-
-    return __curios_sparql_query($query, 'dataset');
-}
-
-function _curios_fetch_subject_types($subject_id) {
-  $query = "select ?type where { hc:$subject_id a ?type . ?type a owl:Class }";
-  $rs = __curios_sparql_query($query, 'dataset');
-
-  $classes = array();
-  foreach ($rs['result']['rows'] as $row) {
-    $classes[] = $row['type'];
-  }
-
-  return $classes;
 }
 
 // -- CONFIGURATION --

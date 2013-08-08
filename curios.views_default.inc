@@ -3,6 +3,24 @@ require_once('curios_entities.inc');
 require_once('curios_ldcms.inc');
 require_once('curios.views_custom.inc');
 
+/**
+ * Implements hook_views_default_views.
+ *
+ * Generates a default set of views based on the configuration.
+ *
+ * Each browsing class has a:
+ *   master view - defines fields and relationships used in other views.
+ *   listing view - the listings/search page.
+ *   summary block - provide a summary of an individual - title and description.
+ *   properties block - literal field value listing.
+ *   images block - image gallery block.
+ *   object block - display relationship links, one block per relationship.
+ *
+ * The structure of the $view object is not current well documented for the Views API. Generally the parameters can be
+ * found by using the View UI to create/edit a view, then using the export function to examine the generated views objects.
+ *
+ * This function will also attempt to load pre-defined views exports from files named with the format: views/VIEW-ID.view.inc
+ */
 function curios_views_default_views() {
   if (!variable_get('ldcms_installed')) {
     return;
@@ -33,6 +51,9 @@ function curios_views_default_views() {
   return $views;
 }
 
+/**
+ * Format field labels.
+ */
 function __format_name($name) { return _curios_split_camel_case($name); }
 
 function _curios_table_id($resource_name) {
@@ -45,6 +66,9 @@ function _curios_table_id($resource_name) {
   return $endpoint->table_id;
 }
 
+/**
+ * Generates the default set of view displays for a browsing class.
+ */
 function __curios_generate_default_view(&$view_spec) {
   $config = curios_configuration();
 
@@ -87,6 +111,15 @@ function __curios_generate_default_view(&$view_spec) {
   return $view;
 }
 
+/**
+ * Generate a specific view display.
+ *
+ * This function executes the appropriate function to create a specific view display. These functions can be overridden
+ * on a per-resource basis. Default views are defined in functions named with:
+ *   __curios_generate_display_VIEW-ID_default
+ * These can be overridden for a particular resource by functions named with:
+ *   __curios_generate_display_VIEW-ID_RESOURCE-ID
+ */
 function __curios_generate_display($view_name, &$view, &$view_spec, $base_fields, $default = FALSE) {
     $resource_name = $view_spec->getResource()->getMachineName();
 
@@ -100,8 +133,10 @@ function __curios_generate_display($view_name, &$view, &$view_spec, $base_fields
     }
 }
 
+/**
+ * Defines the master view.
+ */
 function __curios_generate_display_master_default(&$view, &$view_spec, $base_fields) {
-  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   
@@ -189,6 +224,11 @@ function __curios_generate_display_master_default(&$view, &$view_spec, $base_fie
   return $handler;
 }
 
+/**
+ * Defines the default summary view.
+ *
+ * This display shows the title and description of an individual.
+ */
 function __curios_generate_display_summary_default(&$view, &$view_spec, $base_fields) {
   $config = curios_configuration();
   $resource = $view_spec->getResource();
@@ -355,6 +395,11 @@ function __curios_generate_display_summary_default(&$view, &$view_spec, $base_fi
   return $handler;
 }
 
+/**
+ * Defines the default properties display view.
+ *
+ * This display lists all literal fields defined for a browsing class.
+ */
 function __curios_generate_display_properties_default(&$view, &$view_spec, $base_fields) {
   $config = curios_configuration();
   $resource = $view_spec->getResource();
@@ -518,6 +563,11 @@ function __curios_generate_display_properties_default(&$view, &$view_spec, $base
   return $handler;
 }
 
+/**
+ * Generates a relationships block.
+ *
+ * This display lists links to pages for other records in the system.
+ */
 function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $field_id) {
   $config = curios_configuration();
   $resource = $view_spec->getResource();
@@ -771,6 +821,9 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   return TRUE;
 }
 
+/**
+ * Generates the default listings page view.
+ */
 function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
@@ -1049,6 +1102,9 @@ function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fi
   return $handler;
 }
 
+/**
+ * Generates the default image gallery view.
+ */
 function __curios_generate_display_images_default(&$view, &$view_spec, $base_fields) {
   $config = curios_configuration();
   $resource = $view_spec->getResource();
@@ -1199,7 +1255,9 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   return $handler;
 }
 
-
+/**
+ * Filters a view by OWL class.
+ */
 function __curios_rdf_type_filter(&$handler, $view, $view_spec) {
   $resource_name = $view_spec->getResource()->getMachineName();
   $field_name = $resource_name.'_type';
@@ -1220,6 +1278,9 @@ function __curios_rdf_type_filter(&$handler, $view, $view_spec) {
   );
 }
 
+/**
+ * Filters a view by individual URI.
+ */
 function __curios_uri_filter(&$handler, $view, $view_spec) {
   $config = curios_configuration();
   $resource_name = $view_spec->getResource()->getMachineName();
@@ -1239,6 +1300,9 @@ function __curios_uri_filter(&$handler, $view, $view_spec) {
   );
 }
 
+/**
+ * Creates a blank line in a field listing.
+ */
 function __curios_field_newline(&$handler) {
   static $c = 0;
   $field_name = 'newline_'.$c++;

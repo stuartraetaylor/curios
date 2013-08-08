@@ -1,13 +1,22 @@
 <?php
 
+/**
+ * startsWith function using the regex engine.
+ */
 function startsWith($needle, $haystack) {
   return preg_match('/^'.preg_quote($needle, '/')."/", $haystack);
 }
 
+/**
+ * startsWith function using strncasecmp.
+ */
 function startsWith_ncasecmp($needle, $haystack) {
     return !strncasecmp($haystack, $needle, strlen($needle));
 }
 
+/**
+ * Returns the concatenation of the hash value for an array of values.
+ */
 function __curios_hash() {
   $args = func_get_args();
   $hash_function = function($value) { return hash('crc32b', $value); };
@@ -16,15 +25,24 @@ function __curios_hash() {
   return join($hash_args);
 }
 
+/**
+ * Validate the specified subject id.
+ */
 function __curios_valid_id($id) {
   return preg_match('/^[0-9]+$/', $id);
 }
 
+/**
+ * Split camel case strings.
+ */
 function _curios_split_camel_case($text, $delimiter = ' ') {
   $f = function($match) use (&$delimiter) { return $delimiter. $match[0]; };
   return preg_replace_callback('/(?<!\b)[A-Z][a-z]+|(?<=[a-z])[A-Z]/', $f, $text);
 }
 
+/**
+ * Returns a CURIE as an array from a URI using the namespace definitions in the configuration.
+ */
 function __curios_split_uri_to_curie($uri, $config) {
   $prefixes = $config->getNamespaceToPrefixMap();
 
@@ -43,13 +61,22 @@ function __curios_split_uri_to_curie($uri, $config) {
   }
 }
 
+/**
+ * Splits a CURIE into prefix and local parts.
+ */
 function __curios_split_curie($curie) {
   return explode(':', $curie); }
 
+/**
+ * Creates a CURIE from a URI using the namespaces mappings defined in the configuration.
+ */
 function __curios_curie_from_uri($uri, $config) {
   return join(':', __curios_split_uri_to_curie($uri, $config));
 }
 
+/**
+ * Creates a URI from a CURIE using the namespace mappings definied in the configuration.
+ */
 function __curios_uri_from_curie($curie, $config) {
   list($prefix, $lname) = __curios_split_curie($curie);
   $namespace = $config->getNamespace($prefix);
@@ -57,6 +84,9 @@ function __curios_uri_from_curie($curie, $config) {
   return $namespace . $lname;
 }
 
+/**
+ * Creates a valid CMS identifier (machine name) from a CURIE.
+ */
 function __curios_cmsid_from_curie_parts($prefix, $lname, $trim = TRUE) {
   $prefix = _curios_split_camel_case($prefix, '_');
   $prefix = strtolower($prefix);
@@ -74,17 +104,26 @@ function __curios_cmsid_from_curie_parts($prefix, $lname, $trim = TRUE) {
   return $id;
 }
 
+/**
+ * Creates a valid CMS identifier (machine name) from a CURIE.
+ */
 function __curios_cmsid_from_curie($curie) {
   list($prefix, $lname) = __curios_split_curie($curie);
   return __curios_cmsid_from_curie_parts($prefix, $lname);
 }
 
+/**
+ * Creates a valid CMS identifier (machine name) from a URI.
+ */
 function __curios_cmsid_from_uri($uri, $config) {
   list($prefix, $lname) = __curios_split_uri_to_curie($uri, $config);
   return __curios_cmsid_from_curie_parts($prefix, $lname);
 }
 
-function __curios_path_from_id($id) {
+/**
+ * Creates a valid Drupal path from a CMS identifier.
+ */
+function __curios_path_from_cmsid($id) {
   $path = $id;
   $path = preg_replace('/^ldcms_/', '', $path);
   $path = str_replace('_', '-', $path);
@@ -92,6 +131,9 @@ function __curios_path_from_id($id) {
   return $path;
 }
 
+/**
+ * Creates a valid Drupal path from a CURIE.
+ */
 function __curios_path_from_curie_parts($prefix, $lname) {
   $prefix = _curios_split_camel_case($prefix, '-');
   $prefix = strtolower($prefix);
@@ -102,16 +144,25 @@ function __curios_path_from_curie_parts($prefix, $lname) {
   return $prefix.'/'.$lname;
 }
 
+/**
+ * Creates a valid Drupal path from a CURIE.
+ */
 function __curios_path_from_curie($uri, $config) {
   list($prefix, $lname) = __curios_split_curie($uri, $config);
   return __curios_path_from_curie_parts($prefix, $lname);
 }
 
+/**
+ * Creates a valid Drupal path from a URI.
+ */
 function __curios_path_from_uri($uri, $config) {
   list($prefix, $lname) = __curios_split_uri_to_curie($uri, $config);
   return __curios_path_from_curie_parts($prefix, $lname);
 }
 
+/**
+ * Creates a label from the local part of a CURIE.
+ */
 function __curios_label_from_curie($uri, $config) {
   list( , $lname) = __curios_split_curie($uri, $config);
 
@@ -121,6 +172,9 @@ function __curios_label_from_curie($uri, $config) {
   return $label;
 }
 
+/**
+ * Creates a label from the local part of a URI.
+ */
 function __curios_label_from_uri($uri, $config) {
   list( , $lname) = __curios_split_uri_to_curie($uri, $config);
 
@@ -130,6 +184,9 @@ function __curios_label_from_uri($uri, $config) {
   return $label;
 }
 
+/**
+ * Finds the resource id (CMSID) from a base class URI.
+ */
 function __curios_resource_id_from_class_uri($base_class, $config) {
   $base_class_curie = __curios_curie_from_uri($base_class, $config);
   $resource_id = $config->getResourceForBaseClass($base_class_curie);
@@ -137,6 +194,9 @@ function __curios_resource_id_from_class_uri($base_class, $config) {
   return $resource_id ? $resource_id : FALSE ;
 }
 
+/**
+ * Sets a block as active.
+ */
 function __curios_activate_block($module, $block, $region, $theme, $pages, $visibility) {
   db_merge('block')
   ->key(array('theme' => $theme, 'delta' => $block, 'module' => $module))

@@ -1,11 +1,10 @@
 <?php
-//function curios_views_pre_build(&$view) { }
-//function curios_views_pre_execute(&$view) { }
-//function curios_views_pre_render(&$view) { }
-//function curios_views_post_render(&$view, &$output, &$cache) { }
-//function curios_views_pre_view(&$view, &$display_id, &$args) { }
-//function mymodule_views_handlers() { }
 
+/**
+ * Implements hook_views_data.
+ *
+ * Declare custom field handlers.
+ */
 function curios_views_data() {
   $data = array();
   $data['views']['curios_link_target_rewriter'] = array(
@@ -27,12 +26,19 @@ function curios_views_data() {
   return $data;
 }
 
-
+/**
+ * Implements hook_view_pre_render.
+ *
+ * This hook fires after the query has run and before the view is rendered.
+ */
 function curios_views_pre_render(&$view) {
   _curios_views_link_target_rewriter($view);
   _curios_view_rewrite_title($view);
 }
 
+/**
+ * Rewrite the page title based on the current panel varient and view being displayed.
+ */
 function _curios_view_rewrite_title(&$view) {
   if (startsWith('ldcms_', $view->name)) {
     // Remove h1 title.
@@ -54,6 +60,13 @@ function _curios_view_rewrite_title(&$view) {
   }
 }
 
+/**
+ * Rewrite the link target for relationships with multiple targets.
+ *
+ * Certain relationships (such as associatedWith) have multiple targets (e.g., hc_person, hc_business etc.).
+ * This function uses the class assertions from the ontology and the relationship targets specified in the configuration
+ * to determine the most appropriate relationship target page at runtime.
+ */
 function _curios_views_link_target_rewriter(&$view) {
   $display_name = $view->current_display;
   $display = $view->display[$display_name];

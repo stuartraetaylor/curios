@@ -2,11 +2,6 @@
 
 /**
  * Override listings view for hc_image_file.
- *
- * @param type $view
- * @param type $view_spec
- * @param type $base_fields
- * @return type
  */
 function __curios_generate_display_listing_hc_imagefile(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
@@ -24,11 +19,6 @@ function __curios_generate_display_listing_hc_imagefile(&$view, &$view_spec, $ba
 
 /**
  * Override summary view for hc_image_file.
- *
- * @param type $view
- * @param type $view_spec
- * @param type $base_fields
- * @return type
  */
 function __curios_generate_display_summary_hc_imagefile(&$view, &$view_spec, $base_fields) {
   // Remove searchlink.
@@ -39,16 +29,14 @@ function __curios_generate_display_summary_hc_imagefile(&$view, &$view_spec, $ba
 
 /**
  * Override image gallery view for hc_image_file.
- *
- * @param type $view
- * @param type $view_spec
- * @param type $base_fields
- * @return type
  */
 function __curios_generate_display_images_hc_imagefile(&$view, &$view_spec, $base_fields) {
   return FALSE;
 }
 
+/**
+ * Override properties view for hc_imagefile.
+ */
 function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();

@@ -8,7 +8,7 @@ require_once('curios_functions.inc');
 require_once('curios.views.inc');
 
 /**
- * Implement hook_views_api().
+ * Implements hook_views_api().
  */
 function curios_views_api($module, $api) {
   if ($module == 'views' && $api == 'views_default') {
@@ -17,7 +17,7 @@ function curios_views_api($module, $api) {
 }
 
 /**
- * Implement hook_ctools_plugin_api().
+ * Implements hook_ctools_plugin_api().
  */
 function curios_ctools_plugin_api($module, $api) {
   if ($module == 'panels' && $api == 'layouts') {
@@ -28,6 +28,9 @@ function curios_ctools_plugin_api($module, $api) {
   }
 }
 
+/**
+ * Implements hook_init.
+ */
 function curios_init() {
   // Temporary fix for exposed drop down filter.
   if (!isset($_GET['field_event_category_value'])) {
@@ -35,6 +38,11 @@ function curios_init() {
   }
 }
 
+/**
+ * Implements hook_premission.
+ *
+ * Defines permissions for the CURIOS module.
+ */
 function curios_permission() {
   return array(
     'curios manage repository' => array(
@@ -45,13 +53,17 @@ function curios_permission() {
   );
 }
 
-// To work around odd bug in hook_menu
+// To work around odd bug in hook_menu.
 function curios_resource_type_to_arg() { return ''; }
 function curios_subject_id_to_arg() { return ''; }
 
+/**
+ * Implements hook_menu.
+ *
+ * Menu router for the module.
+ */
 function curios_menu() {
   $items = array();
-
   $items['admin/structure/ldcms'] = array(
     'title' => 'Linked Data CMS settings',
     'description' => 'Managed LDCMS configuration.',
@@ -60,7 +72,6 @@ function curios_menu() {
     'access arguments' => array('administer users'),
     'type' => MENU_NORMAL_ITEM,
    );
-
   $items['curios/manage'] = array(
     'title' => t('Manage Records'),
     'page callback' => 'curios_manage_page',
@@ -70,8 +81,6 @@ function curios_menu() {
     'menu_name' => 'main-menu',
     'weight' => '99',
   );
-  
-  
   $items['curios/manage/create'] = array(
     'title' => t('Create New Record'),
     'page callback' => 'curios_insert_page',
@@ -88,7 +97,6 @@ function curios_menu() {
     'page arguments' => array(3),
     'tab parent' => 'curios/manage/create',
   );
-
   $items['curios/manage/edit'] = array(
     'title' => t('Edit / Delete Record'),
     'page callback' => 'curios_update_page',
@@ -104,7 +112,6 @@ function curios_menu() {
     'page arguments' => array(3,4),
     'tab parent' => 'curios/manage/edit',
   );
-
   $items['curios/manage/tools'] = array(
     'title' => t('Admin Tools'),
     'page callback' => 'curios_admin_tools_page',
@@ -113,7 +120,6 @@ function curios_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => '99',
   );
-
   $items['curios/manage/autocomplete_fields/%/%'] = array(
    'title' => 'Auto complete handler',
     'page callback' => 'curios_autocomplete_fields',
@@ -125,6 +131,11 @@ function curios_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_block_info.
+ *
+ * Defines blocks used in the module.
+ */
 function curios_block_info() {
   $blocks = array();
 
@@ -137,6 +148,12 @@ function curios_block_info() {
   return $blocks;
 }
 
+/**
+ * Implements hook_block_view.
+ *
+ * @param type $delta block name.
+ * @return block content.
+ */
 function curios_block_view($delta = '') {
   $block = array();
 
@@ -150,6 +167,11 @@ function curios_block_view($delta = '') {
   return $block;
 }
 
+/**
+ * Implements hook_filter_info.
+ *
+ * Filters used in the module.
+ */
 function curios_filter_info() {
   $filters = array();
   $filters[] = array(
@@ -160,6 +182,11 @@ function curios_filter_info() {
   return $filters;
 }
 
+/**
+ * Filter callback.
+ *
+ * This filter parses XStandard hyperlink markup in the Hebridean Connections description fields.
+ */
 function curios_filter_description_links($text, $filter, $format, $langcode, $cache, $cache_id) {
   global $base_path;
   //$subject_link = '/<<([0-9]+)##(.*?)>>/';
@@ -168,6 +195,11 @@ function curios_filter_description_links($text, $filter, $format, $langcode, $ca
   return preg_replace($subject_link, $replacement, $text);
 }
 
+/**
+ * Form callback.
+ *
+ * The global search box displayed in the header.
+ */
 function curios_search_engine_form($form, $form_state) {
   if (!variable_get('ldcms_installed')) {
     return;
@@ -191,9 +223,15 @@ function curios_search_engine_form($form, $form_state) {
     '#default_value' => 'ldcms_people',
   );
   $form['submit'] = array('#type' => 'submit', '#value' => t('Search'));
+  
   return $form;
 }
 
+/**
+ * Form submit handler.
+ *
+ * Redirect the search form to the appropriate listings page.
+ */
 function curios_search_engine_form_submit($form, &$form_state) {
   $base_path = base_path();
   $config = curios_configuration();
@@ -210,13 +248,9 @@ function curios_search_engine_form_submit($form, &$form_state) {
 
 
 /**
- * Implements hook_rdf_mapping().
+ * Implements hook_rdf_mapping.
  *
- * This hook should only be used to define the RDF mapping for an entity or
- * bundle that has been defined by this module. On installation, this mapping
- * will be saved to the database. To alter anything in this mapping after module
- * installation (or to alter bundles defined in another module), the RDF CRUD
- * functions should be used.
+ * Returns RDF mappings for the fields defined in the configuration.
  */
 function curios_rdf_mapping() {
   $config = curios_configuration();
@@ -240,12 +274,9 @@ function curios_rdf_mapping() {
 }
 
 /*
- * Implements hook_rdf_namespaces().
+ * Implements hook_rdf_namespaces.
  *
- * This hook should be used to define any prefixes used by this module that are
- * not already defined in core by rdf_rdf_namespaces.
- *
- * @see http://api.drupal.org/api/drupal/modules--rdf--rdf.api.php/function/hook_rdf_namespaces/7
+ * Returns the prefix to namespace URI mapping from the configuration.
  */
 function curios_rdf_namespaces() {
   $config = curios_configuration();

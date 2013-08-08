@@ -1,6 +1,11 @@
 <?php
 require('curios_field_install.inc');
 
+/**
+ * Implements hook_admin.
+ *
+ * Admin settings form found at admin/structure/ldcms.
+ */
 function curios_admin() {
   $form = array();
 
@@ -28,6 +33,11 @@ function curios_admin() {
   return $form;
 }
 
+/**
+ * Implements hook_admin_submit.
+ *
+ * Submit handler, triggers (re)loading of the configuration, creation of fields, resources etc.
+ */
 function curios_admin_submit($form, &$form_state) {
   $config_file_previous = variable_get('ldcms_config');
   $config_file_new = $form_state['values']['config_files'];
@@ -53,6 +63,11 @@ function curios_admin_submit($form, &$form_state) {
   _curios_update_entity_batch_start($config_previous, $config_new, $form_state['values']['quick']);
 }
 
+/**
+ * List configuration files.
+ *
+ * Returns file names matching: config/CONFIG-NAME.ldcms.inc
+ */
 function _curios_config_file_list() {
   $config_path = drupal_get_path('module', 'curios') . '/config';
 

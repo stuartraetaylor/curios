@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Field handler to rewrite link targets generated in curios.views.inc.
+ */
 class curios_link_target_rewriter extends views_handler_field {
 
   /**
@@ -25,6 +28,9 @@ class curios_link_target_rewriter extends views_handler_field {
   }
 }
 
+/**
+ * Field handler to output HTML that displays thumbnail images using Timthumb and Lightbox.
+ */
 class curios_image_thumbnail_field extends views_handler_field {
 
   function query() {

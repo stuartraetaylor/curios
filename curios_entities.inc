@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Top entity in the LDCMS.
+ *
+ * Each entity has an identifier (machine name) and a label.
+ */
 abstract class DrupalThing {
 
   private $id;
@@ -16,10 +21,14 @@ abstract class DrupalThing {
 
 }
 
-
+/**
+ * An RDFResource corresponds to a browsing class in the configuration.
+ *
+ * Each RDFResource has a base class, a set of fields, and a set of relationships.
+ */
 class RDFResource extends DrupalThing {
 
-  private $rdf_type;
+  private $rdf_type; // base class.
   private $fields;
   private $relationships;
   private $relationship_targets; // relationship_id => target_resource_id.
@@ -44,6 +53,7 @@ class RDFResource extends DrupalThing {
 
   // Methods following LDCMS naming convention.
 
+  public function getBaseClass() { return $this->rdf_type; }
   public function addField($field) { $this->fields[] = $field; }
   public function addRelationship($relationship) { $this->relationships[] = $relationship; }
   public function setRelationshipTargets($relationship_id, array $targets) {
@@ -60,7 +70,11 @@ class RDFResource extends DrupalThing {
 
 }
 
-
+/**
+ * RDFField corresponds to a field or relationships.
+ *
+ * Fields and relationships are distinguished by their type attribute.
+ */
 class RDFField extends DrupalThing {
 
   private $rdf_predicate;
@@ -77,7 +91,10 @@ class RDFField extends DrupalThing {
 
 }
 
-
+/**
+ * RDFView provides some additional information to the Views API to determine
+ * how a browsing class (RDFResource) should be displayed.
+ */
 class RDFView extends DrupalThing {
 
   private $path;
@@ -143,7 +160,15 @@ class RDFView extends DrupalThing {
 
 }
 
-
+/**
+ * Linked Data CMS Configuration.
+ *
+ * The configuration consists of a set of browsing classes (RDFResource), view specifications (RDFView), fields (RDFField),
+ * relationships (RDFField). There are also has tables to map between browsing classes and views specifications, prefixes,
+ * namespaces etc.
+ *
+ * The configuration is generated from a configuration file by the mapping algorithm in curios_ldcms.inc.
+ */
 class LDCMSConfiguration {
 
   private $endpoints = array();
