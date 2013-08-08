@@ -105,6 +105,32 @@ function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, 
   $handler->display->display_options['fields'][$resource_name]['empty_zero'] = 0;
   $handler->display->display_options['fields'][$resource_name]['hide_alter_empty'] = 0;
 
+  // Field: title
+  $handler->display->display_options['fields'][$base_fields['title']]['id'] = $base_fields['title'];
+  $handler->display->display_options['fields'][$base_fields['title']]['table'] = $view->base_table;
+  $handler->display->display_options['fields'][$base_fields['title']]['field'] = $base_fields['title'];
+  $handler->display->display_options['fields'][$base_fields['title']]['label'] = '';
+  $handler->display->display_options['fields'][$base_fields['title']]['exclude'] = TRUE;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['make_link'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['absolute'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['external'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['trim'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['html'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['alter']['url_encode'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['element_label_colon'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['element_default_classes'] = 1;
+  $handler->display->display_options['fields'][$base_fields['title']]['hide_empty'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['empty_zero'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields'][$base_fields['title']]['required'] = 1;
+
     // Field: file.
   $field_name = 'hc_imagefile_hc_url';
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
@@ -131,45 +157,16 @@ function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, 
   $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$field_name]['required'] = 1;
 
-  /* Field: PHP Image Output */
-  $field_name = 'hc_image_php_output';
-  $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
-  $handler->display->display_options['fields'][$field_name]['table'] = 'views';
-  $handler->display->display_options['fields'][$field_name]['field'] = 'php';
-  $handler->display->display_options['fields'][$field_name]['label'] = '';
-  $handler->display->display_options['fields'][$field_name]['ui_name'] = 'PHP Image Output';
-  $handler->display->display_options['fields'][$field_name]['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['make_link'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['absolute'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['external'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields'][$field_name]['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields'][$field_name]['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['trim'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['html'] = 0;
-  $handler->display->display_options['fields'][$field_name]['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields'][$field_name]['element_default_classes'] = 1;
-  $handler->display->display_options['fields'][$field_name]['hide_empty'] = 0;
-  $handler->display->display_options['fields'][$field_name]['empty_zero'] = 0;
-  $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields'][$field_name]['use_php_setup'] = 0;
-  $handler->display->display_options['fields'][$field_name]['php_value'] = '';
-  $handler->display->display_options['fields'][$field_name]['php_output'] = '<?php
-  $image_path = str_replace(\'http://www.hebrideanconnections.com/\', \'http://www.dotrural.ac.uk/curiosdemo/images/\', $row->hc_imagefile_hc_url);
-  $output = \'<a href="\'.$image_path.\'" rel="lightbox"><img src="\'.$image_path.\'" /></a><br /><br />\';
-  echo $output;
-  ?>';
-  //var_dump($handler->display->display_options['fields'][$field_name]['php_output']); exit;
-  $handler->display->display_options['fields'][$field_name]['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields'][$field_name]['php_click_sortable'] = '';
-  $handler->display->display_options['displays'] = array(
-    'details' => 'details',
-    'default' => 0,
-    'page' => 0,
-  );
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['id'] = 'curios_image_thumbnail_field';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_image_thumbnail_field';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_imagefile_hc_url]';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = FALSE;
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['title_field'] = $base_fields['title'];
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['disable_thumbnail'] = TRUE;
 
   // Contextual filters.
   __curios_uri_filter($handler, $view, $view_spec);

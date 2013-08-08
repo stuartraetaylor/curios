@@ -39,9 +39,13 @@ class curios_image_thumbnail_field extends views_handler_field {
     $image_url = str_replace('http://www.hebrideanconnections.com/', 'http://www.dotrural.ac.uk/curiosdemo/images/', $image_url);
     $title = $values->{$this->options['title_field']};
 
-    $timthumb_url = $timthumb_path . "?w=$w&src=" . urlencode($image_url);
-    $image_output = "<a href=\"$image_url\" title=\"$title\" rel=\"lightbox[gallery]\"><img src=\"$timthumb_url\" width=\"$w\" alt=\"$title\" /></a>";
-    
+    if (isset($this->options['disable_thumbnail']) && $this->options['disable_thumbnail'] = TRUE) { // Display full size image.
+      $image_output = "<a href=\"$image_url\" title=\"$title\" rel=\"lightbox[gallery]\"><img src=\"$image_url\" alt=\"$title\" /></a>";
+    } else { // Generate thumbnail.
+      $timthumb_url = $timthumb_path . "?w=$w&src=" . urlencode($image_url);
+      $image_output = "<a href=\"$image_url\" title=\"$title\" rel=\"lightbox[gallery]\"><img src=\"$timthumb_url\" width=\"$w\" alt=\"$title\" /></a>";
+    }
+
     return $image_output;
   }
 }

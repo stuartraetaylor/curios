@@ -1184,7 +1184,6 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['title_field'] = $base_fields['title'];
 
-
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
