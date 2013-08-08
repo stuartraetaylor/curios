@@ -49,7 +49,14 @@ class RDFResource extends DrupalThing {
   public function setRelationshipTargets($relationship_id, array $targets) {
     $this->relationship_targets[$relationship_id] = $targets;
   }
-  public function getRelationshipTargets() { return $this->relationship_targets; }
+  
+  public function getRelationshipTargets($relationship_field = NULL) {
+    if ($relationship_field != NULL) {
+      return $this->relationship_targets[$relationship_field];
+    } else {
+      return $this->relationship_targets;
+    }
+  }
 
 }
 
@@ -155,8 +162,8 @@ class LDCMSConfiguration {
 
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
     return $is_curie ? 
-      __curios_id_from_curie($ontology_entity, $this) :
-      __curios_id_from_uri($ontology_entity, $this);
+      __curios_cmsid_from_curie($ontology_entity, $this) :
+      __curios_cmsid_from_uri($ontology_entity, $this);
   }
 
   function setEndpoints(array $endpoints) { $this->endpoints = $endpoints; }

@@ -57,7 +57,7 @@ function __curios_escape_sparql($s) {
   return trim(addcslashes($s, "\"\r\n"));
 }
 
-function __curios_subject_update($subject_id, $triples_insert, $triples_delete) {
+function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
   $query = '';
 
   if (!empty ($triples_delete)) {
@@ -81,7 +81,7 @@ function __curios_subject_update($subject_id, $triples_insert, $triples_delete) 
   return __curios_sparql_update($query, 'dataset');
 }
 
-function __curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
+function _curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
   $query = '';
   $query .= "INSERT DATA {\n";
   $query .= "  hc:$subject_id a ". $rdf_type .";\n";
@@ -92,7 +92,7 @@ function __curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
   return __curios_sparql_update($query, 'dataset');
 }
 
-function __curios_subject_delete($subject_id) {
+function _curios_subject_delete($subject_id) {
   // TODO should use subject id field.
   $subject_id = __curios_escape_sparql($subject_id);
 
@@ -105,7 +105,7 @@ function __curios_subject_delete($subject_id) {
   return __curios_sparql_update($query, 'dataset');
 }
 
-function __curios_fetch_max_identifier() {
+function _curios_fetch_max_identifier() {
   $query = '';
   $query .= "select ?id where {\n";
   $query .= "  [] hc:subjectID ?id .}\n";
@@ -120,7 +120,7 @@ function __curios_fetch_max_identifier() {
   }
 }
 
-function __curios_latest_record_identifiers($n = 10) {
+function _curios_latest_record_identifiers($n = 10) {
   $query = <<<EOT
 select ?id ?title where {
   [] hc:subjectID ?id ;
@@ -142,7 +142,7 @@ EOT;
   return $identifiers;
 }
 
-function __curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
+function _curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
   $query = <<<EOT
 # Check individual is in the range of the specified property for the specified class.
 select ?range where  {
@@ -158,7 +158,7 @@ EOT;
     return ($rs != NULL && !empty($rs['result']['rows']));
 }
 
-function __curios_fetch_property_values($class, $property) {
+function _curios_fetch_property_values($class, $property) {
   $query = '';
   $query .= "select distinct ?value where { \n";
   $query .= "[] a $class ; \n";
@@ -168,8 +168,17 @@ function __curios_fetch_property_values($class, $property) {
     return __curios_sparql_query($query, 'dataset');
 }
 
+function _curios_fetch_subject_types($subject_id) {
+  $query = "select ?type where { hc:$subject_id a ?type . ?type a owl:Class }";
+  $rs = __curios_sparql_query($query, 'dataset');
 
+  $classes = array();
+  foreach ($rs['result']['rows'] as $row) {
+    $classes[] = $row['type'];
+  }
 
+  return $classes;
+}
 
 // -- CONFIGURATION --
 

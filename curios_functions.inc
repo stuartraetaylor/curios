@@ -57,7 +57,7 @@ function __curios_uri_from_curie($curie, $config) {
   return $namespace . $lname;
 }
 
-function __curios_id_from_curie_parts($prefix, $lname, $trim = TRUE) {
+function __curios_cmsid_from_curie_parts($prefix, $lname, $trim = TRUE) {
   $prefix = _curios_split_camel_case($prefix, '_');
   $prefix = strtolower($prefix);
   
@@ -74,14 +74,14 @@ function __curios_id_from_curie_parts($prefix, $lname, $trim = TRUE) {
   return $id;
 }
 
-function __curios_id_from_curie($curie) {
+function __curios_cmsid_from_curie($curie) {
   list($prefix, $lname) = __curios_split_curie($curie);
-  return __curios_id_from_curie_parts($prefix, $lname);
+  return __curios_cmsid_from_curie_parts($prefix, $lname);
 }
 
-function __curios_id_from_uri($uri, $config) {
+function __curios_cmsid_from_uri($uri, $config) {
   list($prefix, $lname) = __curios_split_uri_to_curie($uri, $config);
-  return __curios_id_from_curie_parts($prefix, $lname);
+  return __curios_cmsid_from_curie_parts($prefix, $lname);
 }
 
 function __curios_path_from_id($id) {

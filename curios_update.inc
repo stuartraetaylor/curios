@@ -22,7 +22,7 @@ EOT;
 }
 
 function curios_admin_tools_page() {
-  $latest_records = __curios_latest_record_identifiers(15);
+  $latest_records = _curios_latest_record_identifiers(15);
   $content = '';
 
   $content .= '<p>This page contains a selection of admin tools for the Hebridean Connections repository.</p>';
@@ -103,25 +103,10 @@ function curios_delete_page() {
   return $page;
 }
 
-//function curios_manage_delete_form($form, &$form_state, $collapsed = FALSE) {
-//  $form = array();
-//
-// // $form['fieldset']['type'] = __curios_resources_form_select();
-//  $form['delete_subject_id'] = array(
-//    '#type' => 'textfield',
-//    '#title' => t('Subject Id'),
-//    '#required' => TRUE,
-//    '#size' => '12',
-//  );
-//  $form['submit'] = array('#type' => 'submit', '#value' => 'Delete Record');
-//
-//  return $form;
-//}
-
 function curios_delete_form_submit($form, &$form_state) {
   // TODO add confirm form
   $subject_id = $form_state['values']['identifier'];
-  $success = __curios_subject_delete($subject_id);
+  $success = _curios_subject_delete($subject_id);
 
   if ($success) {
     drupal_set_message("The record has been deleted successfully  (ID: $subject_id)", 'status', FALSE);
@@ -130,8 +115,6 @@ function curios_delete_form_submit($form, &$form_state) {
     drupal_set_message("Failed to delete record", 'status', FALSE);
   }
 }
-
-
 
 function __curios_resources_form_select() {
   $options = array();
@@ -151,8 +134,6 @@ function __curios_resources_form_select() {
     '#options' => $options,
   );
 }
-
-
 
 
 // ------ INSERT -------
@@ -291,7 +272,7 @@ function curios_insert_form_submit($form, &$form_state) {
   $triples_insert = array_unique($triples_insert);
   $triples_insert = join("\n", $triples_insert);
 
-  $success = __curios_subject_insert($subject_id, $rdf_type, $triples_insert);
+  $success = _curios_subject_insert($subject_id, $rdf_type, $triples_insert);
 
   if ($success) {
     drupal_set_message("The new record has been created successfully (ID: $subject_id)", 'status', FALSE);
@@ -672,24 +653,36 @@ function curios_update_relationship_input_remove($form, &$form_state) {
 function curios_update_form_validate($form, &$form_state) {
   $resource_name = $form_state['values']['resource'];
 
-  $entity_info = entity_get_info('sparql_views_resource');
-  $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
-
   // Validate relationships.
   $relationships = $form_state['values']['relationship_fieldset'];
   array_pop($relationships);
 
   foreach ($relationships as $field_name=>$relationship) {
     $error_field_name = "relationship_fieldset][$field_name][value";
-    $class_name = $rdf_mapping['rdftype'][0];
-    $property_name = $rdf_mapping[$relationship['field']]['predicates'][0];
 
     if (!__curios_valid_id($relationship['value'])) {
       form_set_error($error_field_name, t('Relationship value is not a valid subject id.'));
-    } else if (!__curios_is_valid_property_assertion($class_name, $property_name, $relationship['value'])) {
+    } else if (!_curios_is_valid_relationship_assertion($resource_name, $relationship['field'], $relationship['value'])) {
       form_set_error($error_field_name, 'Relationship type is not valid for subject '. $relationship['value']. '.');
     }
   }
+}
+
+function _curios_is_valid_relationship_assertion($resource_name, $relationship_name, $subject_id) {
+  $config = curios_configuration();
+  $resource = $config->getResource($resource_name);
+  $targets = $resource->getRelationshipTargets($relationship_name);
+
+  $rdf_types = _curios_fetch_subject_types($subject_id);
+  foreach ($rdf_types as $type) {
+    $candidate_resource = __curios_resource_id_from_class_uri($type, $config);
+
+    if ($candidate_resource && in_array($candidate_resource, $targets)) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 
@@ -776,7 +769,7 @@ function curios_update_form_submit($form, &$form_state) {
 
   // Submit form.
   if (!empty($triples_delete) || !empty($triples_insert)) {
-    $success = __curios_subject_update($subject_id, $triples_insert, $triples_delete);
+    $success = _curios_subject_update($subject_id, $triples_insert, $triples_delete);
 
     if ($success) {
       drupal_set_message("The record has been updated successfully (ID: $subject_id)", 'status', FALSE);
@@ -804,7 +797,7 @@ function curios_autocomplete_fields($resource_name, $field_name, $q = '') {
   $values = phpFastCache::get($key);
 
   if ($values == NULL) {
-    $rs = __curios_fetch_property_values($class_name, $property_name);
+    $rs = _curios_fetch_property_values($class_name, $property_name);
     $values = array();
 
    	if ($rs != NULL) {
@@ -822,14 +815,17 @@ function curios_autocomplete_fields($resource_name, $field_name, $q = '') {
   drupal_json_output($matches);
 }
 
-function __generate_new_subject_id() { return intval(__curios_fetch_max_identifier()) + 1; }
+function __generate_new_subject_id() { return intval(_curios_fetch_max_identifier()) + 1; }
 
 // FIXME the conditions in the below functions should eventually be part of the config.
+//       update 20130808: the latest version generated in curios_ldcms has most of these definitions
+//                        now built in.
 
 // FIXME really hacky way of detecting sparql_view_related_resource's
 //     This entity type is defined as a sub type of sparql_views_resource in SPARQL Views,
 //     but all that I can get back from the API is its widget type to identify it...
 function __is_resource_field($field_instance) { return $field_instance['widget']['type'] == 'options_select'; }
+
 function __is_identifier_field($field_instance) { return $field_instance['field_name'] == 'hc_subject_id'; }
 function __is_title_field($field_instance) { return ($field_instance['field_name'] == 'dc_title' || $field_instance['field_name'] == 'hc_english_name'); }
 function __is_description_field($field_instance) { return $field_instance['field_name'] == 'dc_description'; }
