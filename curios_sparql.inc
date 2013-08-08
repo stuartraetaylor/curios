@@ -1,7 +1,22 @@
 <?php
 
+function curios_endpoints() {
+  $endpoints = array(
+    'dataset' => array(
+      'query' => 'http://localhost:3030/dataset/query',
+      'update' => 'http://localhost:3030/dataset/update',
+    ),
+    'config' => array(
+      'query' => 'http://localhost:3030/ldcms-config/query',
+      'update' => 'http://localhost:3030/ldcms-config/update',
+    ),
+  );
+
+  return $endpoints;
+}
+
 function __curios_sparql_query($query, $endpoint) {
-  $endpoints = __curios_endpoints();
+  $endpoints = curios_endpoints();
   $query = __curios_sparql_append_prefixes($query);
   $rs = sparql_request($query, (object)array('uri' => $endpoints[$endpoint]['query']));
 
@@ -13,7 +28,7 @@ function __curios_sparql_query($query, $endpoint) {
 }
 
 function __curios_sparql_update($query) {
-  $endpoints = __curios_endpoints();
+  $endpoints = curios_endpoints();
   $query = __curios_sparql_append_prefixes($query);
   $rs = sparql_request($query, (object)array('uri' => $endpoints['dataset']['update']));
 
@@ -40,21 +55,6 @@ function __curios_sparql_append_prefixes($query) {
 
 function __curios_escape_sparql($s) {
   return trim(addcslashes($s, "\"\r\n"));
-}
-
-function __curios_endpoints() {
-  $endpoints = array(
-    'dataset' => array(
-      'query' => 'http://localhost:3030/dataset/query',
-      'update' => 'http://localhost:3030/dataset/update',
-    ),
-    'config' => array(
-      'query' => 'http://localhost:3030/ldcms-config/query',
-      'update' => 'http://localhost:3030/ldcms-config/update',
-    ),
-  );
-
-  return $endpoints;
 }
 
 function __curios_subject_update($subject_id, $triples_insert, $triples_delete) {

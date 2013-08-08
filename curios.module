@@ -177,9 +177,9 @@ function curios_search_engine_form($form, $form_state) {
   $config = curios_configuration();
   
   $options = array();
-  foreach ($config->getViews() as $view_name => $view_spec) {
-    $view = views_get_view($view_name);
-    $options[$view_name] = t($view->human_name);
+  foreach ($config->getViews() as $view_spec) {
+    $view = views_get_view($view_spec->getId());
+    $options[$view_spec->getId()] = t($view->human_name);
   }
   natcasesort($options);
 

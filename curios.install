@@ -1,6 +1,6 @@
 <?php
 require_once('curios_functions.inc');
-require_once('curios_ldcms.inc');
+require_once('curios_sparql.inc');
 
 function curios_schema() {
   $schema = array();
@@ -28,6 +28,7 @@ function curios_schema() {
 
 function curios_install() {
   // Register end point.
+  $config_endpoints = curios_endpoints();
   $endpoints = array();
   $endpoints['curios_query_endpoint'] = (object)array(
     'title' => 'CURIOS: query endpoint',

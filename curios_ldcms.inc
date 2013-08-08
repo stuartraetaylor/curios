@@ -1,6 +1,6 @@
 <?php
 require_once('curios_functions.inc');
-require_once('curios_entities.inc');
+require_once('curios_sparql.inc');
 
 function curios_configuration($config_file = NULL) {
   $config = &drupal_static(__FUNCTION__);
@@ -17,16 +17,7 @@ function curios_create_configuration($config_spec) {
   $config = new LDCMSConfiguration();
   $config->setPrefixToNamespaceMap($config_spec['namespaces']);
 
-  $config->setEndpoints(array(
-    'dataset' => array(
-      'query' => 'http://localhost:3030/dataset/query',
-      'update' => 'http://localhost:3030/dataset/update',
-    ),
-    'config' => array(
-      'query' => 'http://localhost:3030/ldcms-config/query',
-      'update' => 'http://localhost:3030/ldcms-config/update',
-    ),
-  ));
+  $config->setEndpoints(curios_endpoints());
 
   __curios_configuration_fields($config, $config_spec);
   __curios_configuration_resources_views($config, $config_spec);
