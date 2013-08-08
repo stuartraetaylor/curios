@@ -20,7 +20,6 @@ Required modules from Drupal.org version control:
   * SPARQL        7.x-2.x    https://drupal.org/project/sparql
   * SPARQL Views  curios-7.x-2.x - See special requirements below.
   * Libraries     7.x-2.x    https://drupal.org/project/libraries
-  * Views PHP     7.x-1.x    https://drupal.org/project/views_php
   * Views Litepager 7.x-3.x  https://drupal.org/project/views_litepager
   * Devel                    https://drupal.org/project/devel
 
