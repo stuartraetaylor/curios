@@ -6,7 +6,7 @@
  * Removes old fields and resources using the previously loaded configuration (if any), and then installs new ones
  * using the current configuration. The batch is triggered from the submit handler for the admin settings page.
  */
-function  _curios_update_entity_batch_start(&$config_old, &$config_new, $quick_mode = FALSE) {
+function  _curios_update_entity_batch_start(&$config_old, &$config_new, $remove_only = FALSE, $quick_mode = FALSE) {
   $install_fields = $config_new->getFields();
   $install_resources = $config_new->getResources();
 
@@ -21,25 +21,28 @@ function  _curios_update_entity_batch_start(&$config_old, &$config_new, $quick_m
       $remove_resources = $config_old->getResources();
     }
   }
-
+  
+  $operations = array();
+  $operations[] = array('_curios_remove_rdf_mappings', _curios_rdf_mappings($config_old));
+  $operations[] = array('_curios_remove_field_instances', _curios_installed_instances($remove_resources, $config_old));
+  $operations[] = array('_curios_remove_fields', array(array_values($remove_fields)));
+  $operations[] = array('_curios_remove_resource_types', array(array_values($remove_resources)));
+  if (!$remove_only) {
+    $operations[] = array('_curios_create_resource_types', array(_curios_installed_resource_types($install_resources, $config_new)));
+    $operations[] = array('_curios_create_fields', array(_curios_installed_fields($install_fields, $config_new)));
+    $operations[] = array('_curios_create_field_instances', array(_curios_installed_instances($install_resources, $config_new)));
+    $operations[] = array('_curios_create_rdf_mappings', _curios_rdf_mappings($config_old));
+  }
+  
   // Disable views, pages, etc.
   variable_set('ldcms_installed', FALSE);
 
   batch_set(array(
     'title' => t('Updating LDCMS Entities'),
-    'operations' => array(
-      array('_curios_remove_field_instances', _curios_installed_instances($remove_resources, $config_old)),
-      array('_curios_remove_fields', array(array_values($remove_fields))),
-      array('_curios_remove_resource_types', array(array_values($remove_resources))),
-
-      array('_curios_create_resource_types', array(_curios_installed_resource_types($install_resources, $config_new))),
-      array('_curios_create_fields', array(_curios_installed_fields($install_fields, $config_new))),
-      array('_curios_create_field_instances', array(_curios_installed_instances($install_resources, $config_new))),
-    ),
+    'operations' => $operations,
     'finished' => '_curios_install_config_batch_finished',
     )
   );
-
   batch_process();
 }
 
@@ -386,59 +389,92 @@ function _curios_installed_instances($resources, &$config) {
   return $field_instances;
 }
 
-//function _curios_create_rdf_mappings($mappings, &$context) {
-//  $limit = 10;
-//
-//  if (!isset($context['sandbox']['progress'])) {
-//    $context['sandbox']['progress'] = 0;
-//    $context['sandbox']['payload'] = $mappings;
-//    $context['sandbox']['max'] = count($mappings);
-//  }
-//
-//  $context['message'] = 'Saving RDF mappings.';
-//
-//  $count = 0;
-//  foreach ($context['sandbox']['payload'] as $mapping) {
-//    if ($count == $limit) {
-//      break;
-//    }
-//
-//    $context['sandbox']['progress'] += 1;
-//    $context['results'][] = $mapping['bundle'];
-//    //$context['message'] = 'Saving RDF mappings' . $mapping['bundle'];
-//
-//    try {
-//      rdf_mapping_save($mapping);
-//    } catch (Exception $e) {
-//      echo 'Caught exception: ',  $e->getMessage(), "\n";
-//    }
-//
-//    unset($context['sandbox']['payload'][$count]);
-//    $count += 1;
-//  }
-//
-//  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
-//    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
-//  }
-//}
-//
-//function __curios_rdf_mappings() {
-//  $config = _curios_configuration();
-//  $mappings = array();
-//
-//  foreach ($config->getResources() as $entity) {
-//    $rdf_mapping = array();
-//    $rdf_mapping['rdftype'] = array($entity->getRDFType());
-//
-//    foreach ($entity->getFields() as $field) {
-//      $rdf_mapping[$field->getMachineName()] = array('predicates' => array($field->getRDFPredicate()));
-//    }
-//
-//    $mappings[$entity->getMachineName()] = array(
-//        'type' => 'sparql_views_resource',
-//        'bundle' => $entity->getMachineName(),
-//        'mapping' => $rdf_mapping);
-//  }
-//
-//  return $mappings;
-//}
+function _curios_create_rdf_mappings($mappings, &$context) {
+  $limit = 10;
+
+  if (!isset($context['sandbox']['progress'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['payload'] = $mappings;
+    $context['sandbox']['max'] = count($mappings);
+  }
+
+  $context['message'] = 'Saving RDF mappings.';
+
+  $count = 0;
+  foreach ($context['sandbox']['payload'] as $mapping) {
+    if ($count == $limit) {
+      break;
+    }
+
+    try {
+      rdf_mapping_save($mapping);
+    } catch (Exception $e) {
+      dd($e->getMessage());
+    }
+    
+    unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
+
+    $context['sandbox']['progress'] += 1;
+    $context['results'][] = $mapping['bundle'];
+    $count += 1;
+  }
+
+  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+}
+
+function _curios_remove_rdf_mappings($mappings, &$context) {
+  $limit = 10;
+
+  if (!isset($context['sandbox']['progress'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['payload'] = $mappings;
+    $context['sandbox']['max'] = count($mappings);
+  }
+
+  $context['message'] = 'Removing RDF mappings.';
+
+  $count = 0;
+  foreach ($context['sandbox']['payload'] as $mapping) {
+    if ($count == $limit) {
+      break;
+    }
+
+    try {
+      rdf_mapping_delete($mapping['type'], $mapping['bundle']);
+    } catch (Exception $e) {
+      dd($e->getMessage());
+    }
+    
+    unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
+
+    $context['sandbox']['progress'] += 1;
+    $context['results'][] = $mapping['bundle'];
+    $count += 1;
+  }
+
+  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+}
+
+function _curios_rdf_mappings(&$config) {
+  $mappings = array();
+
+  foreach ($config->getResources() as $entity) {
+    $rdf_mapping = array();
+    $rdf_mapping['rdftype'] = array($entity->getRDFType());
+
+    foreach ($entity->getFields() as $field) {
+      $rdf_mapping[$field->getMachineName()] = array('predicates' => array($field->getRDFPredicate()));
+    }
+
+    $mappings[$entity->getMachineName()] = array(
+        'type' => 'sparql_views_resource',
+        'bundle' => $entity->getMachineName(),
+        'mapping' => $rdf_mapping);
+  }
+
+  return $mappings;
+}

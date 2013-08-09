@@ -30,6 +30,12 @@ function curios_admin() {
     '#title' => t('Full reload of all Drupal entities (use this if you have modified any field or browsing class definitions).'),
     '#attributes' => array('checked' => 'checked'),
   );
+  
+  $form['remove_only'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Remove only, do not create new entities (uninstall mode).'),
+    '#attributes' => array('checked' => 'checked'),
+  );
 
   $form['submit'] = array(
     '#type' => 'submit',
@@ -64,7 +70,7 @@ function curios_admin_submit($form, &$form_state) {
   $config_new = curios_create_configuration($config_data_new);
 
   if ($form_state['values']['full']) { // Add/remove fields.
-    _curios_update_entity_batch_start($config_previous, $config_new);
+    _curios_update_entity_batch_start($config_previous, $config_new, $form_state['values']['remove_only']);
   } else {
     drupal_set_message('Configuration values reloaded.');
   }
