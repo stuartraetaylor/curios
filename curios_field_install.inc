@@ -28,13 +28,13 @@ function  _curios_update_entity_batch_start(&$config_old, &$config_new, $quick_m
   batch_set(array(
     'title' => t('Updating LDCMS Entities'),
     'operations' => array(
-      array('_curios_remove_field_instances', _curios_installed_instances($remove_resources, $config_old)),
-      array('_curios_remove_fields', array(array_values($remove_fields))),
       array('_curios_remove_resource_types', array(array_values($remove_resources))),
-        
-      array('_curios_create_resource_types', array(_curios_installed_resource_types($install_resources, $config_new))),
-      array('_curios_create_fields', array(_curios_installed_fields($install_fields, $config_new))),
+      array('_curios_remove_fields', array(array_values($remove_fields))),
+      array('_curios_remove_field_instances', _curios_installed_instances($remove_resources, $config_old)),
+
       array('_curios_create_field_instances', array(_curios_installed_instances($install_resources, $config_new))),
+      array('_curios_create_fields', array(_curios_installed_fields($install_fields, $config_new))),
+      array('_curios_create_resource_types', array(_curios_installed_resource_types($install_resources, $config_new))),
     ),
     'finished' => '_curios_install_config_batch_finished',
     )
