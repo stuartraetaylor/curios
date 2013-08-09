@@ -20,9 +20,15 @@ function curios_admin() {
     '#options' => $config_files,
   );
 
-  $form['quick'] = array(
+//  $form['quick'] = array(
+//    '#type' => 'checkbox',
+//    '#title' => t('Quick mode (perform a shallow diff on field and relationship assignments).'),
+//  );
+
+  $form['full'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Quick mode (perform a shallow diff on field and relationship assignments).'),
+    '#title' => t('Full reload of all Drupal entities (use this if you have modified any field or browsing class definitions).'),
+    '#attributes' => array('checked' => 'checked'),
   );
 
   $form['submit'] = array(
@@ -57,10 +63,11 @@ function curios_admin_submit($form, &$form_state) {
   $config_data_new = curios_load_configuration_spec($config_file_new);
   $config_new = curios_create_configuration($config_data_new);
 
-  $form_state['values']['quick'] = FALSE;
-
-  // Add/remove fields.
-  _curios_update_entity_batch_start($config_previous, $config_new, $form_state['values']['quick']);
+  if ($form_state['values']['full']) { // Add/remove fields.
+    _curios_update_entity_batch_start($config_previous, $config_new);
+  } else {
+    drupal_set_message('Configuration values reloaded.');
+  }
 }
 
 /**

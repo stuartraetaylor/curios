@@ -92,16 +92,16 @@ class RDFField extends DrupalThing {
 }
 
 /**
- * RDFView provides some additional information to the Views API to determine
+ * RDFViewSpec provides some additional information to the Views API to determine
  * how a browsing class (RDFResource) should be displayed.
  */
-class RDFView extends DrupalThing {
+class RDFViewSpec extends DrupalThing {
 
   private $path;
   private $browsing_class_curie;
   private $resource;
-  private $title_field;
-  private $description_field;
+  private $title_field_id;
+  private $description_field_id;
   private $required_data_fields;
   private $optional_data_fields;
   private $optional_object_fields;
@@ -112,8 +112,8 @@ class RDFView extends DrupalThing {
     $this->path = $path;
     $this->browsing_class_curie = $browsing_class_curie;
     $this->resource = $resource;
-    $this->title_field = $title_field;
-    $this->description_field = $description_field;
+    $this->title_field_id = $title_field;
+    $this->description_field_id = $description_field;
     $this->required_data_fields = $required_data_fields;
     $this->optional_data_fields = $optional_data_fields;
     $this->optional_object_fields = $optional_object_fields;
@@ -122,8 +122,8 @@ class RDFView extends DrupalThing {
   public function getBrowsingClassCURIE() { return $this->browsing_class_curie; }
   public function getBrowsingClassName() { return preg_replace('/^ldcms_/', '', $this->getId()); }
   public function getPath() { return $this->path; }
-  public function getTitleField() { return $this->title_field; }
-  public function getDescriptionField() { return $this->description_field; }
+  public function getTitleFieldId() { return $this->title_field_id; }
+  public function getDescriptionFieldId() { return $this->description_field_id; }
   public function getResource() { return $this->resource; }
 
   public function getRequiredDataFields() { return $this->required_data_fields; }
@@ -163,7 +163,7 @@ class RDFView extends DrupalThing {
 /**
  * Linked Data CMS Configuration.
  *
- * The configuration consists of a set of browsing classes (RDFResource), view specifications (RDFView), fields (RDFField),
+ * The configuration consists of a set of browsing classes (RDFResource), view specifications (RDFViewSpec), fields (RDFField),
  * relationships (RDFField). There are also has tables to map between browsing classes and views specifications, prefixes,
  * namespaces etc.
  *
@@ -181,9 +181,9 @@ class LDCMSConfiguration {
   private $resourceToViewMap = array();
   private $baseClassToResourceMap = array();
 
-  private $title_field = NULL;
-  private $description_field = NULL;
-  private $image_relationship_field = NULL;
+  private $title_field_id = NULL;
+  private $description_field_id = NULL;
+  private $image_relationship_field_id = NULL;
 
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
     return $is_curie ? 
@@ -208,13 +208,9 @@ class LDCMSConfiguration {
   function getNamespace($prefix) { return $this->prefixToNamespaceMap[$prefix]; }
   function getPrefix($namespace) { return $this->namespaceToPrefixMap[$namespace]; }
 
-  //function setFields(array $fields) { $this->fields = $fields; }
-  //function setResources(array $resources) { $this->resources = $resources; }
-  //function setViews(array $views) { $this->views = $views; }
-
   function addField($field) { $this->fields[$field->getId()] = $field; }
   function addResource($resource) { $this->resources[$resource->getId()] = $resource; }
-  function addView($view) { $this->views[$view->getId()] = $view; }
+  function addViewSpec($view) { $this->views[$view->getId()] = $view; }
 
   function getFields() { return $this->fields; }
   function getResources() { return $this->resources; }
@@ -222,11 +218,11 @@ class LDCMSConfiguration {
 
   function getField($id) { return $this->fields[$id]; }
   function getResource($id) { return $this->resources[$id]; }
-  function getView($id) { return $this->views[$id]; }
+  function getViewSpec($id) { return $this->views[$id]; }
 
   function setResourceToViewMap(array $resourceToViewMap) { $this->resourceToViewMap = $resourceToViewMap; }
   function getResourceToViewMap() { return $this->resourceToViewMap; }
-  function getViewForResource($resource_id) { return $this->resourceToViewMap[$resource_id]; }
+  function getViewIdForResource($resource_id) { return $this->resourceToViewMap[$resource_id]; }
 
   function setBaseClassToResourceMap(array $baseClassToResourceMap) { $this->baseClassToResourceMap = $baseClassToResourceMap; }
   function getBaseClassToResourceMap() { return $this->baseClassToResourceMap; }
@@ -234,14 +230,14 @@ class LDCMSConfiguration {
     return isset($this->baseClassToResourceMap[$base_class_curie]) ? $this->baseClassToResourceMap[$base_class_curie] : NULL;
   }
   
-  function setTitleField($title_field) { $this->title_field = $title_field; }
-  function getTitleField() { return $this->title_field; }
+  function setTitleFieldId($title_field_id) { $this->title_field_id = $title_field_id; }
+  function getTitleFieldId() { return $this->title_field_id; }
 
-  function setDescriptionField($description_field) { $this->description_field = $description_field; }
-  function getDescriptionField() { return $this->description_field; }
+  function setDescriptionFieldId($description_field_id) { $this->description_field_id = $description_field_id; }
+  function getDescriptionFieldId() { return $this->description_field_id; }
 
-  function setImageRelationshipField($image_relationship_field) { $this->image_relationship_field = $image_relationship_field; }
-  function getImageRelationshipField() { return $this->image_relationship_field; }
+  function setImageRelationshipFieldId($image_relationship_field) { $this->image_relationship_field_id = $image_relationship_field; }
+  function getImageRelationshipFieldId() { return $this->image_relationship_field_id; }
 
   function toString_dump() {
     var_dump($this->resourceToViewMap);

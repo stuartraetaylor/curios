@@ -22,24 +22,22 @@ function curios_configuration($config_file = NULL) {
 function curios_create_configuration($config_spec) {
   $config = new LDCMSConfiguration();
   $config->setPrefixToNamespaceMap($config_spec['namespaces']);
-
   $config->setEndpoints(curios_endpoints());
-
-  __curios_configuration_fields($config, $config_spec);
-  __curios_configuration_resources_views($config, $config_spec);
 
   // Title field.
   $title_field_id = $config->getCMSID($config_spec['options']['title_property']);
-  $config->setTitleField($title_field_id);
+  $config->setTitleFieldId($title_field_id);
 
   // Description field.
   $description_field_id = $config->getCMSID($config_spec['options']['description_property']);
-  $config->setDescriptionField($description_field_id);
-  
+  $config->setDescriptionFieldId($description_field_id);
+
   // Image relationship field.
   $image_relationship_id = $config->getCMSID($config_spec['options']['image_relationship_property']);
-  $config->setImageRelationshipField($image_relationship_id);
+  $config->setImageRelationshipFieldId($image_relationship_id);
 
+  __curios_configuration_fields($config, $config_spec);
+  __curios_configuration_resources_views($config, $config_spec);
 
   return $config;
 }
@@ -84,6 +82,9 @@ function __curios_configuration_resources_views($config, $config_spec) {
   $resourceToViewMap = array();
   $baseClassToResourceMap = array();
 
+  $global_title_field = $config->getField($config->getTitleFieldId());
+  $global_description_field = $config->getField($config->getDescriptionFieldId());
+
   // Create resources and views for all browsing classes.
   // __curios_sparql_fetch_browsing_classes($config);
   foreach ($config_spec['browsing_classes'] as $row) {
@@ -100,25 +101,22 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $resourceToViewMap[$resource_id] = $browsing_class_id;
     $baseClassToResourceMap[$base_resource_curie] = $resource_id;
 
-    // FIXME add these to config spec.
-    // Title field.
-    $title_field_id = $config->getCMSID('dc:title');
-    $title_field = $config->getField($title_field_id);
-
-    // Description field.
-    $description_field_id = $config->getCMSID('dc:description');
-    $description_field = $config->getField($description_field_id);
+    // Add local title and description fields.
+    $title_property = $row['title'];
+    $title_field = $config->getCMSID($title_property);
+    $description_property = $row['description'];
+    $description_field = $config->getCMSID($description_property);
 
     $config->addResource(new RDFResource($resource_id, $resource_label, $base_resource_curie));
-    $config->addView(new RDFView($browsing_class_id, $browsing_class_label, $view_path, NULL, $config->getResource($resource_id), $title_field, $description_field));
+    $config->addViewSpec(new RDFViewSpec($browsing_class_id, $browsing_class_label, $view_path, NULL, $config->getResource($resource_id), $title_field, $description_field));
   }
   $config->setResourceToViewMap($resourceToViewMap);
   $config->setBaseClassToResourceMap($baseClassToResourceMap);
 
   // Set fields and relationships for resources and views.
   foreach ($config->getResources() as $resource) {
-    $view_id = $config->getViewForResource($resource->getId());
-    $view = $config->getView($view_id);
+    $view_id = $config->getViewIdForResource($resource->getId());
+    $view = $config->getViewSpec($view_id);
     $browsing_class_name = $view->getBrowsingClassName();
 
     // Add fields.
@@ -131,6 +129,10 @@ function __curios_configuration_resources_views($config, $config_spec) {
 
       $resource->addField($field);
     }
+
+    // Add global title and description fields.
+    $resource->addField($global_title_field);
+    $resource->addField($global_description_field);
 
     // Add relationships.
     // __curios_sparql_fetch_relationships($browsing_class, $config);

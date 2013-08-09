@@ -50,11 +50,15 @@ function _curios_view_rewrite_title(&$view) {
         drupal_set_title($view->human_name);
         break;
       case 'summary':
-        $config = curios_configuration();
-        $view_spec = $config->getView($view->name);
-        $resource_id = $view_spec->getResource()->getId();
-        $title_field = $config->getTitleField();
-        drupal_set_title($view->result[0]->{$resource_id.'_'.$title_field});
+        if (!empty($view->result)) {
+          $config = curios_configuration();
+          $view_spec = $config->getViewSpec($view->name);
+          $resource_id = $view_spec->getResource()->getId();
+          $title_field = $config->getTitleFieldId();
+
+          drupal_set_title($view->result[0]->{$resource_id.'_'.$title_field});
+        }
+        
         break;
     }
   }
@@ -74,7 +78,7 @@ function _curios_views_link_target_rewriter(&$view) {
   if (!empty($view->result) && startsWith('object_', $display_name) && $display->display_options['curios']['rewrite_object_target'] == TRUE) {
     // Get resource for this view.
     $config = curios_configuration();
-    $view_spec = $config->getView($view->name);
+    $view_spec = $config->getViewSpec($view->name);
     $resource = $view_spec->getResource();
     $resource_name = $resource->getMachineName();
 
@@ -105,7 +109,7 @@ function _curios_views_link_target_rewriter(&$view) {
       $target_resource = !empty($intersect) ? reset($intersect) : 'hc_subject'; // pick one or fall back to subject.
 
       // Rewrite link using target resource path.
-      $target_view = $config->getViewForResource($target_resource);
+      $target_view = $config->getViewIdForResource($target_resource);
 
       // Remove extra results.
       $duplicates = count($types[$target_individual])-1;

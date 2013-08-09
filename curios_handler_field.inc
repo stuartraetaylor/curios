@@ -21,7 +21,7 @@ class curios_link_target_rewriter extends views_handler_field {
     $display = $this->view->display[$this->view->current_display];
     $targets = $display->display_options['curios']['relationship_targets'];
     $subject_id = $values->{'hc_subject_hc_subject_id'};
-    $target_view = $config->getView($targets[$subject_id]);
+    $target_view = $config->getViewSpec($targets[$subject_id]);
     $target_path = $target_view->getPath();
     $this->options['alter']['path'] =  $target_path. strstr($this->options['alter']['path'], '/');
     return parent::render($values);

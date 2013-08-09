@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Global SPARQL rndpoints declaration.
+ * Global SPARQL endpoints declaration.
  */
 function curios_endpoints() {
   $endpoints = array(
@@ -151,7 +151,7 @@ function _curios_latest_record_identifiers($n = 10) {
   $query = <<<EOT
 select ?id ?title where {
   [] hc:subjectID ?id ;
-     hc:englishName ?title .
+     dc:title ?title .
 }
 order by desc(strlen(?id)) desc(?id)
 limit $n

@@ -72,8 +72,7 @@
     white-space: nowrap;
 }
 
-
-#edit-dc-description-format { display: none; }
+#edit-hc-description-format { display: none; }
 
 #relationships-create-fieldset-wrapper .form-item,
 #relationships-create-fieldset-wrapper .form-submit,

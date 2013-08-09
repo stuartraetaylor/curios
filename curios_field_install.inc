@@ -6,7 +6,7 @@
  * Removes old fields and resources using the previously loaded configuration (if any), and then installs new ones
  * using the current configuration. The batch is triggered from the submit handler for the admin settings page.
  */
-function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mode = FALSE) {
+function  _curios_update_entity_batch_start(&$config_old, &$config_new, $quick_mode = FALSE) {
   $install_fields = $config_new->getFields();
   $install_resources = $config_new->getResources();
 
@@ -38,8 +38,8 @@ function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mod
     'finished' => '_curios_install_config_batch_finished',
     )
   );
+
   batch_process();
-   
 }
 
 /**
@@ -48,8 +48,11 @@ function  _curios_update_entity_batch_start($config_old, $config_new, $quick_mod
 function _curios_install_config_batch_finished($success, $results, $operations) {
   if ($success) {
     drupal_set_message('Entity update successful: ' . number_format(count($results)) . ' entities updated.');
-    cache_clear_all('*', 'cache_views', TRUE);
     variable_set('ldcms_installed', TRUE);
+
+    cache_clear_all('*', 'cache_views', TRUE);
+    menu_rebuild();
+    cache_clear_all(NULL, 'cache_block');
   } else {
     drupal_set_message('Entity installation failed.', 'error');
   }
@@ -317,7 +320,7 @@ function _curios_config_diff($config_old, $config_new) {
 /**
  * Creates to input array to install resource types using a configuration.
  */
-function _curios_installed_resource_types($resources, $config) {
+function _curios_installed_resource_types($resources, &$config) {
   $config_endpoints = $config->getEndpoints();
 
   $resource_types = array();
@@ -339,13 +342,13 @@ function _curios_installed_resource_types($resources, $config) {
 /**
  * Creates to input array to install fields using a configuration.
  */
-function _curios_installed_fields($install_fields, $config) {
+function _curios_installed_fields($install_fields, &$config) {
   $fields = array();
   $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
 
   foreach ($install_fields as $field) {
     // TODO integrate formatter into field object
-    $settings = ($field->getMachineName() == $config->getDescriptionField()) ? $description_settings : array('default_formatter' => 'filtered_html');
+    $settings = ($field->getMachineName() == $config->getDescriptionFieldId()) ? $description_settings : array('default_formatter' => 'filtered_html');
 
     $fields[] = array(
       'field_name' => $field->getMachineName(),
@@ -360,14 +363,14 @@ function _curios_installed_fields($install_fields, $config) {
 /**
  * Creates to input array to install field instances using a configuration.
  */
-function _curios_installed_instances($resources, $config) {
+function _curios_installed_instances($resources, &$config) {
   $field_instances = array();
   $description_settings = array('text_processing' => 1, 'default_formatter' => 'full_html', 'default_value' => ' ', 'format' => 'full_html', 'value' => ' ');
 
   foreach ($resources as $entity) {
     foreach ($entity->getFields() as $field) {
       // TODO integrate formatter into field object
-      $settings = ($field->getMachineName() == $config->getDescriptionField()) ? $description_settings : array('default_formatter' => 'filtered_html');
+      $settings = ($field->getMachineName() == $config->getDescriptionFieldId()) ? $description_settings : array('default_formatter' => 'filtered_html');
 
       $field_instances[] = array(
         'bundle' => $entity->getMachineName(),

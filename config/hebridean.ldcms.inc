@@ -639,93 +639,126 @@ $browsing_classes[] = array(
   'name'  => 'subjects',
   'label' => 'ALL SUBJECTS',
   'base'  => 'hc:Subject',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'boats',
   'label' => 'Boats',
   'base'  => 'hc:Boat',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'buildings_and_public_amenities',
   'label' => 'Buildings and Public Amenities',
   'base'  => 'hc:BuildingOrPublicAmenity',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'businesses',
   'label' => 'Businesses',
   'base'  => 'hc:Business',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'crofts_and_residences',
   'label' => 'Crofts and Residences',
   'base'  => 'hc:CroftOrResidence',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'gaelic_verse',
   'label' => 'Gaelic Verse',
   'base'  => 'hc:GaelicVerse',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'historical_events',
   'label' => 'Historical Events',
   'base'  => 'hc:HistoricalEvent',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'landmarks_and_archaeological_sites',
   'label' => 'Landmarks and Archaeological Sites',
   'base'  => 'hc:LandmarkOrArchaeologicalSite',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'locations',
   'label' => 'Locations',
   'base'  => 'hc:Location',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'natural_landscape_features',
   'label' => 'Natural Landscape Features',
   'base'  => 'hc:NaturalLandscapeFeature',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'objects_and_artefacts',
   'label' => 'Objects and Artefacts',
   'base'  => 'hc:ObjectOrArtefact',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'organisations',
   'label' => 'Organisations',
   'base'  => 'hc:Organisation',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'people',
   'label' => 'People',
   'base'  => 'hc:Person',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'resources',
   'label' => 'Resources',
   'base'  => 'hc:Resource',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'stories_reports_and_traditions',
   'label' => 'Stories, Reports and Traditions',
   'base'  => 'hc:StoryReportOrTradition',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'vehicles',
   'label' => 'Vehicles',
   'base'  => 'hc:Vehicle',
+  'title' => 'hc:englishName',
+  'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'image_details',
   'label' => 'Image Details',
   'base'  => 'hc:Imagefile',
+  'title' => 'hc:title',
+  'description' => 'hc:description',
 );
 
 /* Field assignments. */
 
 $field_assignments['subjects'] = array(
-    'dc:title',
-    'dc:description',
+'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:alsoKnownAs',
@@ -761,8 +794,7 @@ $field_assignments['subjects'] = array(
     'hc:soundexName',
 );
 $field_assignments['boats'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:alsoKnownAs',
@@ -774,8 +806,7 @@ $field_assignments['boats'] = array(
     'hc:subjectID',
 );
 $field_assignments['buildings_and_public_amenities'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfBuildingPublicAmenity',
@@ -792,8 +823,7 @@ $field_assignments['buildings_and_public_amenities'] = array(
     'hc:subjectID',
 );
 $field_assignments['businesses'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfBusiness',
@@ -805,8 +835,7 @@ $field_assignments['businesses'] = array(
     'hc:subjectID',
 );
 $field_assignments['crofts_and_residences'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfLocation',
@@ -823,8 +852,7 @@ $field_assignments['crofts_and_residences'] = array(
     'hc:subjectID',
 );
 $field_assignments['gaelic_verse'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:date',
@@ -835,8 +863,7 @@ $field_assignments['gaelic_verse'] = array(
     'hc:subjectID',
 );
 $field_assignments['historical_events'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfEvent',
@@ -848,8 +875,7 @@ $field_assignments['historical_events'] = array(
     'hc:subjectID',
 );
 $field_assignments['landmarks_and_archaeological_sites'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfSite',
@@ -862,8 +888,7 @@ $field_assignments['landmarks_and_archaeological_sites'] = array(
     'hc:subjectID',
 );
 $field_assignments['locations'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:alsoKnownAs',
@@ -876,8 +901,7 @@ $field_assignments['locations'] = array(
     'hc:subjectID',
 );
 $field_assignments['natural_landscape_features'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:alsoKnownAs',
@@ -889,8 +913,7 @@ $field_assignments['natural_landscape_features'] = array(
     'hc:subjectID',
 );
 $field_assignments['objects_and_artefacts'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfObjectArtefact',
@@ -902,8 +925,7 @@ $field_assignments['objects_and_artefacts'] = array(
     'hc:subjectID',
 );
 $field_assignments['organisations'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfOrganisation',
@@ -914,8 +936,7 @@ $field_assignments['organisations'] = array(
     'hc:subjectID',
 );
 $field_assignments['people'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:alsoKnownAs',
@@ -933,8 +954,7 @@ $field_assignments['people'] = array(
     'hc:subjectID',
 );
 $field_assignments['resources'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:date',
@@ -950,8 +970,7 @@ $field_assignments['resources'] = array(
     'hc:subjectID',
 );
 $field_assignments['stories_reports_and_traditions'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfStoryReportTradition',
@@ -965,8 +984,7 @@ $field_assignments['stories_reports_and_traditions'] = array(
     'hc:subjectID',
 );
 $field_assignments['vehicles'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
     'hc:typeOfVehicle',
@@ -976,8 +994,8 @@ $field_assignments['vehicles'] = array(
     'hc:subjectID',
 );
 $field_assignments['image_details'] = array(
-    'dc:title',
-    'dc:description',
+    'hc:title',
+    'hc:description',
     'hc:URL',
     'hc:ownedBySociety',
     'hc:subjectID',

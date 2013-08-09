@@ -135,26 +135,36 @@ $browsing_classes[] = array(   // Images details browsing class.
   'name'  => 'image_details',  // Name to identify this browsing class.
   'label' => 'Image Details',  // Human readable label used in Drupal.
   'base'  => 'ex:Image',       // Corresponding class in the ontology.
+  'title' => 'dc:title',
+  'description' => 'dc:description',
 );
 $browsing_classes[] = array( // The browsing class for ex:Entity used in default_class.
   'name'  => 'entity',
   'label' => 'All Entities',
   'base'  => 'ex:Entity',
+  'title' => 'dc:title',
+  'description' => 'dc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'person',
   'label' => 'People',
   'base'  => 'ex:Person',
+  'title' => 'dc:title',
+  'description' => 'dc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'business',
   'label' => 'Businesses',
   'base'  => 'ex:Business',
+  'title' => 'dc:title',
+  'description' => 'dc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'university',
   'label' => 'Universities',
   'base'  => 'ex:University',
+  'title' => 'dc:title',
+  'description' => 'dc:description',
 );
 
 

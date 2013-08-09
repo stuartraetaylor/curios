@@ -208,3 +208,13 @@ function __curios_activate_block($module, $block, $region, $theme, $pages, $visi
   ))
   ->execute();
 }
+
+/**
+ * Outputs each parameter via var_dump and exits.
+ */
+function curios_debug_exit() {
+  foreach (func_get_args() as $arg) {
+    var_dump($arg);
+  }
+  exit;
+}

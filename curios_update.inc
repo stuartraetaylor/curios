@@ -202,7 +202,12 @@ function curios_insert_page() {
  *
  * Insert record form. This form accepts title, description and literal fields.
  */
-function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_state);
+function curios_insert_form($form, $form_state, $resource_type) {
+  $config = curios_configuration();
+  $browsing_class = $config->getResource($resource_type->name);
+  $view_spec_id = $config->getViewIdForResource($browsing_class->getId());
+  $view_spec = $config->getViewSpec($view_spec_id);
+
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
   $field_instances = field_read_instances(array(
@@ -215,27 +220,25 @@ function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_sta
   $form['status'] = array('#markup' => "<h3>Create new: <strong>".$resource_type->label."</strong></h3>");//<span style=\"font-size: 0.8em; text-style: italic;\">(".$resource_type->name.")</span>
   $form['resource'] = array('#type' => 'hidden', '#value' => $resource_type->name);
 
-  //$form['identifier'] = array(
-  //  '#type' => 'textfield',
-  //  '#title' => t('Identifier'),
-  //);
+  // Get title and description fields from view spec.
+  $title_field = $config->getField($view_spec->getTitleFieldId());
+  $description_field = $config->getField($view_spec->getDescriptionFieldId());
 
-   // FIXME dc_title and dc_description should come from config
-  $form['dc_title'] = array(
+  $form[$title_field->getId()] = array(
     '#type' => 'textfield',
-    '#title' => t('Title'),
+    '#title' => t($title_field->getLabel()),
     '#required' => TRUE,
     '#size' => '80',
-    '#field_suffix' => '<em style="font-size: 0.7em;">(dc:title / hc:englishName)</em>',
+    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$title_field->getId()]['predicates'][0] .')</em>',
   );
-  $form['dc_description'] = array(
+  $form[$description_field->getId()] = array(
     '#type'=>'text_format',
-    '#title' => t('Description'),
+    '#title' => t($description_field->getLabel()),
     '#required' => TRUE,
     '#cols' => '80',
     '#rows' => '4',
     '#format' => 'filtered_html',
-    '#field_suffix' => '<em style="font-size: 0.7em;">(dc:description)</em>',
+    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$description_field->getId()]['predicates'][0] .')</em>',
   );
   $form[] = $break;
 
@@ -247,10 +250,6 @@ function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_sta
   );
 
   foreach ($field_instances as $instance) {
-    //$block['content'] .= '<p><label style="display: inline-block; font-weight: bold; width: 280px;">'.$instance['label'].':</label>';
-    //$block['content'] .= '<input type="text" name="'.$instance['field_name'].'"/>&nbsp;&nbsp;';
-    //$block['content'] .= '';
-
     if (__is_identifier_field($instance) || 
         __is_title_field($instance) ||
         __is_description_field($instance) ||
@@ -269,7 +268,6 @@ function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_sta
 
   $form[] = $break;
   $form['submit'] = array('#type' => 'submit', '#value' => 'Create New Record');
-  //$form['reset'] = array('#markup' => '<input type="reset" class="form-submit" value="Clear Form" />');
 
   return $form;
 }
@@ -280,6 +278,8 @@ function curios_insert_form($form, $form_state, $resource_type) {//dpm($form_sta
  * Processes the insert form and builds the set of triples to be inserted.
  */
 function curios_insert_form_submit($form, &$form_state) {
+  $config = curios_configuration();
+
   $resource_name = $form_state['values']['resource'];
   //$resource_type = sparql_views_resource_type_load($resource_name);
   $entity_info = entity_get_info('sparql_views_resource');
@@ -288,13 +288,18 @@ function curios_insert_form_submit($form, &$form_state) {
     'entity_type' => 'sparql_views_resource',
     'bundle' => $resource_name,));
 
+  $browsing_class = $config->getResource($resource_name);
+  $view_spec_id = $config->getViewIdForResource($browsing_class->getId());
+  $view_spec = $config->getViewSpec($view_spec_id);
+  $title_field = $config->getField($view_spec->getTitleFieldId());
+  $description_field = $config->getField($view_spec->getDescriptionFieldId());
+
   $subject_id = __generate_new_subject_id();
   $rdf_type = $rdf_mapping['rdftype'][0];
   $triples_insert = array();
-  // FIXME requied triples - should come from config
-  $triples_insert[] = '      ' . $rdf_mapping['hc_subject_id']['predicates'][0]  ." \"$subject_id\"^^<http://www.w3.org/2001/XMLSchema#string>;";  // TODO 'id' field from config
 
-  $required_fields = array('dc_title', 'dc_description'); // TODO add into config
+  $triples_insert[] = '      ' . $rdf_mapping['hc_subject_id']['predicates'][0]  ." \"$subject_id\"^^<http://www.w3.org/2001/XMLSchema#string>;";  // TODO 'id' field from config
+  $required_fields = array($title_field->getId(), $description_field->getId());
 
   // Add required fields.
   foreach ($required_fields as $field_name) {
@@ -306,8 +311,6 @@ function curios_insert_form_submit($form, &$form_state) {
 
     $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
   }
-
-  //$triples_insert .= '      ' . $rdf_mapping['hc_english_name']['predicates'][0]  ." \"". $form_state['values']['dc_title']."\";\n";
 
   foreach ($field_instances as $instance) {
     if (__is_identifier_field($instance) ||
@@ -369,8 +372,8 @@ function curios_update_form_page($resource_type, $subject_id = NULL) {
 function _curios_execute_details_view($resource_name, $subject_id) {
   $config = curios_configuration();
   $resource_config = $config->getResource($resource_name);
-  $view_config_id = $config->getViewForResource($resource_name);
-  $view_config = $config->getView($view_config_id);
+  $view_config_id = $config->getViewIdForResource($resource_name);
+  $view_config = $config->getViewSpec($view_config_id);
   
   return views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
 }
@@ -381,8 +384,8 @@ function _curios_execute_details_view($resource_name, $subject_id) {
 function _curios_execute_relationship_view($resource_name, $relationship_name, $subject_id) {
   $config = curios_configuration();
   $resource_config = $config->getResource($resource_name);
-  $view_config_id = $config->getViewForResource($resource_name);
-  $view_config = $config->getView($view_config_id);
+  $view_config_id = $config->getViewIdForResource($resource_name);
+  $view_config = $config->getViewSpec($view_config_id);
 
   return views_get_view_result($view_config->getMachineName(), 'object_'.$resource_name.'_'.$relationship_name,
       $subject_id, $resource_config->getRDFType());
@@ -420,16 +423,24 @@ function curios_update_page() {
  */
 function curios_update_form($form, $form_state, $resource_type, $subject_id, $view_result) {
   $config = curios_configuration();
+  $browsing_class = $config->getResource($resource_type->name);
+  $view_spec_id = $config->getViewIdForResource($browsing_class->getId());
+  $view_spec = $config->getViewSpec($view_spec_id);
+  
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
   $field_instances = field_read_instances(array(
     'entity_type' => 'sparql_views_resource',
     'bundle' => $resource_type->name));
 
-  $title_field = $resource_type->name.'_dc_title';
-  $title_value = $view_result[0]->$title_field;
-  $description_field = $resource_type->name.'_dc_description';
-  $description_value = $view_result[0]->$description_field;
+    // Get title and description fields from view spec.
+  $title_field = $config->getField($view_spec->getTitleFieldId());
+  $description_field = $config->getField($view_spec->getDescriptionFieldId());
+
+  $views_title_field = $resource_type->name.'_'.$title_field->getId();
+  $title_value = $view_result[0]->{$views_title_field};
+  $views_description_field = $resource_type->name.'_'.$description_field->getId();
+  $description_value = $view_result[0]->{$views_description_field};
 
   $form = array();
   $form['status'] = array('#markup' => "<h3>Edit: <strong>".$resource_type->label."</strong>; ID: <strong>". $subject_id ."</strong>; Name: <strong>". $title_value ."</strong></h3>");
@@ -438,30 +449,29 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
 
   $break = array('#markup' => '<br/>');
 
-  // FIXME dc_title and dc_description should come from config
-  $form['dc_title'] = array(
+  $form[$title_field->getId()] = array(
     '#type' => 'textfield',
-    '#title' => t('Title'),
+    '#title' => t($title_field->getLabel()),
     '#required' => TRUE,
     '#size' => '80',
-    '#field_suffix' => '<em style="font-size: 0.7em;">(dc:title / hc:englishName)</em>',
+    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$title_field->getId()]['predicates'][0] .')</em>',
     '#default_value' => $title_value,
   );
-  $form['old_dc_title'] = array(
+  $form['old_'.$title_field->getId()] = array(
     '#type' => 'hidden',
     '#value' => $title_value,
   );
-  $form['dc_description'] = array(
+  $form[$description_field->getId()] = array(
     '#type'=>'text_format',
-    '#title' => t('Description'),
+    '#title' => t($description_field->getLabel()),
     '#required' => TRUE,
     '#cols' => '80',
     '#rows' => '4',
     '#format' => 'filtered_html',
-    '#field_suffix' => '<em style="font-size: 0.7em;">(dc:description)</em>',
+    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$description_field->getId()]['predicates'][0] .')</em>',
     '#default_value' => $description_value,
   );
-  $form['old_dc_description'] = array(
+  $form['old_'.$description_field->getId()] = array(
     '#type' => 'hidden',
     '#value' => $description_value,
   );
@@ -489,7 +499,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     $value = empty($view_result[0]->$results_field) ? '' : $view_result[0]->$results_field;
 
     if (__is_resource_field($instance)) { // Relationship.
-      $relationship_options[$instance['field_name']] = $instance['label'];// . ' ('.$rdf_mapping[$instance['field_name']]['predicates'][0].')';
+      $relationship_options[$instance['field_name']] = $instance['label'];
     } else { // Field.
       $form['optional_fields'][$instance['field_name']] = array(
         '#type' => 'textfield',
@@ -784,6 +794,8 @@ function _curios_is_valid_relationship_assertion($resource_name, $relationship_n
  * Processes the update form and generates the tripled to be added/removed.
  */
 function curios_update_form_submit($form, &$form_state) {
+  $config = curios_configuration();
+
   $resource_name = $form_state['values']['resource'];
   $subject_id = $form_state['values']['identifier'];
 
@@ -793,10 +805,16 @@ function curios_update_form_submit($form, &$form_state) {
     'entity_type' => 'sparql_views_resource',
     'bundle' => $resource_name,));
 
+  $browsing_class = $config->getResource($resource_name);
+  $view_spec_id = $config->getViewIdForResource($browsing_class->getId());
+  $view_spec = $config->getViewSpec($view_spec_id);
+  $title_field = $config->getField($view_spec->getTitleFieldId());
+  $description_field = $config->getField($view_spec->getDescriptionFieldId());
+
   $triples_delete = array();
   $triples_insert = array();
 
-  $required_fields = array('dc_title', 'dc_description'); // TODO get from config
+  $required_fields = array($title_field->getId(), $description_field->getId());
 
   // Add required fields.
   foreach ($required_fields as $field_name) {
@@ -925,6 +943,6 @@ function __generate_new_subject_id() { return intval(_curios_fetch_max_identifie
 function __is_resource_field($field_instance) { return $field_instance['widget']['type'] == 'options_select'; }
 
 function __is_identifier_field($field_instance) { return $field_instance['field_name'] == 'hc_subject_id'; }
-function __is_title_field($field_instance) { return ($field_instance['field_name'] == 'dc_title' || $field_instance['field_name'] == 'hc_english_name'); }
-function __is_description_field($field_instance) { return $field_instance['field_name'] == 'dc_description'; }
-function __is_special_field($field_instance, $config) { return $field_instance['field_name'] == $config->getImageRelationshipField(); }
+function __is_title_field($field_instance) { return ($field_instance['field_name'] == 'dc_title' || $field_instance['field_name'] == 'hc_english_name' || $field_instance['field_name'] == 'hc_title'); }
+function __is_description_field($field_instance) { return ($field_instance['field_name'] == 'dc_description' || $field_instance['field_name'] == 'hc_description'); }
+function __is_special_field($field_instance, $config) { return $field_instance['field_name'] == $config->getImageRelationshipFieldId(); }

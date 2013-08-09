@@ -347,7 +347,7 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
   // Relationships Region.
   $pane_index = 0;
   foreach ($view_spec->getObjectFields() as $field_id) {
-    if ($field_id == $config->getImageRelationshipField())
+    if ($field_id == $config->getImageRelationshipFieldId())
       continue;
 
     $resource = $view_spec->getResource();
