@@ -758,9 +758,9 @@ $browsing_classes[] = array(
 /* Field assignments. */
 
 $field_assignments['subjects'] = array(
-'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:alsoKnownAs',
     'hc:born',
     'hc:chassis',
@@ -794,9 +794,9 @@ $field_assignments['subjects'] = array(
     'hc:soundexName',
 );
 $field_assignments['boats'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:alsoKnownAs',
     'hc:typeOfBoat',
     'hc:dateLaunched',
@@ -806,9 +806,9 @@ $field_assignments['boats'] = array(
     'hc:subjectID',
 );
 $field_assignments['buildings_and_public_amenities'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfBuildingPublicAmenity',
     'hc:dateBuilt',
     'hc:dateEstablished',
@@ -823,9 +823,9 @@ $field_assignments['buildings_and_public_amenities'] = array(
     'hc:subjectID',
 );
 $field_assignments['businesses'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfBusiness',
     'hc:dateFounded',
     'hc:period',
@@ -835,9 +835,9 @@ $field_assignments['businesses'] = array(
     'hc:subjectID',
 );
 $field_assignments['crofts_and_residences'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfLocation',
     'hc:dateBuilt',
     'hc:dateDemolished',
@@ -852,9 +852,9 @@ $field_assignments['crofts_and_residences'] = array(
     'hc:subjectID',
 );
 $field_assignments['gaelic_verse'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:date',
     'hc:theme',
     'hc:northing',
@@ -863,9 +863,9 @@ $field_assignments['gaelic_verse'] = array(
     'hc:subjectID',
 );
 $field_assignments['historical_events'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfEvent',
     'hc:date',
     'hc:dateEstablished',
@@ -875,9 +875,9 @@ $field_assignments['historical_events'] = array(
     'hc:subjectID',
 );
 $field_assignments['landmarks_and_archaeological_sites'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfSite',
     'hc:period',
     'hc:periodOfConstructionUse',
@@ -888,9 +888,9 @@ $field_assignments['landmarks_and_archaeological_sites'] = array(
     'hc:subjectID',
 );
 $field_assignments['locations'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:alsoKnownAs',
     'hc:typeOfLocation',
     'hc:geoRef',
@@ -901,9 +901,9 @@ $field_assignments['locations'] = array(
     'hc:subjectID',
 );
 $field_assignments['natural_landscape_features'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:alsoKnownAs',
     'hc:typeOfNaturalLandscapeFeature',
     'hc:geoRef',
@@ -913,9 +913,9 @@ $field_assignments['natural_landscape_features'] = array(
     'hc:subjectID',
 );
 $field_assignments['objects_and_artefacts'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfObjectArtefact',
     'hc:period',
     'hc:northing',
@@ -925,9 +925,9 @@ $field_assignments['objects_and_artefacts'] = array(
     'hc:subjectID',
 );
 $field_assignments['organisations'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfOrganisation',
     'hc:dateEstablished',
     'hc:dateOfSource',
@@ -936,9 +936,9 @@ $field_assignments['organisations'] = array(
     'hc:subjectID',
 );
 $field_assignments['people'] = array(
-    'hc:description',
-    'hc:englishName',
+     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:alsoKnownAs',
     'hc:born',
     'hc:date',
@@ -954,9 +954,9 @@ $field_assignments['people'] = array(
     'hc:subjectID',
 );
 $field_assignments['resources'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:date',
     'hc:dateEstablished',
     'hc:dateOfSource',
@@ -970,9 +970,9 @@ $field_assignments['resources'] = array(
     'hc:subjectID',
 );
 $field_assignments['stories_reports_and_traditions'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfStoryReportTradition',
     'hc:date',
     'hc:dateEstablished',
@@ -984,9 +984,9 @@ $field_assignments['stories_reports_and_traditions'] = array(
     'hc:subjectID',
 );
 $field_assignments['vehicles'] = array(
-    'hc:description',
     'hc:englishName',
     'hc:gaelicName',
+    'hc:description',
     'hc:typeOfVehicle',
     'hc:chassis',
     'hc:registration',
