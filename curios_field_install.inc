@@ -264,7 +264,7 @@ function _curios_remove_field_instances($field_instances, &$context) {
     }
 
     try {
-      field_create_instance($instance);
+      field_delete_instance($instance);
     } catch (Exception $e) {
       dd($e->getMessage());
     }
