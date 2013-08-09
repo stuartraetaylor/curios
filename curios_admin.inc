@@ -34,7 +34,6 @@ function curios_admin() {
   $form['remove_only'] = array(
     '#type' => 'checkbox',
     '#title' => t('Remove only, do not create new entities (uninstall mode).'),
-    '#attributes' => array('checked' => 'checked'),
   );
 
   $form['submit'] = array(

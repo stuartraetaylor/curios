@@ -23,15 +23,15 @@ function  _curios_update_entity_batch_start(&$config_old, &$config_new, $remove_
   }
   
   $operations = array();
-  $operations[] = array('_curios_remove_rdf_mappings', _curios_rdf_mappings($config_old));
-  $operations[] = array('_curios_remove_field_instances', _curios_installed_instances($remove_resources, $config_old));
+  $operations[] = array('_curios_remove_rdf_mappings', array(_curios_rdf_mappings($config_old)));
+  $operations[] = array('_curios_remove_field_instances', array(_curios_installed_instances($remove_resources, $config_old)));
   $operations[] = array('_curios_remove_fields', array(array_values($remove_fields)));
   $operations[] = array('_curios_remove_resource_types', array(array_values($remove_resources)));
   if (!$remove_only) {
     $operations[] = array('_curios_create_resource_types', array(_curios_installed_resource_types($install_resources, $config_new)));
     $operations[] = array('_curios_create_fields', array(_curios_installed_fields($install_fields, $config_new)));
     $operations[] = array('_curios_create_field_instances', array(_curios_installed_instances($install_resources, $config_new)));
-    $operations[] = array('_curios_create_rdf_mappings', _curios_rdf_mappings($config_old));
+    $operations[] = array('_curios_create_rdf_mappings', array(_curios_rdf_mappings($config_old)));
   }
   
   // Disable views, pages, etc.
@@ -352,7 +352,8 @@ function _curios_installed_fields($install_fields, &$config) {
 
   foreach ($install_fields as $field) {
     // TODO integrate formatter into field object
-    $settings = ($field->getMachineName() == $config->getDescriptionFieldId()) ? $description_settings : array('default_formatter' => 'filtered_html');
+    $settings = ($field->getMachineName() == $config->getDescriptionFieldId() ||$field->getMachineName() == 'hc_description') ?
+      $description_settings : array('default_formatter' => 'filtered_html');
 
     $fields[] = array(
       'field_name' => $field->getMachineName(),
@@ -373,8 +374,8 @@ function _curios_installed_instances($resources, &$config) {
 
   foreach ($resources as $entity) {
     foreach ($entity->getFields() as $field) {
-      // TODO integrate formatter into field object
-      $settings = ($field->getMachineName() == $config->getDescriptionFieldId()) ? $description_settings : array('default_formatter' => 'filtered_html');
+      $settings = ($field->getMachineName() == $config->getDescriptionFieldId() ||$field->getMachineName() == 'hc_description') ?
+        $description_settings : array('default_formatter' => 'filtered_html');
 
       $field_instances[] = array(
         'bundle' => $entity->getMachineName(),
