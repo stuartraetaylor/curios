@@ -31,7 +31,7 @@ function  _curios_update_entity_batch_start(&$config_old, &$config_new, $remove_
     $operations[] = array('_curios_create_resource_types', array(_curios_installed_resource_types($install_resources, $config_new)));
     $operations[] = array('_curios_create_fields', array(_curios_installed_fields($install_fields, $config_new)));
     $operations[] = array('_curios_create_field_instances', array(_curios_installed_instances($install_resources, $config_new)));
-    $operations[] = array('_curios_create_rdf_mappings', array(_curios_rdf_mappings($config_old)));
+    $operations[] = array('_curios_create_rdf_mappings', array(_curios_rdf_mappings($config_new)));
   }
   
   // Disable views, pages, etc.
@@ -408,11 +408,11 @@ function _curios_create_rdf_mappings($mappings, &$context) {
     }
 
     try {
-      rdf_mapping_save($mapping);
+      $status = rdf_mapping_save($mapping);
     } catch (Exception $e) {
       dd($e->getMessage());
     }
-    
+dd($context['sandbox']['progress']);
     unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
 
     $context['sandbox']['progress'] += 1;
@@ -471,7 +471,7 @@ function _curios_rdf_mappings(&$config) {
       $rdf_mapping[$field->getMachineName()] = array('predicates' => array($field->getRDFPredicate()));
     }
 
-    $mappings[$entity->getMachineName()] = array(
+    $mappings[] = array(
         'type' => 'sparql_views_resource',
         'bundle' => $entity->getMachineName(),
         'mapping' => $rdf_mapping);
