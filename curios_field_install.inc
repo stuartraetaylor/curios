@@ -412,7 +412,7 @@ function _curios_create_rdf_mappings($mappings, &$context) {
     } catch (Exception $e) {
       dd($e->getMessage());
     }
-dd($context['sandbox']['progress']);
+
     unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
 
     $context['sandbox']['progress'] += 1;
