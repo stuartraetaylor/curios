@@ -284,15 +284,86 @@ function _curios_remove_field_instances($field_instances, &$context) {
   }
 }
 
+function _curios_create_rdf_mappings($mappings, &$context) {
+  $limit = 10;
+
+  if (!isset($context['sandbox']['progress'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['payload'] = $mappings;
+    $context['sandbox']['max'] = count($mappings);
+  }
+
+  $context['message'] = 'Saving RDF mappings.';
+
+  $count = 0;
+  foreach ($context['sandbox']['payload'] as $mapping) {
+    if ($count == $limit) {
+      break;
+    }
+
+    try {
+      rdf_mapping_save($mapping);
+    } catch (Exception $e) {
+      dd($e->getMessage());
+    }
+
+    unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
+
+    $context['sandbox']['progress'] += 1;
+    $context['results'][] = $mapping['bundle'];
+    $count += 1;
+  }
+
+  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+}
+
+function _curios_remove_rdf_mappings($mappings, &$context) {
+  $limit = 10;
+
+  if (!isset($context['sandbox']['progress'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['payload'] = $mappings;
+    $context['sandbox']['max'] = count($mappings);
+  }
+
+  $context['message'] = 'Removing RDF mappings.';
+
+  $count = 0;
+  foreach ($context['sandbox']['payload'] as $mapping) {
+    if ($count == $limit) {
+      break;
+    }
+
+    try {
+      rdf_mapping_delete($mapping['type'], $mapping['bundle']);
+    } catch (Exception $e) {
+      dd($e->getMessage());
+    }
+
+    unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
+
+    $context['sandbox']['progress'] += 1;
+    $context['results'][] = $mapping['bundle'];
+    $count += 1;
+  }
+
+  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+}
+
 /**
  * Calculates a diff between the previous and current configurations to reduce the number of entities being
  * created/removed in the Drupal database.
  */
 function _curios_config_diff($config_old, $config_new) {
+  // TODO fix this
+  
   $remove_fields = array_diff_key($config_old->getFields(), $config_new->getFields());
   $install_fields = array_diff_key($config_new->getFields(), $config_old->getFields());
 
-  // TODO
 //  $remove_resources = array_diff_key($config_old->getResources(), $config_new->getResources());
 //  $install_resources = array_diff_key($config_new->getResources(), $config_old->getResources());
 //  $retain_resources = array_diff_key($config_old->getResources(), $remove_resources);
@@ -388,76 +459,6 @@ function _curios_installed_instances($resources, &$config) {
   }
 
   return $field_instances;
-}
-
-function _curios_create_rdf_mappings($mappings, &$context) {
-  $limit = 10;
-
-  if (!isset($context['sandbox']['progress'])) {
-    $context['sandbox']['progress'] = 0;
-    $context['sandbox']['payload'] = $mappings;
-    $context['sandbox']['max'] = count($mappings);
-  }
-
-  $context['message'] = 'Saving RDF mappings.';
-
-  $count = 0;
-  foreach ($context['sandbox']['payload'] as $mapping) {
-    if ($count == $limit) {
-      break;
-    }
-
-    try {
-      $status = rdf_mapping_save($mapping);
-    } catch (Exception $e) {
-      dd($e->getMessage());
-    }
-
-    unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
-
-    $context['sandbox']['progress'] += 1;
-    $context['results'][] = $mapping['bundle'];
-    $count += 1;
-  }
-
-  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
-    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
-  }
-}
-
-function _curios_remove_rdf_mappings($mappings, &$context) {
-  $limit = 10;
-
-  if (!isset($context['sandbox']['progress'])) {
-    $context['sandbox']['progress'] = 0;
-    $context['sandbox']['payload'] = $mappings;
-    $context['sandbox']['max'] = count($mappings);
-  }
-
-  $context['message'] = 'Removing RDF mappings.';
-
-  $count = 0;
-  foreach ($context['sandbox']['payload'] as $mapping) {
-    if ($count == $limit) {
-      break;
-    }
-
-    try {
-      rdf_mapping_delete($mapping['type'], $mapping['bundle']);
-    } catch (Exception $e) {
-      dd($e->getMessage());
-    }
-    
-    unset($context['sandbox']['payload'][$context['sandbox']['progress']]);
-
-    $context['sandbox']['progress'] += 1;
-    $context['results'][] = $mapping['bundle'];
-    $count += 1;
-  }
-
-  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
-    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
-  }
 }
 
 function _curios_rdf_mappings(&$config) {
