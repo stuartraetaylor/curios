@@ -95,11 +95,11 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $view_path = __curios_path_from_cmsid($browsing_class_id);
 
     // Resource corresponding to base class.
-    $base_resource_curie = $row['base'];
-    $resource_id = $config->getCMSID($base_resource_curie);
-    $resource_label =  __curios_label_from_curie($base_resource_curie, $config);
+    $base_class_curie = $row['class'];
+    $resource_id = $config->getCMSID($base_class_curie);
+    $resource_label =  __curios_label_from_curie($base_class_curie, $config);
     $resourceToViewMap[$resource_id] = $browsing_class_id;
-    $baseClassToResourceMap[$base_resource_curie] = $resource_id;
+    $baseClassToResourceMap[$base_class_curie] = $resource_id;
 
     // Add local title and description fields.
     $title_property = $row['title'];
@@ -107,7 +107,7 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $description_property = $row['description'];
     $description_field = $config->getCMSID($description_property);
 
-    $config->addResource(new RDFResource($resource_id, $resource_label, $base_resource_curie));
+    $config->addResource(new RDFResource($resource_id, $resource_label, $base_class_curie));
     $config->addViewSpec(new RDFViewSpec($browsing_class_id, $browsing_class_label, $view_path, NULL, $config->getResource($resource_id), $title_field, $description_field));
   }
   $config->setResourceToViewMap($resourceToViewMap);
@@ -170,7 +170,7 @@ function curios_load_configuration_spec($config_file = NULL) {
     $config_spec = curios_load_configuration_spec_from_database($config_file);
   }
 
-  if ($config_spec == NULL) { // Renew configuration.
+  if ($config_spec == NULL || $force_renew) { // Renew configuration.
     $config_spec = curios_load_configuration_from_file($config_file);
 
     // Update database.

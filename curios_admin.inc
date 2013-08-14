@@ -72,6 +72,7 @@ function curios_admin_submit($form, &$form_state) {
     _curios_update_entity_batch_start($config_previous, $config_new, $form_state['values']['remove_only']);
   } else {
     drupal_set_message('Configuration values reloaded.');
+    variable_set('ldcms_installed', TRUE);
   }
 }
 

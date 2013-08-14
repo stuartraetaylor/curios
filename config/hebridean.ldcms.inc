@@ -638,119 +638,119 @@ $fields[] = array(
 $browsing_classes[] = array(
   'name'  => 'subjects',
   'label' => 'ALL SUBJECTS',
-  'base'  => 'hc:Subject',
+  'class'  => 'hc:Subject',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'boats',
   'label' => 'Boats',
-  'base'  => 'hc:Boat',
+  'class'  => 'hc:Boat',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'buildings_and_public_amenities',
   'label' => 'Buildings and Public Amenities',
-  'base'  => 'hc:BuildingOrPublicAmenity',
+  'class'  => 'hc:BuildingOrPublicAmenity',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'businesses',
   'label' => 'Businesses',
-  'base'  => 'hc:Business',
+  'class'  => 'hc:Business',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'crofts_and_residences',
   'label' => 'Crofts and Residences',
-  'base'  => 'hc:CroftOrResidence',
+  'class'  => 'hc:CroftOrResidence',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'gaelic_verse',
   'label' => 'Gaelic Verse',
-  'base'  => 'hc:GaelicVerse',
+  'class'  => 'hc:GaelicVerse',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'historical_events',
   'label' => 'Historical Events',
-  'base'  => 'hc:HistoricalEvent',
+  'class'  => 'hc:HistoricalEvent',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'landmarks_and_archaeological_sites',
   'label' => 'Landmarks and Archaeological Sites',
-  'base'  => 'hc:LandmarkOrArchaeologicalSite',
+  'class'  => 'hc:LandmarkOrArchaeologicalSite',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'locations',
   'label' => 'Locations',
-  'base'  => 'hc:Location',
+  'class'  => 'hc:Location',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'natural_landscape_features',
   'label' => 'Natural Landscape Features',
-  'base'  => 'hc:NaturalLandscapeFeature',
+  'class'  => 'hc:NaturalLandscapeFeature',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'objects_and_artefacts',
   'label' => 'Objects and Artefacts',
-  'base'  => 'hc:ObjectOrArtefact',
+  'class'  => 'hc:ObjectOrArtefact',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'organisations',
   'label' => 'Organisations',
-  'base'  => 'hc:Organisation',
+  'class'  => 'hc:Organisation',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'people',
   'label' => 'People',
-  'base'  => 'hc:Person',
+  'class'  => 'hc:Person',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'resources',
   'label' => 'Resources',
-  'base'  => 'hc:Resource',
+  'class'  => 'hc:Resource',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'stories_reports_and_traditions',
   'label' => 'Stories, Reports and Traditions',
-  'base'  => 'hc:StoryReportOrTradition',
+  'class'  => 'hc:StoryReportOrTradition',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'vehicles',
   'label' => 'Vehicles',
-  'base'  => 'hc:Vehicle',
+  'class'  => 'hc:Vehicle',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'image_details',
   'label' => 'Image Details',
-  'base'  => 'hc:Imagefile',
+  'class'  => 'hc:Imagefile',
   'title' => 'hc:title',
   'description' => 'hc:description',
 );

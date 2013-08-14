@@ -125,7 +125,7 @@ $fields[] = array(
 
 /*
  * The browsing classes correspond to sets of pages about specific
- * classes in Drupal. Each browsing class has a base class 'base' 
+ * classes in Drupal. Each browsing class has a base class 'class' 
  * to identify the corresponding class in the ontology.
  * 'name' should be a valid Drupal machine name, i.e., all lower case,
  * underscores can be used between words.
@@ -134,35 +134,35 @@ $fields[] = array(
 $browsing_classes[] = array(   // Images details browsing class.
   'name'  => 'image_details',  // Name to identify this browsing class.
   'label' => 'Image Details',  // Human readable label used in Drupal.
-  'base'  => 'ex:Image',       // Corresponding class in the ontology.
+  'class'  => 'ex:Image',       // Corresponding class in the ontology.
   'title' => 'dc:title',
   'description' => 'dc:description',
 );
 $browsing_classes[] = array( // The browsing class for ex:Entity used in default_class.
   'name'  => 'entity',
   'label' => 'All Entities',
-  'base'  => 'ex:Entity',
+  'class'  => 'ex:Entity',
   'title' => 'dc:title',
   'description' => 'dc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'person',
   'label' => 'People',
-  'base'  => 'ex:Person',
+  'class'  => 'ex:Person',
   'title' => 'dc:title',
   'description' => 'dc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'business',
   'label' => 'Businesses',
-  'base'  => 'ex:Business',
+  'class'  => 'ex:Business',
   'title' => 'dc:title',
   'description' => 'dc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'university',
   'label' => 'Universities',
-  'base'  => 'ex:University',
+  'class'  => 'ex:University',
   'title' => 'dc:title',
   'description' => 'dc:description',
 );

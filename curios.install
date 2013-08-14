@@ -68,5 +68,6 @@ function curios_install() {
  * Implements hook_uninstall.
  */
 function curios_uninstall() {
+  variable_del('ldcms_installed');
   // TODO clean up.
 }
