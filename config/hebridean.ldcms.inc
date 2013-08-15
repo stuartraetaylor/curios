@@ -19,17 +19,12 @@ $options = array(
 
 $fields[] = array(
   'property' => 'hc:alsoKnownAs',
-  'label'    => 'AlsoKnownAs',
+  'label'    => 'Also Known As',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:bkReference',
-  'label'    => 'BkReference',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'hc:born',
-  'label'    => 'Born',
+  'label'    => 'Bk Reference',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -39,7 +34,7 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:createdBySociety',
-  'label'    => 'Createdby',
+  'label'    => 'Created By',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -49,52 +44,57 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:dateBuilt',
-  'label'    => 'DateBuilt',
+  'label'    => 'Date Built',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateDemolished',
-  'label'    => 'DateDemolished',
+  'label'    => 'Date Demolished',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateEstablished',
-  'label'    => 'DateEstablished',
+  'label'    => 'Date Established',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateFounded',
-  'label'    => 'DateFounded',
+  'label'    => 'Date Founded',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateLaunched',
-  'label'    => 'DateLaunched',
+  'label'    => 'Date Launched',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateLotted',
-  'label'    => 'DateLotted',
+  'label'    => 'Date Lotted',
+  'type'     => 'text',
+);
+$fields[] = array(
+  'property' => 'hc:born',
+  'label'    => 'Date of Birth',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateOfDeath',
-  'label'    => 'DateOfDeath',
+  'label'    => 'Date of Death',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateOfMarriage',
-  'label'    => 'DateOfMarriage',
+  'label'    => 'Date of Marriage',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateOfRegistration',
-  'label'    => 'DateOfRegistration',
+  'label'    => 'Date of Registration',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:dateOfSource',
-  'label'    => 'DateOfSource',
+  'label'    => 'Date of Source',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -103,28 +103,28 @@ $fields[] = array(
   'type'     => 'text',
 );
 $fields[] = array(
-  'property' => 'hc:easting',
-  'label'    => 'Easting',
-  'type'     => 'text',
-);
-$fields[] = array(
   'property' => 'hc:englishName',
-  'label'    => 'EnglishName',
+  'label'    => 'English Name',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:gaelicName',
-  'label'    => 'GaelicName',
+  'label'    => 'Gaelic Name',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:geoRef',
-  'label'    => 'GeoRef',
+  'label'    => 'Geo Ref',
+  'type'     => 'text',
+);
+$fields[] = array(
+  'property' => 'hc:easting',
+  'label'    => 'OS Grid Reference: Easting',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:northing',
-  'label'    => 'Northing',
+  'label'    => 'OS Grid Reference: Northing',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -139,7 +139,7 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:periodOfConstructionUse',
-  'label'    => 'PeriodOfConstructionUse',
+  'label'    => 'Period of Construction',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -164,12 +164,12 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:soundexName',
-  'label'    => 'Soundexname',
+  'label'    => 'Soundex Name',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:subjectID',
-  'label'    => 'Subjectid',
+  'label'    => 'Subject Id',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -184,12 +184,12 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:timePeriod',
-  'label'    => 'TimePeriod',
+  'label'    => 'Time Period',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:URL',
-  'label'    => 'ImageURL',
+  'label'    => 'Image URL',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -262,82 +262,82 @@ $fields[] = array(
 
 $fields[] = array(
   'property' => 'hc:adoptedBy',
-  'label'    => 'AdoptedBy',
+  'label'    => 'Adopted By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:adoptedPerson',
-  'label'    => 'AdoptedPerson',
+  'label'    => 'Adopted Person',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:associatedWith',
-  'label'    => 'AssociatedWith',
+  'label'    => 'Associated With',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:authorOriginatorOf',
-  'label'    => 'AuthorOriginatorOf',
+  'label'    => 'Author Originator Of',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:bornIn',
-  'label'    => 'BornIn',
+  'label'    => 'Born In',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:builder',
-  'label'    => 'Builder',
+  'label'    => 'Builder Of',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:builtBy',
-  'label'    => 'BuiltBy',
+  'label'    => 'Built By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:childOf',
-  'label'    => 'ChildOf',
+  'label'    => 'Child Of',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:CompiledMaintainedBy',
-  'label'    => 'compiledMaintainedBy',
+  'label'    => 'compiled Maintained By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:compilerOf',
-  'label'    => 'CompilerOf',
+  'label'    => 'Compiler Of',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:composedBy',
-  'label'    => 'ComposedBy',
+  'label'    => 'Composed By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:composedSong',
-  'label'    => 'ComposedSong',
+  'label'    => 'Composed Song',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:comprisesSubSite',
-  'label'    => 'ComprisesSubSite',
+  'label'    => 'Comprises Subsite',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:crewedBy',
-  'label'    => 'CrewedBy',
+  'label'    => 'Crewed By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:diedIn',
-  'label'    => 'DiedIn',
+  'label'    => 'Died In',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:emigratedTo',
-  'label'    => 'EmigratedTo',
+  'label'    => 'Emigrated To',
   'type'     => 'relationship',
 );
 $fields[] = array(
@@ -347,32 +347,32 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:employedBy',
-  'label'    => 'EmployedBy',
+  'label'    => 'Employed By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:fosteredBy',
-  'label'    => 'FosteredBy',
+  'label'    => 'Fostered By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:fosteredPerson',
-  'label'    => 'FosteredPerson',
+  'label'    => 'Fostered Person',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:foundAt',
-  'label'    => 'FoundAt',
+  'label'    => 'Found At',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:foundHere',
-  'label'    => 'FoundHere',
+  'label'    => 'Found Here',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:hasFile',
-  'label'    => 'HasFile',
+  'label'    => 'Has File',
   'type'     => 'relationship',
 );
 $fields[] = array(
@@ -382,52 +382,52 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:immigrantFrom',
-  'label'    => 'ImmigrantFrom',
+  'label'    => 'Immigrant From',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:informationObtainedFrom',
-  'label'    => 'InformationObtainedFrom',
+  'label'    => 'Information Obtained From',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:isPartOfSite',
-  'label'    => 'IsPartOfSite',
+  'label'    => 'Is Part Of Site',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:isShownHere',
-  'label'    => 'IsShownHere',
+  'label'    => 'Is Shown Here',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:livedHere',
-  'label'    => 'LivedHere',
+  'label'    => 'Lived Here',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:livedAt',
-  'label'    => 'LivedAt',
+  'label'    => 'Lived At',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:livedWith',
-  'label'    => 'LivedWith',
+  'label'    => 'Lived With',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:locatedAt',
-  'label'    => 'LocatedAt',
+  'label'    => 'Located At',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:locatedHere',
-  'label'    => 'LocatedHere',
+  'label'    => 'Located Here',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:locatedNear',
-  'label'    => 'LocatedNear',
+  'label'    => 'Located Near',
   'type'     => 'relationship',
 );
 $fields[] = array(
@@ -437,72 +437,72 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:MayBeTheSameAs',
-  'label'    => 'mayBeTheSameAs',
+  'label'    => 'May Be The Same As',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:movedFrom',
-  'label'    => 'MovedFrom',
+  'label'    => 'Moved From',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:movedTo',
-  'label'    => 'MovedTo',
+  'label'    => 'Moved To',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:onCrewOfBoat',
-  'label'    => 'OnCrewOfBoat',
+  'label'    => 'On Crew Of Boat',
   'type'     => 'relationship',
 );
 $fields[] = array(
-  'property' => 'hc:ownedOf',
+  'property' => 'hc:owned',
   'label'    => 'Owned',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:ownedBy',
-  'label'    => 'OwnedBy',
+  'label'    => 'Owned By',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:parentOf',
-  'label'    => 'ParentOf',
+  'label'    => 'Parent Of',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:personBornHere',
-  'label'    => 'PersonBornHere',
+  'label'    => 'Person Born Here',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:personWhoDiedHere',
-  'label'    => 'PersonWhoDiedHere',
+  'label'    => 'Person Who Died Here',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:relatedTo',
-  'label'    => 'RelatedTo',
+  'label'    => 'Related To',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:siblingOf',
-  'label'    => 'SiblingOf',
+  'label'    => 'Sibling Of',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:sourceOfInformationOn',
-  'label'    => 'SourceOfInformationOn',
+  'label'    => 'Source Of Information On',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:usedObject',
-  'label'    => 'UsedObject',
+  'label'    => 'Used Object',
   'type'     => 'relationship',
 );
 $fields[] = array(
   'property' => 'hc:writtenCompiledBy',
-  'label'    => 'WrittenCompiledBy',
+  'label'    => 'Written Compiled By',
   'type'     => 'relationship',
 );
 
@@ -510,27 +510,27 @@ $fields[] = array(
 
 $fields[] = array(
   'property' => 'hc:Approvedby',
-  'label'    => 'Approvedby',
+  'label'    => 'Approved by',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:Approveddate',
-  'label'    => 'Approveddate',
+  'label'    => 'Approved date',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:approvedForPub',
-  'label'    => 'ApprovedForPub',
+  'label'    => 'Approved For Pub',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:ownedBySociety',
-  'label'    => 'OwnedBySociety',
+  'label'    => 'Owned By Society',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:maintainedBySociety',
-  'label'    => 'MaintainedBySociety',
+  'label'    => 'Maintained By Society',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -545,7 +545,7 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:Compilernotes',
-  'label'    => 'Compilernotes',
+  'label'    => 'Compiler notes',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -555,12 +555,12 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:Editedby',
-  'label'    => 'Editedby',
+  'label'    => 'Edited by',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:Extrainfo',
-  'label'    => 'Extrainfo',
+  'label'    => 'Extra info',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -570,17 +570,17 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:Internalsummary',
-  'label'    => 'Internalsummary',
+  'label'    => 'Internal summary',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:Inversecaption',
-  'label'    => 'Inversecaption',
+  'label'    => 'Inverse caption',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:Isprimary',
-  'label'    => 'Isprimary',
+  'label'    => 'Is primary',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -590,7 +590,7 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:Lochistsocref',
-  'label'    => 'Lochistsocref',
+  'label'    => 'Lochistsoc ref',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -600,22 +600,22 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:Origindate',
-  'label'    => 'Origindate',
+  'label'    => 'Origin date',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:Tobepublished',
-  'label'    => 'Tobepublished',
+  'label'    => 'To be published',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:Whencreated',
-  'label'    => 'Whencreated',
+  'label'    => 'When created',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:Whenedited',
-  'label'    => 'Whenedited',
+  'label'    => 'When edited',
   'type'     => 'text',
 );
 
@@ -637,120 +637,120 @@ $fields[] = array(
 
 $browsing_classes[] = array(
   'name'  => 'subjects',
-  'label' => 'ALL SUBJECTS',
-  'class'  => 'hc:Subject',
+  'label' => 'All Records',
+  'class' => 'hc:Subject',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'boats',
   'label' => 'Boats',
-  'class'  => 'hc:Boat',
+  'class' => 'hc:Boat',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'buildings_and_public_amenities',
   'label' => 'Buildings and Public Amenities',
-  'class'  => 'hc:BuildingOrPublicAmenity',
+  'class' => 'hc:BuildingOrPublicAmenity',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'businesses',
   'label' => 'Businesses',
-  'class'  => 'hc:Business',
+  'class' => 'hc:Business',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'crofts_and_residences',
   'label' => 'Crofts and Residences',
-  'class'  => 'hc:CroftOrResidence',
+  'class' => 'hc:CroftOrResidence',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'gaelic_verse',
   'label' => 'Gaelic Verse',
-  'class'  => 'hc:GaelicVerse',
+  'class' => 'hc:GaelicVerse',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'historical_events',
   'label' => 'Historical Events',
-  'class'  => 'hc:HistoricalEvent',
+  'class' => 'hc:HistoricalEvent',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'landmarks_and_archaeological_sites',
   'label' => 'Landmarks and Archaeological Sites',
-  'class'  => 'hc:LandmarkOrArchaeologicalSite',
+  'class' => 'hc:LandmarkOrArchaeologicalSite',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'locations',
   'label' => 'Locations',
-  'class'  => 'hc:Location',
+  'class' => 'hc:Location',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'natural_landscape_features',
   'label' => 'Natural Landscape Features',
-  'class'  => 'hc:NaturalLandscapeFeature',
+  'class' => 'hc:NaturalLandscapeFeature',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'objects_and_artefacts',
   'label' => 'Objects and Artefacts',
-  'class'  => 'hc:ObjectOrArtefact',
+  'class' => 'hc:ObjectOrArtefact',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'organisations',
   'label' => 'Organisations',
-  'class'  => 'hc:Organisation',
+  'class' => 'hc:Organisation',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'people',
   'label' => 'People',
-  'class'  => 'hc:Person',
+  'class' => 'hc:Person',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'resources',
   'label' => 'Resources',
-  'class'  => 'hc:Resource',
+  'class' => 'hc:Resource',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'stories_reports_and_traditions',
   'label' => 'Stories, Reports and Traditions',
-  'class'  => 'hc:StoryReportOrTradition',
+  'class' => 'hc:StoryReportOrTradition',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'vehicles',
   'label' => 'Vehicles',
-  'class'  => 'hc:Vehicle',
+  'class' => 'hc:Vehicle',
   'title' => 'hc:englishName',
   'description' => 'hc:description',
 );
 $browsing_classes[] = array(
   'name'  => 'image_details',
   'label' => 'Image Details',
-  'class'  => 'hc:Imagefile',
+  'class' => 'hc:Imagefile',
   'title' => 'hc:title',
   'description' => 'hc:description',
 );
@@ -779,6 +779,7 @@ $field_assignments['subjects'] = array(
     'hc:URL',
     'hc:fileName',
     'hc:geoRef',
+    'hc:easting',
     'hc:northing',
     'hc:occupation',
     'hc:period',
@@ -817,8 +818,8 @@ $field_assignments['buildings_and_public_amenities'] = array(
     'hc:period',
     'hc:periodOfConstructionUse',
     'hc:SMRRecordID',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:subjectID',
 );
@@ -829,8 +830,8 @@ $field_assignments['businesses'] = array(
     'hc:typeOfBusiness',
     'hc:dateFounded',
     'hc:period',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:subjectID',
 );
@@ -846,8 +847,8 @@ $field_assignments['crofts_and_residences'] = array(
     'hc:geoRef',
     'hc:period',
     'hc:periodOfConstructionUse',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:subjectID',
 );
@@ -857,8 +858,8 @@ $field_assignments['gaelic_verse'] = array(
     'hc:description',
     'hc:date',
     'hc:theme',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:subjectID',
 );
@@ -881,8 +882,8 @@ $field_assignments['landmarks_and_archaeological_sites'] = array(
     'hc:typeOfSite',
     'hc:period',
     'hc:periodOfConstructionUse',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:SMRRecordID',
     'hc:subjectID',
@@ -895,8 +896,8 @@ $field_assignments['locations'] = array(
     'hc:typeOfLocation',
     'hc:geoRef',
     'hc:periodOfConstructionUse',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:subjectID',
 );
@@ -907,8 +908,8 @@ $field_assignments['natural_landscape_features'] = array(
     'hc:alsoKnownAs',
     'hc:typeOfNaturalLandscapeFeature',
     'hc:geoRef',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:subjectID',
 );
@@ -918,8 +919,8 @@ $field_assignments['objects_and_artefacts'] = array(
     'hc:description',
     'hc:typeOfObjectArtefact',
     'hc:period',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:SMRRecordID',
     'hc:subjectID',
@@ -936,19 +937,18 @@ $field_assignments['organisations'] = array(
     'hc:subjectID',
 );
 $field_assignments['people'] = array(
-     'hc:englishName',
+    'hc:englishName',
     'hc:gaelicName',
     'hc:description',
     'hc:alsoKnownAs',
     'hc:born',
-    'hc:date',
     'hc:dateOfDeath',
     'hc:dateOfMarriage',
     'hc:geoRef',
     'hc:occupation',
     'hc:sex',
-    'hc:northing',
     'hc:easting',
+    'hc:northing',
     'hc:ownedBySociety',
     'hc:bkReference',
     'hc:subjectID',
@@ -1573,7 +1573,7 @@ $relationship_assignments['people'][] = array(
     'target'    => 'hc:Boat',
 );
 $relationship_assignments['people'][] = array(
-    'property'  => 'hc:ownedOf',
+    'property'  => 'hc:owned',
     'target'    => array(
           'hc:Business',
           'hc:Boat',
