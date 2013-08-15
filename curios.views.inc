@@ -34,17 +34,6 @@ function curios_views_data() {
 function curios_views_pre_render(&$view) {
   _curios_views_link_target_rewriter($view);
   _curios_views_rewrite_title($view);
-  _curios_views_admin_edit_link($view);
-}
-
-/**
- * Include admin edit record link.
- */
-function _curios_views_admin_edit_link(&$view) {
-  if ($view->current_display == 'summary' && user_access('curios manager repository')) {
-    // FIXME find where 'exclude' is processed and update hook.
-    $view->display['summary']->display_options['fields']['curios_admin_edit_link']['exclude'] = FALSE;
-  }
 }
 
 /**

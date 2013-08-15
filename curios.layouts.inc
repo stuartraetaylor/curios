@@ -54,6 +54,7 @@ $layout->settings = array(
         0 => 4,
         1 => 5,
         2 => 6,
+        3 => 7,
       ),
       'class' => 'Col #1',
     ),
@@ -63,7 +64,7 @@ $layout->settings = array(
       'width_type' => '%',
       'parent' => 'main-row',
       'children' => array(
-        0 => 7,
+        0 => 8,
       ),
       'class' => 'Col #2',
     ),
@@ -71,7 +72,7 @@ $layout->settings = array(
       'type' => 'row',
       'contains' => 'region',
       'children' => array(
-        0 => 'summary_region',
+        0 => 'admin_region',
       ),
       'parent' => '2',
       'class' => '',
@@ -80,7 +81,7 @@ $layout->settings = array(
       'type' => 'row',
       'contains' => 'region',
       'children' => array(
-        0 => 'properties_region',
+        0 => 'summary_region',
       ),
       'parent' => '2',
       'class' => '',
@@ -89,7 +90,7 @@ $layout->settings = array(
       'type' => 'row',
       'contains' => 'region',
       'children' => array(
-        0 => 'image_gallery_region',
+        0 => 'properties_region',
       ),
       'parent' => '2',
       'class' => '',
@@ -98,17 +99,34 @@ $layout->settings = array(
       'type' => 'row',
       'contains' => 'region',
       'children' => array(
+        0 => 'image_gallery_region',
+      ),
+      'parent' => '2',
+      'class' => '',
+    ),
+    8 => array(
+      'type' => 'row',
+      'contains' => 'region',
+      'children' => array(
         0 => 'relationships_region',
       ),
       'parent' => '3',
       'class' => '',
+    ),
+    'admin_region' => array(
+      'type' => 'region',
+      'title' => 'Admin Region',
+      'width' => 100,
+      'width_type' => '%',
+      'parent' => '4',
+      'class' => 'curios-admin',
     ),
     'summary_region' => array(
       'type' => 'region',
       'title' => 'Summary Region',
       'width' => 100,
       'width_type' => '%',
-      'parent' => '4',
+      'parent' => '5',
       'class' => 'curios-summary',
     ),
     'properties_region' => array(
@@ -116,7 +134,7 @@ $layout->settings = array(
       'title' => 'Properties Region',
       'width' => 100,
       'width_type' => '%',
-      'parent' => '5',
+      'parent' => '6',
       'class' => 'curios-properties',
     ),
     'image_gallery_region' => array(
@@ -124,7 +142,7 @@ $layout->settings = array(
       'title' => 'Image Gallery Region',
       'width' => 100,
       'width_type' => '%',
-      'parent' => '6',
+      'parent' => '7',
       'class' => 'curios-image-gallery',
     ),
     'relationships_region' => array(
@@ -132,7 +150,7 @@ $layout->settings = array(
       'title' => 'Relationships Region',
       'width' => 100,
       'width_type' => '%',
-      'parent' => '7',
+      'parent' => '8',
       'class' => 'curios-relationships',
     ),
   ),
