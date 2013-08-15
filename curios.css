@@ -53,6 +53,16 @@
     text-align: center;
 }
 
+
+.panels-flexible-hc_subject_page_layout .curios-admin-row {
+  padding-bottom: 0px !important;
+}
+
+.panels-flexible-hc_subject_page_layout .curios-summary-row {
+
+}
+
+
 /* Listings page */
 
 #content .curios-listing .form-text {

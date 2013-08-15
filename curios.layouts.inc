@@ -75,7 +75,7 @@ $layout->settings = array(
         0 => 'admin_region',
       ),
       'parent' => '2',
-      'class' => '',
+      'class' => 'curios-admin-row',
     ),
     5 => array(
       'type' => 'row',
@@ -84,7 +84,7 @@ $layout->settings = array(
         0 => 'summary_region',
       ),
       'parent' => '2',
-      'class' => '',
+      'class' => 'curios-summary-row',
     ),
     6 => array(
       'type' => 'row',
