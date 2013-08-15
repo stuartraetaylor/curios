@@ -32,6 +32,7 @@ function  _curios_update_entity_batch_start(&$config_old, &$config_new, $remove_
     $operations[] = array('_curios_create_fields', array(_curios_installed_fields($install_fields, $config_new)));
     $operations[] = array('_curios_create_field_instances', array(_curios_installed_instances($install_resources, $config_new)));
     $operations[] = array('_curios_create_rdf_mappings', array(_curios_rdf_mappings($config_new)));
+    $operations[] = array('_curios_finalise_install', array());
   }
   
   // Disable views, pages, etc.
@@ -52,14 +53,16 @@ function  _curios_update_entity_batch_start(&$config_old, &$config_new, $remove_
 function _curios_install_config_batch_finished($success, $results, $operations) {
   if ($success) {
     drupal_set_message('Entity update successful: ' . number_format(count($results)) . ' entities updated.');
-    variable_set('ldcms_installed', TRUE);
-
     cache_clear_all('*', 'cache_views', TRUE);
     menu_rebuild();
     cache_clear_all(NULL, 'cache_block');
   } else {
     drupal_set_message('Entity installation failed.', 'error');
   }
+}
+
+function _curios_finalise_install() {
+  variable_set('ldcms_installed', TRUE);
 }
 
 /**
