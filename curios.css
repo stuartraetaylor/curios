@@ -47,6 +47,13 @@
     float: right;
 }
 
+/** Admin edit link on summary blocks */
+.views-field-curios-admin-edit-link {
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: -20px;
+}
+
 /* Listings page */
 
 #content .curios-listing .form-text {
