@@ -1,4 +1,24 @@
 <?php
+/*
+ * curios.views_default.inc
+ * 
+ * Copyright (c) 2011-2013, Stuart Taylor (staylor@abdn.ac.uk).
+ * All rights reserved.
+ *
+ * CURIOS: Linked Data CMS is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This software is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this software. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 require_once('curios_entities.inc');
 require_once('curios_ldcms.inc');
 require_once('curios.views_custom.inc');
@@ -16,7 +36,7 @@ require_once('curios.views_custom.inc');
  *   images block - image gallery block.
  *   object block - display relationship links, one block per relationship.
  *
- * The structure of the $view object is not current well documented for the Views API. Generally the parameters can be
+ * The structure of the $view object is not currently well documented for the Views API. Generally the parameters can be
  * found by using the View UI to create/edit a view, then using the export function to examine the generated views objects.
  *
  * This function will also attempt to load pre-defined views exports from files named with the format: views/VIEW-ID.view.inc
