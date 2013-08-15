@@ -119,12 +119,12 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:easting',
-  'label'    => 'OS Grid Reference: Easting',
+  'label'    => 'Grid Ref Easting',
   'type'     => 'text',
 );
 $fields[] = array(
   'property' => 'hc:northing',
-  'label'    => 'OS Grid Reference: Northing',
+  'label'    => 'Grid Ref Northing',
   'type'     => 'text',
 );
 $fields[] = array(
