@@ -416,7 +416,7 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:isShownHere',
-  'label'    => 'Is Shown Here',
+  'label'    => 'Associated With',
   'type'     => 'relationship',
 );
 $fields[] = array(
