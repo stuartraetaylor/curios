@@ -704,8 +704,8 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   $handler->display->display_options['pager']['options']['offset'] = '0';
   // FIXME using rdf:type increases the results, ARC2 dies, limit to 100 for now
   //$handler->display->display_options['pager']['type'] = 'none';
-  $handler->display->display_options['pager']['type'] = 'lite';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['type'] = 'none';
+  //$handler->display->display_options['pager']['options']['items_per_page'] = '100';
   
   //$handler->display->display_options['pager']['type'] = 'mini';
 //  $handler->display->display_options['attachment_position'] = 'after';
