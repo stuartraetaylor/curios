@@ -115,3 +115,11 @@
 #relationships-remove-fieldset-wrapper .form-submit {
     display: inline;
 }
+
+.listing-image-Yes {
+  background-image: url('images/tick-sm.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.listing-image-Yes span { display: none; }
+
