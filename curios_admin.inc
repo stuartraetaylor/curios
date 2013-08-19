@@ -37,18 +37,27 @@ function curios_admin() {
     '#options' => $config_files,
   );
 
-//  $form['quick'] = array(
+
+  $form['fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Advanced Options'),
+    '#weight' => 5,
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
+//  $form['fieldset']'quick'] = array(
 //    '#type' => 'checkbox',
 //    '#title' => t('Quick mode (perform a shallow diff on field and relationship assignments).'),
 //  );
 
-  $form['full'] = array(
+  $form['fieldset']['full'] = array(
     '#type' => 'checkbox',
     '#title' => t('Full reload of all Drupal entities (use this if you have modified any field or browsing class definitions).'),
     '#attributes' => array('checked' => 'checked'),
   );
   
-  $form['remove_only'] = array(
+  $form['fieldset']['remove_only'] = array(
     '#type' => 'checkbox',
     '#title' => t('Remove only, do not create new entities (uninstall mode).'),
   );
