@@ -61,7 +61,7 @@ class curios_image_thumbnail_field extends views_handler_field {
     $w = '260';
 
     $image_url = $values->{'hc_imagefile_hc_url'};
-    $image_url = str_replace('http://www.hebrideanconnections.com/', 'http://www.dotrural.ac.uk/curiosdemo/images/', $image_url);
+    $image_url = str_replace('http://www.hebrideanconnections.com/', 'http://www.dotrural.ac.uk/curiosdemo/', $image_url);
     $title = $values->{$this->options['title_field']};
 
     if (isset($this->options['disable_thumbnail']) && $this->options['disable_thumbnail'] = TRUE) { // Display full size image.
