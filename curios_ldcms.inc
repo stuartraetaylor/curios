@@ -2,8 +2,8 @@
 /*
  * curios_ldcms.inc
  * 
- * Copyright (c) 2011-2013, Stuart Taylor (staylor@abdn.ac.uk).
- * All rights reserved.
+ * Copyright (c) 2011-2013, Stuart Taylor (staylor@abdn.ac.uk),
+ * University of Aberdeen. All rights reserved.
  *
  * CURIOS: Linked Data CMS is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License as
