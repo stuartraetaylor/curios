@@ -1073,7 +1073,7 @@ function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fi
   $handler->display->display_options['filters'][$base_fields['title']]['id'] = $base_fields['title'];
   $handler->display->display_options['filters'][$base_fields['title']]['table'] = $view->base_table;
   $handler->display->display_options['filters'][$base_fields['title']]['field'] = $base_fields['title'];
-  $handler->display->display_options['filters'][$base_fields['title']]['operator'] = '~=';
+  $handler->display->display_options['filters'][$base_fields['title']]['operator'] = 'search';
   $handler->display->display_options['filters'][$base_fields['title']]['exposed'] = TRUE;
   $handler->display->display_options['filters'][$base_fields['title']]['expose']['operator_id'] = $base_fields['title'].'_op';
   $handler->display->display_options['filters'][$base_fields['title']]['expose']['label'] = 'Search '.$view_spec->getLabel();
