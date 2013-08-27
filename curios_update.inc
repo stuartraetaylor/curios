@@ -91,13 +91,6 @@ function curios_resource_type_load($resource_name) {
 function curios_manage_insert_form($form, &$form_state) {
   $form = array();
 
- // $form['fieldset'] = array(
- //   '#type' => 'fieldset',
- //   '#title' => t('Insert New Record'),
- //   '#weight' => 5,
- //   '#collapsible' => TRUE,
- //   '#collapsed' => $collapsed,
- // );
   $form['type'] = __curios_resources_form_select();
   $form['submit'] = array('#type' => 'submit', '#value' => 'Next');
   
@@ -254,7 +247,7 @@ function curios_insert_form($form, $form_state, $resource_type) {
   $form[$description_field->getId()] = array(
     '#type'=>'text_format',
     '#title' => t($description_field->getLabel()),
-    '#required' => TRUE,
+    '#required' => FALSE,
     '#cols' => '80',
     '#rows' => '4',
     '#format' => 'filtered_html',
@@ -409,16 +402,6 @@ function _curios_execute_relationship_view($resource_name, $relationship_name, $
 
   return views_get_view_result($view_config->getMachineName(), 'object_'.$resource_name.'_'.$relationship_name,
       $subject_id, $resource_config->getRDFType());
-
-  //  rendering view:
-  //
-  //  $filters = array('nid' => 5,'title' => 'foo');
-  //$view = views_get_view('product_result_exposed');
-  //$view->set_exposed_input($filters); // Set exposed filters
-  //
-  //$view->set_display('block_view');
-  //$view->execute();
-  //echo $view->render('block_view');
 }
 
 /**
@@ -460,7 +443,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   $views_title_field = $resource_type->name.'_'.$title_field->getId();
   $title_value = $view_result[0]->{$views_title_field};
   $views_description_field = $resource_type->name.'_'.$description_field->getId();
-  $description_value = $view_result[0]->{$views_description_field};
+  $description_value = empty($view_result[0]->{$views_description_field}) ? '' : $view_result[0]->{$views_description_field};
 
   $form = array();
   $form['status'] = array('#markup' => "<h3>Edit: <strong>".$resource_type->label."</strong>; ID: <strong>". $subject_id ."</strong>; Name: <strong>". $title_value ."</strong></h3>");
@@ -484,7 +467,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   $form[$description_field->getId()] = array(
     '#type'=>'text_format',
     '#title' => t($description_field->getLabel()),
-    '#required' => TRUE,
+    '#required' => FALSE,
     '#cols' => '80',
     '#rows' => '4',
     '#format' => 'filtered_html',
@@ -708,19 +691,23 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     $form['relationship_fieldset'][] = array('#markup' => "<p>No relationship fields have been defined for this record type.</p>");
   }
 
-  // Form controls.
-
-  $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
-
-  // TODO reset description
-  //$form['reset'] = array('#markup' => '<input type="reset" class="form-submit" value="Undo Changes" />');
-
-  $form['delete'] = array(
+  // Delete fieldset.
+  $form['delete_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Delete Record'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['delete_fieldset']['delete_text'] = array('#markup' => '<p>This will permanently delete the record.</p>');
+  $form['delete_fieldset']['delete'] = array(
     '#type' => 'submit',
     '#value' => t('Delete Record'),
-    '#attributes' => array('onclick' => 'return confirm("Are you sure you wish to permanently delete this record?");'),
+    '#attributes' => array('onclick' => 'return confirm("Are you sure you want to permanently delete this record?");'),
     '#submit' => array('curios_delete_form_submit'),
   );
+
+  // Submit button.
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
 
   return $form;
 }
