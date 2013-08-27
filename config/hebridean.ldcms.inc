@@ -1358,19 +1358,7 @@ $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
 /* Locations */
 $relationship_assignments['locations'][] = array(
     'property'  => 'hc:associatedWith',
-    'target'    => array(
-          'hc:StoryReportOrTradition',
-          'hc:Organisation',
-          'hc:Boat',
-          'hc:Person',
-          'hc:Business',
-          'hc:Location',
-          'hc:ObjectOrArtefact',
-          'hc:NaturalLandscapeFeature',
-          'hc:HistoricalEvent',
-          'hc:BuildingOrPublicAmenity',
-          'hc:LandmarkOrArchaeologicalSite',
-      ),
+    'target'    => $all_records,
 );
 $relationship_assignments['locations'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1400,8 +1388,12 @@ $relationship_assignments['locations'][] = array(
     'property'  => 'hc:locatedHere',
     'target'    => array(
           'hc:Business',
+          'hc:BuildingOrPublicAmenity',
           'hc:CroftOrResidence',
           'hc:LandmarkOrArchaeologicalSite',
+          'hc:Location',
+          'hc:NaturalLandscapeFeature',
+          'hc:Organisation',
       ),
 );
 $relationship_assignments['locations'][] = array(
