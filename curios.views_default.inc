@@ -861,7 +861,7 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
 function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $image_file = $resource_name.'_hc_has_file';
+  $image_file = $resource_name.'_hc_has_image_file';
   $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
   
   $handler = $view->new_display('block', 'Listing', 'listing');
@@ -1157,7 +1157,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   
   // TODO use some standard RDF image reference
   // Relationship
-  $relationship_field = $resource_name.'_hc_has_file';
+  $relationship_field = $resource_name.'_hc_has_image_file';
   $handler->display->display_options['relationships'][$relationship_field]['id'] = $relationship_field;
   $handler->display->display_options['relationships'][$relationship_field]['table'] = $view->base_table;
   $handler->display->display_options['relationships'][$relationship_field]['field'] = $relationship_field;

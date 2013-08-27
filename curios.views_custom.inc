@@ -35,7 +35,7 @@ function __curios_generate_display_listing_hc_sound_file(&$view, &$view_spec, $b
 function __curios_remove_image_file_column(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $image_file = $resource_name.'_hc_has_file';
+  $image_file = $resource_name.'_hc_has_image_file';
 
   // Remove image file column.
   $handler = __curios_generate_display('listing', $view, $view_spec, $base_fields, TRUE);
