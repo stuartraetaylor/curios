@@ -22,7 +22,17 @@
 /**
  * Override listings view for hc_image_file.
  */
-function __curios_generate_display_listing_hc_imagefile(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_listing_hc_image_file(&$view, &$view_spec, $base_fields) {
+  return __curios_remove_image_file_column($view, &$view_spec, $base_fields);
+}
+function __curios_generate_display_listing_hc_sound_file(&$view, &$view_spec, $base_fields) {
+  return __curios_remove_image_file_column($view, &$view_spec, $base_fields);
+}
+
+/**
+ * Remove image file column from listing.
+ */
+function __curios_remove_image_file_column(&$view, &$view_spec, $base_fields) {
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $image_file = $resource_name.'_hc_has_file';
@@ -36,10 +46,11 @@ function __curios_generate_display_listing_hc_imagefile(&$view, &$view_spec, $ba
   return $handler;
 }
 
+
 /**
  * Override summary view for hc_image_file.
  */
-function __curios_generate_display_summary_hc_imagefile(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_summary_hc_image_file(&$view, &$view_spec, $base_fields) {
   // Remove searchlink.
   $handler = __curios_generate_display('summary', $view, $view_spec, $base_fields, TRUE);
   unset($handler->display->display_options['fields']['searchlink']);
@@ -49,14 +60,15 @@ function __curios_generate_display_summary_hc_imagefile(&$view, &$view_spec, $ba
 /**
  * Override image gallery view for hc_image_file.
  */
-function __curios_generate_display_images_hc_imagefile(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_images_hc_image_file(&$view, &$view_spec, $base_fields) {
   return FALSE;
 }
 
 /**
- * Override properties view for hc_imagefile.
+ * Override properties view for hc_image_file.
  */
-function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, $base_fields) {
+function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec, $base_fields) {
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
 
@@ -139,7 +151,7 @@ function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, 
   $handler->display->display_options['fields'][$base_fields['title']]['required'] = 1;
 
     // Field: file.
-  $field_name = 'hc_imagefile_hc_url';
+  $field_name = 'hc_image_file_hc_url';
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
   $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
@@ -168,12 +180,55 @@ function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, 
   $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_image_thumbnail_field';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_imagefile_hc_url]';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_image_file_hc_url]';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['title_field'] = $base_fields['title'];
   $handler->display->display_options['fields']['curios_link_target_rewriter']['disable_thumbnail'] = TRUE;
+
+
+  // Title/description fields.
+  $title_field_name = $resource_name.'_'.$view_spec->getTitleFieldId();
+  $description_field_name = $resource_name.'_'.$view_spec->getDescriptionFieldId();
+
+  // Optional data fields.
+  foreach ($view_spec->getOptionalDataFields() as $field_id) {
+    $field_name = $resource_name.'_'.$field_id;
+    $field = $config->getField($field_id);
+
+    // Remove base fields.
+    if (in_array($field_name, $base_fields) || $field_name == $title_field_name || $field_name == $description_field_name) {
+        continue;
+    }
+
+    //__new_field_set_defaults($handler, $resource_name.'_'.$field_name);
+    $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
+    $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
+    $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
+    $handler->display->display_options['fields'][$field_name]['label'] = __format_name($field->getLabel());
+    $handler->display->display_options['fields'][$field_name]['alter']['alter_text'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['make_link'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['absolute'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['external'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['replace_spaces'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['trim_whitespace'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['nl2br'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['word_boundary'] = 1;
+    $handler->display->display_options['fields'][$field_name]['alter']['ellipsis'] = 1;
+    $handler->display->display_options['fields'][$field_name]['alter']['strip_tags'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['trim'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['html'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['url_encode'] = 0;
+    $handler->display->display_options['fields'][$field_name]['element_label_type'] = 'strong';
+    $handler->display->display_options['fields'][$field_name]['element_label_colon'] = 1;
+    $handler->display->display_options['fields'][$field_name]['element_default_classes'] = 1;
+    $handler->display->display_options['fields'][$field_name]['hide_empty'] = 0;
+    $handler->display->display_options['fields'][$field_name]['empty_zero'] = 0;
+    $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
+    $handler->display->display_options['fields'][$field_name]['hide_empty'] = 1;
+    $handler->display->display_options['fields'][$field_name]['required'] = 0;
+  }
 
   // Contextual filters.
   __curios_uri_filter($handler, $view, $view_spec);
@@ -181,3 +236,4 @@ function __curios_generate_display_properties_hc_imagefile(&$view, &$view_spec, 
 
   return $handler;
 }
+

@@ -1124,7 +1124,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
-  $image_view_id = $config->getViewIdForResource('hc_imagefile');
+  $image_view_id = $config->getViewIdForResource('hc_image_file');
   $image_view_spec = $config->getViewSpec($image_view_id);
 
   /* Display: Images */
@@ -1189,7 +1189,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields'][$subject_id_field]['hide_alter_empty'] = 0;
 
   // Field: file.
-  $field_name = 'hc_imagefile_hc_url';
+  $field_name = 'hc_image_file_hc_url';
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
   $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
@@ -1248,7 +1248,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_image_thumbnail_field';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_imagefile_hc_url]';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_image_file_hc_url]';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;

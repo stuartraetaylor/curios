@@ -29,8 +29,8 @@ $options = array(
   'id_property' => 'hc:subjectID',
   'title_property' => 'dc:title',
   'description_property' => 'dc:description',
-  'image_class' => 'hc:Imagefile',
-  'image_relationship_property' => 'hc:hasFile',
+  'image_class' => 'hc:ImageFile',
+  'image_relationship_property' => 'hc:hasImageFile',
 );
 
 
@@ -390,11 +390,6 @@ $fields[] = array(
   'type'     => 'relationship',
 );
 $fields[] = array(
-  'property' => 'hc:hasFile',
-  'label'    => 'Has File',
-  'type'     => 'relationship',
-);
-$fields[] = array(
   'property' => 'hc:holds',
   'label'    => 'Holds',
   'type'     => 'relationship',
@@ -412,11 +407,6 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:isPartOfSite',
   'label'    => 'Is Part Of Site',
-  'type'     => 'relationship',
-);
-$fields[] = array(
-  'property' => 'hc:isShownHere',
-  'label'    => 'Associated With',
   'type'     => 'relationship',
 );
 $fields[] = array(
@@ -524,6 +514,26 @@ $fields[] = array(
   'label'    => 'Written Compiled By',
   'type'     => 'relationship',
 );
+$fields[] = array(
+  'property' => 'hc:hasImageFile',
+  'label'    => 'Image File',
+  'type'     => 'relationship',
+);
+$fields[] = array(
+  'property' => 'hc:isShownHere',
+  'label'    => 'Associated With',
+  'type'     => 'relationship',
+);
+$fields[] = array(
+  'property' => 'hc:hasSoundFile',
+  'label'    => 'Sound File',
+  'type'     => 'relationship',
+);
+$fields[] = array(
+  'property' => 'hc:isHeardHere',
+  'label'    => 'Associated With',
+  'type'     => 'relationship',
+);
 
 /* Annotations */
 
@@ -568,7 +578,7 @@ $fields[] = array(
   'type'     => 'text',
 );
 $fields[] = array(
-  'property' => 'hc:Copyright',
+  'property' => 'hc:copyright',
   'label'    => 'Copyright',
   'type'     => 'text',
 );
@@ -613,13 +623,13 @@ $fields[] = array(
   'type'     => 'text',
 );
 $fields[] = array(
-  'property' => 'hc:Originator',
+  'property' => 'hc:originator',
   'label'    => 'Originator',
   'type'     => 'text',
 );
 $fields[] = array(
-  'property' => 'hc:Origindate',
-  'label'    => 'Origin date',
+  'property' => 'hc:originDate',
+  'label'    => 'Date',
   'type'     => 'text',
 );
 $fields[] = array(
@@ -769,7 +779,14 @@ $browsing_classes[] = array(
 $browsing_classes[] = array(
   'name'  => 'image_details',
   'label' => 'Image Details',
-  'class' => 'hc:Imagefile',
+  'class' => 'hc:ImageFile',
+  'title' => 'hc:title',
+  'description' => 'hc:description',
+);
+$browsing_classes[] = array(
+  'name'  => 'sound_files',
+  'label' => 'Sound Files',
+  'class' => 'hc:SoundFile',
   'title' => 'hc:title',
   'description' => 'hc:description',
 );
@@ -1005,6 +1022,19 @@ $field_assignments['image_details'] = array(
     'hc:title',
     'hc:description',
     'hc:URL',
+    'hc:copyright',
+    'hc:originator',
+    'hc:originDate',
+    'hc:ownedBySociety',
+    'hc:subjectID',
+);
+$field_assignments['sound_files'] = array(
+    'hc:title',
+    'hc:description',
+    'hc:URL',
+    'hc:copyright',
+    'hc:originator',
+    'hc:originDate',
     'hc:ownedBySociety',
     'hc:subjectID',
 );
@@ -1012,7 +1042,7 @@ $field_assignments['image_details'] = array(
 
 /* Relationship assignments. */
 
-$all_classes = array(
+$all_records = array(
     'hc:LandmarkOrArchaeologicalSite',
     'hc:Business',
     'hc:HistoricalEvent',
@@ -1034,11 +1064,7 @@ $all_classes = array(
 /* Subjects */
 $relationship_assignments['subjects'][] = array(
     'property'  => 'hc:associatedWith',
-    'target'    => $all_classes,
-);
-$relationship_assignments['subjects'][] = array(
-    'property'  => 'hc:hasFile',
-    'target'    => 'hc:Imagefile',
+    'target'    => $all_records,
 );
 $relationship_assignments['subjects'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1069,16 +1095,20 @@ $relationship_assignments['boats'][] = array(
     'target'    => 'hc:Person',
 );
 $relationship_assignments['boats'][] = array(
-    'property'  => 'hc:hasFile',
-    'target'    => 'hc:Subject',
-);
-$relationship_assignments['boats'][] = array(
     'property'  => 'hc:informationObtainedFrom',
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['boats'][] = array(
     'property'  => 'hc:ownedBy',
     'target'    => 'hc:Person',
+);
+$relationship_assignments['boats'][] = array(
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['boats'][] = array(
+    'property'  => 'hc:hasSoundFile',
+    'target'    => 'hc:Subject',
 );
 
 /* Buildings and public amenities */
@@ -1097,7 +1127,11 @@ $relationship_assignments['buildings_and_public_amenities'][] = array(
       ),
 );
 $relationship_assignments['buildings_and_public_amenities'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['buildings_and_public_amenities'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['buildings_and_public_amenities'][] = array(
@@ -1134,7 +1168,11 @@ $relationship_assignments['businesses'][] = array(
       ),
 );
 $relationship_assignments['businesses'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['businesses'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['businesses'][] = array(
@@ -1164,7 +1202,11 @@ $relationship_assignments['crofts_and_residences'][] = array(
       ),
 );
 $relationship_assignments['crofts_and_residences'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['crofts_and_residences'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['crofts_and_residences'][] = array(
@@ -1211,7 +1253,11 @@ $relationship_assignments['gaelic_verse'][] = array(
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['gaelic_verse'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['gaelic_verse'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 
@@ -1238,7 +1284,11 @@ $relationship_assignments['historical_events'][] = array(
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['historical_events'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['historical_events'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['historical_events'][] = array(
@@ -1269,7 +1319,11 @@ $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['landmarks_and_archaeological_sites'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
@@ -1323,7 +1377,11 @@ $relationship_assignments['locations'][] = array(
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['locations'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['locations'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['locations'][] = array(
@@ -1379,7 +1437,11 @@ $relationship_assignments['natural_landscape_features'][] = array(
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['natural_landscape_features'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['natural_landscape_features'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['natural_landscape_features'][] = array(
@@ -1422,7 +1484,11 @@ $relationship_assignments['objects_and_artefacts'][] = array(
     'target'    => 'hc:Resource',
 );
 $relationship_assignments['objects_and_artefacts'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['objects_and_artefacts'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['objects_and_artefacts'][] = array(
@@ -1449,7 +1515,11 @@ $relationship_assignments['organisations'][] = array(
       ),
 );
 $relationship_assignments['organisations'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['organisations'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['organisations'][] = array(
@@ -1487,7 +1557,7 @@ $relationship_assignments['people'][] = array(
 );
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:associatedWith',
-    'target'    => $all_classes,
+    'target'    => $all_records,
 );
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:authorOriginatorOf',
@@ -1537,7 +1607,11 @@ $relationship_assignments['people'][] = array(
     'target'    => 'hc:Person',
 );
 $relationship_assignments['people'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['people'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['people'][] = array(
@@ -1618,7 +1692,11 @@ $relationship_assignments['resources'][] = array(
     'target'    => 'hc:Organisation',
 );
 $relationship_assignments['resources'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['resources'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['resources'][] = array(
@@ -1651,14 +1729,18 @@ $relationship_assignments['resources'][] = array(
 /* Stories reports and traditions */
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:associatedWith',
-    'target'    => $all_classes,
+    'target'    => $all_records,
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:composedBy',
     'target'    => 'hc:Person',
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['stories_reports_and_traditions'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
@@ -1685,13 +1767,22 @@ $relationship_assignments['vehicles'][] = array(
       ),
 );
 $relationship_assignments['vehicles'][] = array(
-    'property'  => 'hc:hasFile',
+    'property'  => 'hc:hasImageFile',
+    'target'    => 'hc:Subject',
+);
+$relationship_assignments['vehicles'][] = array(
+    'property'  => 'hc:hasSoundFile',
     'target'    => 'hc:Subject',
 );
 
 /* Images */
 $relationship_assignments['image_details'][] = array(
     'property'  => 'hc:isShownHere',
-    'target'    => $all_classes,
+    'target'    => $all_records,
 );
 
+/* Sound Files */
+$relationship_assignments['sound_files'][] = array(
+    'property'  => 'hc:isHeardHere',
+    'target'    => $all_records,
+);
