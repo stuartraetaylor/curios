@@ -258,7 +258,7 @@ function __curios_generate_display_properties_hc_sound_file(&$view, &$view_spec,
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
 
-  $handler = __curios_generate_display_properties_hc_image_file($view, &$view_spec, $base_fields);
+  $handler = __curios_generate_display_properties_hc_image_file($view, $view_spec, $base_fields);
   unset($handler->display->display_options['fields']['curios_image_thumbnail_field']);
 
   // Update and reposition URL field.
