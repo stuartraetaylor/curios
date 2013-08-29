@@ -1105,11 +1105,11 @@ $relationship_assignments['boats'][] = array(
 );
 $relationship_assignments['boats'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['boats'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 
 /* Buildings and public amenities */
@@ -1129,11 +1129,11 @@ $relationship_assignments['buildings_and_public_amenities'][] = array(
 );
 $relationship_assignments['buildings_and_public_amenities'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['buildings_and_public_amenities'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['buildings_and_public_amenities'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1152,7 +1152,15 @@ $relationship_assignments['buildings_and_public_amenities'][] = array(
 );
 $relationship_assignments['buildings_and_public_amenities'][] = array(
     'property'  => 'hc:locatedHere',
-    'target'    => 'hc:Subject',
+    'target'    => array(
+          'hc:Business',
+          'hc:BuildingOrPublicAmenity',
+          'hc:CroftOrResidence',
+          'hc:LandmarkOrArchaeologicalSite',
+          'hc:Location',
+          'hc:NaturalLandscapeFeature',
+          'hc:Organisation',
+      ),
 );
 
 /* Businesses */
@@ -1170,11 +1178,11 @@ $relationship_assignments['businesses'][] = array(
 );
 $relationship_assignments['businesses'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['businesses'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['businesses'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1204,11 +1212,11 @@ $relationship_assignments['crofts_and_residences'][] = array(
 );
 $relationship_assignments['crofts_and_residences'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['crofts_and_residences'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['crofts_and_residences'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1255,11 +1263,11 @@ $relationship_assignments['gaelic_verse'][] = array(
 );
 $relationship_assignments['gaelic_verse'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['gaelic_verse'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 
 /* Historical events */
@@ -1286,19 +1294,19 @@ $relationship_assignments['historical_events'][] = array(
 );
 $relationship_assignments['historical_events'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['historical_events'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['historical_events'][] = array(
     'property'  => 'hc:locatedAt',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:Location',
 );
 $relationship_assignments['historical_events'][] = array(
     'property'  => 'hc:sourceOfInformationOn',
-    'target'    => 'hc:Subject',
+    'target'    => $all_records,
 );
 
 /* Landmarks and archaeological sites */
@@ -1321,15 +1329,15 @@ $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
 );
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'property'  => 'hc:sourceOfInformationOn',
-    'target'    => 'hc:Subject',
+    'target'    => $all_records,
 );
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'property'  => 'hc:comprisesSubSite',
@@ -1353,7 +1361,15 @@ $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
 );
 $relationship_assignments['landmarks_and_archaeological_sites'][] = array(
     'property'  => 'hc:locatedHere',
-    'target'    => 'hc:Subject',
+    'target'    => array(
+          'hc:Business',
+          'hc:BuildingOrPublicAmenity',
+          'hc:CroftOrResidence',
+          'hc:LandmarkOrArchaeologicalSite',
+          'hc:Location',
+          'hc:NaturalLandscapeFeature',
+          'hc:Organisation',
+      ),
 );
 
 /* Locations */
@@ -1367,11 +1383,11 @@ $relationship_assignments['locations'][] = array(
 );
 $relationship_assignments['locations'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['locations'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['locations'][] = array(
     'property'  => 'hc:foundHere',
@@ -1431,11 +1447,11 @@ $relationship_assignments['natural_landscape_features'][] = array(
 );
 $relationship_assignments['natural_landscape_features'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['natural_landscape_features'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['natural_landscape_features'][] = array(
     'property'  => 'hc:foundHere',
@@ -1478,11 +1494,11 @@ $relationship_assignments['objects_and_artefacts'][] = array(
 );
 $relationship_assignments['objects_and_artefacts'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['objects_and_artefacts'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['objects_and_artefacts'][] = array(
     'property'  => 'hc:foundAt',
@@ -1509,11 +1525,11 @@ $relationship_assignments['organisations'][] = array(
 );
 $relationship_assignments['organisations'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['organisations'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['organisations'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1601,11 +1617,11 @@ $relationship_assignments['people'][] = array(
 );
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['people'][] = array(
     'property'  => 'hc:immigrantFrom',
@@ -1686,11 +1702,11 @@ $relationship_assignments['resources'][] = array(
 );
 $relationship_assignments['resources'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['resources'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['resources'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1698,7 +1714,7 @@ $relationship_assignments['resources'][] = array(
 );
 $relationship_assignments['resources'][] = array(
     'property'  => 'hc:locatedAt',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:Location',
 );
 $relationship_assignments['resources'][] = array(
     'property'  => 'hc:sourceOfInformationOn',
@@ -1730,11 +1746,11 @@ $relationship_assignments['stories_reports_and_traditions'][] = array(
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:informationObtainedFrom',
@@ -1742,11 +1758,11 @@ $relationship_assignments['stories_reports_and_traditions'][] = array(
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:locatedAt',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:Location',
 );
 $relationship_assignments['stories_reports_and_traditions'][] = array(
     'property'  => 'hc:sourceOfInformationOn',
-    'target'    => 'hc:Subject',
+    'target'    => $all_records,
 );
 
 /* Vehicles */
@@ -1761,11 +1777,11 @@ $relationship_assignments['vehicles'][] = array(
 );
 $relationship_assignments['vehicles'][] = array(
     'property'  => 'hc:hasImageFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:ImageFile',
 );
 $relationship_assignments['vehicles'][] = array(
     'property'  => 'hc:hasSoundFile',
-    'target'    => 'hc:Subject',
+    'target'    => 'hc:SoundFile',
 );
 
 /* Images */
