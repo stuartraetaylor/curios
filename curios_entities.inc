@@ -203,6 +203,7 @@ class LDCMSConfiguration {
   private $title_field_id = NULL;
   private $description_field_id = NULL;
   private $image_relationship_field_id = NULL;
+  private $url_field_id = NULL;
 
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
     return $is_curie ? 
@@ -257,6 +258,9 @@ class LDCMSConfiguration {
 
   function setImageRelationshipFieldId($image_relationship_field) { $this->image_relationship_field_id = $image_relationship_field; }
   function getImageRelationshipFieldId() { return $this->image_relationship_field_id; }
+
+  function setURLFieldId($url_field) { $this->url_field_id = $url_field; }
+  function getURLFieldId() { return $this->url_field_id; }
 
   function toString_dump() {
     var_dump($this->resourceToViewMap);

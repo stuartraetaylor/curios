@@ -31,6 +31,7 @@ $options = array(
   'description_property' => 'dc:description',
   'image_class' => 'hc:ImageFile',
   'image_relationship_property' => 'hc:hasImageFile',
+  'url_property' => 'hc:URL',
 );
 
 
@@ -208,7 +209,7 @@ $fields[] = array(
 );
 $fields[] = array(
   'property' => 'hc:URL',
-  'label'    => 'Image URL',
+  'label'    => 'URL',
   'type'     => 'text',
 );
 $fields[] = array(

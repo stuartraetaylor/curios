@@ -30,6 +30,27 @@ function __curios_generate_display_listing_hc_sound_file(&$view, &$view_spec, $b
 }
 
 /**
+ * Override summary view for hc_image_file.
+ */
+function __curios_generate_display_summary_hc_image_file(&$view, &$view_spec, $base_fields) {
+  return __curios_remove_search_link($view, &$view_spec, $base_fields);
+}
+function __curios_generate_display_summary_hc_sound_file(&$view, &$view_spec, $base_fields) {
+  return __curios_remove_search_link($view, &$view_spec, $base_fields);;
+}
+
+
+/**
+ * Override image gallery view for hc_image_file.
+ */
+function __curios_generate_display_images_hc_image_file(&$view, &$view_spec, $base_fields) {
+  return FALSE;
+}
+function __curios_generate_display_images_hc_sound_file(&$view, &$view_spec, $base_fields) {
+  return FALSE;
+}
+
+/**
  * Remove image file column from listing.
  */
 function __curios_remove_image_file_column(&$view, &$view_spec, $base_fields) {
@@ -48,20 +69,12 @@ function __curios_remove_image_file_column(&$view, &$view_spec, $base_fields) {
 
 
 /**
- * Override summary view for hc_image_file.
+ * Remove searchlink.
  */
-function __curios_generate_display_summary_hc_image_file(&$view, &$view_spec, $base_fields) {
-  // Remove searchlink.
+function __curios_remove_search_link(&$view, &$view_spec, $base_fields) {
   $handler = __curios_generate_display('summary', $view, $view_spec, $base_fields, TRUE);
   unset($handler->display->display_options['fields']['searchlink']);
   return $handler;
-}
-
-/**
- * Override image gallery view for hc_image_file.
- */
-function __curios_generate_display_images_hc_image_file(&$view, &$view_spec, $base_fields) {
-  return FALSE;
 }
 
 /**
@@ -151,7 +164,7 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $handler->display->display_options['fields'][$base_fields['title']]['required'] = 1;
 
     // Field: file.
-  $field_name = 'hc_image_file_hc_url';
+  $field_name = $resource_name.'_'.$config->getURLFieldId();
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
   $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
@@ -176,16 +189,16 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$field_name]['required'] = 1;
 
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['id'] = 'curios_image_thumbnail_field';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_image_thumbnail_field';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_image_file_hc_url]';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = FALSE;
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['title_field'] = $base_fields['title'];
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['disable_thumbnail'] = TRUE;
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['id'] = 'curios_image_thumbnail_field';
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['table'] = 'views';
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['field'] = 'curios_image_thumbnail_field';
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['label'] = '';
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['alter']['text'] = '[hc_image_file_hc_url]';
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['alter']['make_link'] = FALSE;
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['title_field'] = $base_fields['title'];
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['disable_thumbnail'] = TRUE;
 
 
   // Title/description fields.
@@ -237,3 +250,31 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   return $handler;
 }
 
+/**
+ * Generate properties display for sound files, override image files display.
+ */
+function __curios_generate_display_properties_hc_sound_file(&$view, &$view_spec, $base_fields) {
+  $config = curios_configuration();
+  $resource = $view_spec->getResource();
+  $resource_name = $resource->getMachineName();
+
+  $handler = __curios_generate_display_properties_hc_image_file($view, &$view_spec, $base_fields);
+  unset($handler->display->display_options['fields']['curios_link_target_rewriter']);
+
+  // Update and reposition URL field.
+  $url_field_name = $resource_name.'_'.$config->getURLFieldId();
+  $url_field = $handler->display->display_options['fields'][$url_field_name];
+  unset($handler->display->display_options['fields'][$url_field_name]);
+
+  $url_field['label'] = '';
+  $url_field['exclude'] = FALSE;
+  $url_field['alter']['alter_text'] = 1;
+  $url_field['alter']['make_link'] = 1;
+  $url_field['alter']['path'] = "[$url_field_name]";
+  $url_field['alter']['text'] = 'Download Sound File';
+
+  __curios_field_newline($handler);
+  $handler->display->display_options['fields'][$url_field_name] = $url_field;
+
+  return $handler;
+}

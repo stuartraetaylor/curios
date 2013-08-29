@@ -56,6 +56,10 @@ function curios_create_configuration($config_spec) {
   $image_relationship_id = $config->getCMSID($config_spec['options']['image_relationship_property']);
   $config->setImageRelationshipFieldId($image_relationship_id);
 
+  // URL field.
+  $url_field_id = $config->getCMSID($config_spec['options']['url_property']);
+  $config->setURLFieldId($url_field_id);
+
   __curios_configuration_fields($config, $config_spec);
   __curios_configuration_resources_views($config, $config_spec);
 
