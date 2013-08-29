@@ -23,20 +23,20 @@
  * Override listings view for hc_image_file.
  */
 function __curios_generate_display_listing_hc_image_file(&$view, &$view_spec, $base_fields) {
-  return __curios_remove_image_file_column($view, &$view_spec, $base_fields);
+  return __curios_remove_image_file_column($view, $view_spec, $base_fields);
 }
 function __curios_generate_display_listing_hc_sound_file(&$view, &$view_spec, $base_fields) {
-  return __curios_remove_image_file_column($view, &$view_spec, $base_fields);
+  return __curios_remove_image_file_column($view, $view_spec, $base_fields);
 }
 
 /**
  * Override summary view for hc_image_file.
  */
 function __curios_generate_display_summary_hc_image_file(&$view, &$view_spec, $base_fields) {
-  return __curios_remove_search_link($view, &$view_spec, $base_fields);
+  return __curios_remove_search_link($view, $view_spec, $base_fields);
 }
 function __curios_generate_display_summary_hc_sound_file(&$view, &$view_spec, $base_fields) {
-  return __curios_remove_search_link($view, &$view_spec, $base_fields);;
+  return __curios_remove_search_link($view, $view_spec, $base_fields);;
 }
 
 
