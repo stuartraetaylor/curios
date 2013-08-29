@@ -54,15 +54,14 @@ function curios_admin() {
 //    '#title' => t('Quick mode (perform a shallow diff on field and relationship assignments).'),
 //  );
 
-  $form['fieldset']['full'] = array(
+  $form['fieldset']['config-reload'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Full reload of all Drupal entities (use this if you have modified any field or browsing class definitions).'),
-    '#attributes' => array('checked' => 'checked'),
+    '#title' => t('Reload configuration file only (does not add/remove Drupal fields).'),
   );
   
-  $form['fieldset']['remove_only'] = array(
+  $form['fieldset']['remove-only'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Remove only, do not create new entities (uninstall mode).'),
+    '#title' => t('Remove fields only (uninstall mode, does not create new entities).'),
   );
 
   $form['submit'] = array(
@@ -97,11 +96,11 @@ function curios_admin_submit($form, &$form_state) {
   $config_data_new = curios_load_configuration_spec($config_file_new);
   $config_new = curios_create_configuration($config_data_new);
 
-  if ($form_state['values']['full']) { // Add/remove fields.
-    _curios_update_entity_batch_start($config_previous, $config_new, $form_state['values']['remove_only']);
-  } else {
+  if ($form_state['values']['config-reload']) { // Config reload only.
     drupal_set_message('Configuration values reloaded.');
     variable_set('ldcms_installed', TRUE);
+  } else { // Start field install batch.
+    _curios_update_entity_batch_start($config_previous, $config_new, $form_state['values']['remove-only']);
   }
 }
 
