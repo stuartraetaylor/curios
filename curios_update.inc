@@ -349,7 +349,7 @@ function curios_insert_form_submit($form, &$form_state) {
     $path = "curios/manage/edit/$resource_name/$subject_id";
     $form_state['redirect'] = array($path, array(), 302);
   } else {
-    drupal_set_message("Failed to create record", 'status', FALSE);
+    drupal_set_message("Failed to create record", 'error', FALSE);
   }
 }
 
