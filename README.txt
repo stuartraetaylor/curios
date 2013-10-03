@@ -33,7 +33,7 @@ Special Requirements:
       $ git clone https://github.com/stuartraetaylor/arc2-sparql11.git arc
   * Patch SPARQL module:
       $ cd sites/all/modules/sparql
-      $ wget http://www.abdn.ac.uk/~csc363/curios/sparql-module-arc2-sparql11.patch
+      $ wget http://homepages.abdn.ac.uk/s.taylor/pages/curios/sparql-module-arc2-sparql11.patch
       $ git apply -v sparql-module-arc2-sparql11.patch
       $ wget https://drupal.org/files/sparql-registry-strict-errors-2053013-1.patch
       $ git apply -v sparql-registry-strict-errors-2053013-1.patch
