@@ -28,10 +28,10 @@ function curios_endpoints() {
       'query' => 'http://localhost:3030/dataset/query',
       'update' => 'http://localhost:3030/dataset/update',
     ),
-    'config' => array(
-      'query' => 'http://localhost:3030/ldcms-config/query',
-      'update' => 'http://localhost:3030/ldcms-config/update',
-    ),
+    //'config' => array(
+    //  'query' => 'http://localhost:3030/ldcms-config/query',
+    //  'update' => 'http://localhost:3030/ldcms-config/update',
+    //),
   );
 
   return $endpoints;
@@ -40,7 +40,7 @@ function curios_endpoints() {
 /**
  * Queries the SPARQL endpoint.
  */
-function __curios_sparql_query($query, $endpoint) {
+function __curios_sparql_query($query, $endpoint = 'dataset') {
   $endpoints = curios_endpoints();
   $query = __curios_sparql_append_prefixes($query);
   $rs = sparql_request($query, (object)array('uri' => $endpoints[$endpoint]['query']));
@@ -55,10 +55,10 @@ function __curios_sparql_query($query, $endpoint) {
 /**
  * Updates the SPARQL endpoint.
  */
-function __curios_sparql_update($query) {
+function __curios_sparql_update($query, $endpoint = 'dataset') {
   $endpoints = curios_endpoints();
   $query = __curios_sparql_append_prefixes($query);
-  $rs = sparql_request($query, (object)array('uri' => $endpoints['dataset']['update']));
+  $rs = sparql_request($query, (object)array('uri' => $endpoints[$endpoint]['update']));
 
   return ($rs != NULL);
 }
@@ -112,7 +112,7 @@ function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
   $query .= "  ?subject ?p ?o \n";
   $query .= "  FILTER ( ?subject = hc:$subject_id ) }";
 
-  return __curios_sparql_update($query, 'dataset');
+  return __curios_sparql_update($query);
 }
 
 /**
@@ -126,7 +126,7 @@ function _curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
   $query .= $triples_insert;
   $query .= '}';
 
-  return __curios_sparql_update($query, 'dataset');
+  return __curios_sparql_update($query);
 }
 
 /**
@@ -142,7 +142,7 @@ function _curios_subject_delete($subject_id) {
   $query .= "  ?subject ?p ?o .\n";
   $query .= "  FILTER ( ?subject = hc:$subject_id ) }";
 
-  return __curios_sparql_update($query, 'dataset');
+  return __curios_sparql_update($query);
 }
 
 /**
@@ -155,7 +155,7 @@ function _curios_fetch_max_identifier() {
   $query .= "order by desc(strlen(?id)) desc(?id)\n";
   $query .= "limit 1";
 
-  $rs = __curios_sparql_query($query, 'dataset');
+  $rs = __curios_sparql_query($query);
   if ($rs != NULL) {
     return $rs['result']['rows'][0]['id'];
   } else {
@@ -176,7 +176,7 @@ order by desc(strlen(?id)) desc(?id)
 limit $n
 EOT;
 
-  $rs = __curios_sparql_query($query, 'dataset');
+  $rs = __curios_sparql_query($query);
   $identifiers = array();
 
   if ($rs != NULL) {
@@ -198,7 +198,7 @@ function _curios_fetch_property_values($class, $property) {
   $query .= "  $property ?value . \n";
   $query .= "} limit 500";
 
-    return __curios_sparql_query($query, 'dataset');
+    return __curios_sparql_query($query);
 }
 
 /**
@@ -206,7 +206,7 @@ function _curios_fetch_property_values($class, $property) {
  */
 function _curios_fetch_subject_types($subject_id) {
   $query = "select ?type where { hc:$subject_id a ?type . ?type a owl:Class }";
-  $rs = __curios_sparql_query($query, 'dataset');
+  $rs = __curios_sparql_query($query);
 
   $classes = array();
   foreach ($rs['result']['rows'] as $row) {
@@ -216,92 +216,92 @@ function _curios_fetch_subject_types($subject_id) {
   return $classes;
 }
 
-function _curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
-  $query = <<<EOT
-# Check individual is in the range of the specified property for the specified class.
-select ?range where  {
-  [] a owl:ObjectProperty ;
-      rdfs:subPropertyOf $property ;
-      rdfs:domain $domain_class ;
-      rdfs:range ?range .
-  hc:$range_individual a ?range .
-} limit 1
-EOT;
-
-    $rs = __curios_sparql_query($query, 'dataset');
-    return ($rs != NULL && !empty($rs['result']['rows']));
-}
-
-// -- CONFIGURATION --
-
-function __curios_sparql_fetch_browsing_classes() {
-  $sparql = <<<EOT
-# Get all Browsing Classes
-select ?b ?base ?label ?titleField ?descriptionField where {
-  ?b a cms:BrowsingClass ;
-    cms:baseClass ?base ;
-    rdfs:label ?label ;
-    cms:field [
-      a cms:Title ;
-      cms:property ?titleField ] ;
-    cms:field [
-      a cms:Description ;
-      cms:property ?descriptionField ] .
-}
-EOT;
-
-  return __curios_sparql_query($sparql, 'config');
-}
-
-function __curios_sparql_fetch_unique_fields_relationships() {
-  $sparql = <<<EOT
-# Fetch all UNIQUE fields and relationships.
-select distinct ?p ?label ?type where {
-  {
-    [] a cms:Field ;
-      cms:property ?p .
-    BIND('text' AS ?type)
-    #optional { ?p rdfs:label ?label  }
-  } UNION {
-    [] a cms:Relationship ;
-      cms:property ?p .
-    BIND('sparql_views_related_resource' AS ?type)
-    #optional { ?p rdfs:label ?label  }
-  }
-}
-EOT;
-
-  return __curios_sparql_query($sparql, 'config');
-}
-
-
-function __curios_sparql_fetch_fields($browsing_class) {
-  $sparql = <<<EOT
-# Fetch distinct fields for a specific browsing class.
-select distinct ?p ?label where {
-  $browsing_class a cms:BrowsingClass ;
-    cms:field _:f .
-  _:f a cms:Field ;
-      cms:property ?p ;
-      rdfs:label ?label .
-}
-EOT;
-
-  return __curios_sparql_query($sparql, 'config');
-}
-
-function __curios_sparql_fetch_relationships($browsing_class) {
-  $sparql = <<<EOT
-# Fetch distinct relationships for a specific browsing class.
-select distinct ?p ?target ?label where {
-  $browsing_class a cms:BrowsingClass ;
-    cms:relationship _:r .
-  _:r a cms:Relationship ;
-    rdfs:label ?label ;
-    cms:property ?p ;
-    cms:target ?target .
-}
-EOT;
-
-  return __curios_sparql_query($sparql, 'config');
-}
+//function _curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
+//  $query = <<<EOT
+//# Check individual is in the range of the specified property for the specified class.
+//select ?range where  {
+//  [] a owl:ObjectProperty ;
+//      rdfs:subPropertyOf $property ;
+//      rdfs:domain $domain_class ;
+//      rdfs:range ?range .
+//  hc:$range_individual a ?range .
+//} limit 1
+//EOT;
+//
+//    $rs = __curios_sparql_query($query, 'dataset');
+//    return ($rs != NULL && !empty($rs['result']['rows']));
+//}
+//
+//// -- CONFIGURATION --
+//
+//function __curios_sparql_fetch_browsing_classes() {
+//  $sparql = <<<EOT
+//# Get all Browsing Classes
+//select ?b ?base ?label ?titleField ?descriptionField where {
+//  ?b a cms:BrowsingClass ;
+//    cms:baseClass ?base ;
+//    rdfs:label ?label ;
+//    cms:field [
+//      a cms:Title ;
+//      cms:property ?titleField ] ;
+//    cms:field [
+//      a cms:Description ;
+//      cms:property ?descriptionField ] .
+//}
+//EOT;
+//
+//  return __curios_sparql_query($sparql, 'config');
+//}
+//
+//function __curios_sparql_fetch_unique_fields_relationships() {
+//  $sparql = <<<EOT
+//# Fetch all UNIQUE fields and relationships.
+//select distinct ?p ?label ?type where {
+//  {
+//    [] a cms:Field ;
+//      cms:property ?p .
+//    BIND('text' AS ?type)
+//    #optional { ?p rdfs:label ?label  }
+//  } UNION {
+//    [] a cms:Relationship ;
+//      cms:property ?p .
+//    BIND('sparql_views_related_resource' AS ?type)
+//    #optional { ?p rdfs:label ?label  }
+//  }
+//}
+//EOT;
+//
+//  return __curios_sparql_query($sparql, 'config');
+//}
+//
+//
+//function __curios_sparql_fetch_fields($browsing_class) {
+//  $sparql = <<<EOT
+//# Fetch distinct fields for a specific browsing class.
+//select distinct ?p ?label where {
+//  $browsing_class a cms:BrowsingClass ;
+//    cms:field _:f .
+//  _:f a cms:Field ;
+//      cms:property ?p ;
+//      rdfs:label ?label .
+//}
+//EOT;
+//
+//  return __curios_sparql_query($sparql, 'config');
+//}
+//
+//function __curios_sparql_fetch_relationships($browsing_class) {
+//  $sparql = <<<EOT
+//# Fetch distinct relationships for a specific browsing class.
+//select distinct ?p ?target ?label where {
+//  $browsing_class a cms:BrowsingClass ;
+//    cms:relationship _:r .
+//  _:r a cms:Relationship ;
+//    rdfs:label ?label ;
+//    cms:property ?p ;
+//    cms:target ?target .
+//}
+//EOT;
+//
+//  return __curios_sparql_query($sparql, 'config');
+//}

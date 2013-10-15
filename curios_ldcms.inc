@@ -44,6 +44,17 @@ function curios_create_configuration($config_spec) {
   $config->setPrefixToNamespaceMap($config_spec['namespaces']);
   $config->setEndpoints(curios_endpoints());
 
+  __curios_configuration_options($config, $config_spec);
+  __curios_configuration_fields($config, $config_spec);
+  __curios_configuration_resources_views($config, $config_spec);
+
+  return $config;
+}
+
+/**
+ * Sets values in LDCMSConfiguration from $options.
+ */
+function __curios_configuration_options($config, $config_spec) {
   // Title field.
   $title_field_id = $config->getCMSID($config_spec['options']['title_property']);
   $config->setTitleFieldId($title_field_id);
@@ -52,6 +63,18 @@ function curios_create_configuration($config_spec) {
   $description_field_id = $config->getCMSID($config_spec['options']['description_property']);
   $config->setDescriptionFieldId($description_field_id);
 
+  // Owner field.
+  $owner_field_id = $config->getCMSID($config_spec['options']['owner_property']);
+  $config->setOwnerFieldId($owner_field_id);
+
+  // Maintainer field.
+  $maintainer_field_id = $config->getCMSID($config_spec['options']['maintainer_property']);
+  $config->setMaintainerFieldId($maintainer_field_id);
+
+  // Published field.
+  $published_field_id = $config->getCMSID($config_spec['options']['published_property']);
+  $config->setPublishedFieldId($published_field_id);
+
   // Image relationship field.
   $image_relationship_id = $config->getCMSID($config_spec['options']['image_relationship_property']);
   $config->setImageRelationshipFieldId($image_relationship_id);
@@ -59,11 +82,6 @@ function curios_create_configuration($config_spec) {
   // URL field.
   $url_field_id = $config->getCMSID($config_spec['options']['url_property']);
   $config->setURLFieldId($url_field_id);
-
-  __curios_configuration_fields($config, $config_spec);
-  __curios_configuration_resources_views($config, $config_spec);
-
-  return $config;
 }
 
 /**
@@ -108,6 +126,10 @@ function __curios_configuration_resources_views($config, $config_spec) {
 
   $global_title_field = $config->getField($config->getTitleFieldId());
   $global_description_field = $config->getField($config->getDescriptionFieldId());
+
+  $owner_field = $config->getField($config->getOwnerFieldId());
+  $maintainer_field = $config->getField($config->getMaintainerFieldId());
+  $published_field = $config->getField($config->getPublishedFieldId());
 
   // Create resources and views for all browsing classes.
   // __curios_sparql_fetch_browsing_classes($config);
@@ -158,6 +180,11 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $resource->addField($global_title_field);
     $resource->addField($global_description_field);
 
+    // Add record metadata fields.
+    $resource->addField($owner_field);
+    $resource->addField($maintainer_field);
+    $resource->addField($published_field);
+
     // Add relationships.
     // __curios_sparql_fetch_relationships($browsing_class, $config);
     foreach ($config_spec['relationship_assignments'][$browsing_class_name] as $row) {
@@ -174,8 +201,23 @@ function __curios_configuration_resources_views($config, $config_spec) {
       $resource->setRelationshipTargets($relationship_id, $targets);
     }
 
-    // Set field/relationship preferences.
-    $view->setOptionalAll();
+    // Attach fields and relationships to the view spec.
+    $field_ids = array();
+    foreach ($resource->getDataFields() as $field) {
+      if ($field->getId() == $maintainer_field->getId() || $field->getId() == $published_field->getId()) {
+        continue;
+      }
+
+      $field_ids[] = $field->getId();
+    }
+
+    $relationship_ids = array();
+    foreach ($resource->getObjectFields() as $relationship) {
+      $relationship_ids[] = $relationship->getId();
+    }
+
+    $view->setFieldIds($field_ids);
+    $view->setRelationshipIds($relationship_ids);
   }
   
 }

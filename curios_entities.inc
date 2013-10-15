@@ -111,8 +111,11 @@ class RDFField extends DrupalThing {
 }
 
 /**
- * RDFViewSpec provides some additional information to the Views API to determine
- * how a browsing class (RDFResource) should be displayed.
+ * RDFViewSpec provides some additional information to the Views API to determine how a browsing class (RDFResource)
+ * should be displayed.
+ *
+ * Originally there was only one display per view spec in the module. Currently the data_fields and object_fields
+ * collections are used to specify which fields are displayed in the proprerties display only.
  */
 class RDFViewSpec extends DrupalThing {
 
@@ -121,21 +124,16 @@ class RDFViewSpec extends DrupalThing {
   private $resource;
   private $title_field_id;
   private $description_field_id;
-  private $required_data_fields;
-  private $optional_data_fields;
-  private $optional_object_fields;
+  private $data_fields = array();
+  private $object_fields = array();
 
-  public function __construct($machine_name, $label, $path, $browsing_class_curie, $resource, $title_field, $description_field,
-      array $required_data_fields = array(), array $optional_data_fields = array(), array $optional_object_fields = array()) {
+  public function __construct($machine_name, $label, $path, $browsing_class_curie, $resource, $title_field, $description_field) {
     parent::__construct($machine_name, $label);
     $this->path = $path;
     $this->browsing_class_curie = $browsing_class_curie;
     $this->resource = $resource;
     $this->title_field_id = $title_field;
     $this->description_field_id = $description_field;
-    $this->required_data_fields = $required_data_fields;
-    $this->optional_data_fields = $optional_data_fields;
-    $this->optional_object_fields = $optional_object_fields;
   }
 
   public function getBrowsingClassCURIE() { return $this->browsing_class_curie; }
@@ -145,33 +143,14 @@ class RDFViewSpec extends DrupalThing {
   public function getDescriptionFieldId() { return $this->description_field_id; }
   public function getResource() { return $this->resource; }
 
-  public function getRequiredDataFields() { return $this->required_data_fields; }
-  public function getOptionalDataFields() { return $this->optional_data_fields; }
-  public function getObjectFields() { return $this->optional_object_fields; }
 
-  public function setOptionalAll() {
-    // Data fields.
-    foreach ($this->resource->getDataFields() as $rdf_field) {
-      if ($rdf_field == NULL) { // DEBUG.
-        dd("Error: Invalid field declaration in {$this->getId()}.");
-        var_dump($this->resource->getDataFields());
-      }
+  public function setFieldIds($field_ids) { return $this->data_fields = $field_ids; }
+  public function getFieldIds() { return $this->data_fields; }
+  public function setRelationshipIds($relationship_ids) { $this->object_fields = $relationship_ids; }
+  public function getRelationshipIds() { return $this->object_fields; }
 
-      if (!in_array($rdf_field->getMachineName(), $this->required_data_fields)) {
-        $this->optional_data_fields[] = $rdf_field->getMachineName();
-      }
-    }
-
-    // Object fields.
-    foreach ($this->resource->getObjectFields() as $rdf_field) {
-      if ($rdf_field == NULL) { // DEBUG.
-        dd("Error: Invalid field declaration in {$this->getId()}.");;
-        var_dump($this->resource->getObjectFields());
-      }
-
-      $this->optional_object_fields[] = $rdf_field->getMachineName();
-    }
-  }
+  public function getDataFields() { return $this->getFieldIds(); }
+  public function getObjectFields() { return $this->getRelationshipIds(); }
 
   public function getPageDescription() {
     return 'From this page you can browse and search the Hebridean Connections repository.';
@@ -204,6 +183,9 @@ class LDCMSConfiguration {
   private $description_field_id = NULL;
   private $image_relationship_field_id = NULL;
   private $url_field_id = NULL;
+  private $owner_field_id = NULL;
+  private $maintainer_field_id = NULL;
+  private $published_field_id = NULL;
 
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
     return $is_curie ? 
@@ -261,6 +243,16 @@ class LDCMSConfiguration {
 
   function setURLFieldId($url_field) { $this->url_field_id = $url_field; }
   function getURLFieldId() { return $this->url_field_id; }
+
+  function setOwnerFieldId($owner_field_id) { $this->owner_field_id = $owner_field_id; }
+  function getOwnerFieldId() { return $this->owner_field_id; }
+
+  function setMaintainerFieldId($maintainer_field_id) { $this->maintainer_field_id = $maintainer_field_id; }
+  function getMaintainerFieldId() { return $this->maintainer_field_id; }
+
+  function setPublishedFieldId($published_field_id) { $this->published_field_id = $published_field_id; }
+  function getPublishedFieldId() { return $this->published_field_id; }
+
 
   function toString_dump() {
     var_dump($this->resourceToViewMap);

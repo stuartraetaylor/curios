@@ -58,6 +58,11 @@ function curios_admin() {
     '#type' => 'checkbox',
     '#title' => t('Reload configuration file only (does not add/remove Drupal fields).'),
   );
+
+  $form['fieldset']['ldcms-disable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Disable LDCMS (use this before making changes to the configuration).'),
+  );
   
   $form['fieldset']['remove-only'] = array(
     '#type' => 'checkbox',
@@ -78,6 +83,12 @@ function curios_admin() {
  * Submit handler, triggers (re)loading of the configuration, creation of fields, resources etc.
  */
 function curios_admin_submit($form, &$form_state) {
+  if ($form_state['values']['ldcms-disable']) { // Disable LDCMS only.
+    drupal_set_message('LDCMS disabled.');
+    variable_del('ldcms_installed');
+    return;
+  }
+
   $config_file_previous = variable_get('ldcms_config');
   $config_file_new = $form_state['values']['config_files'];
   variable_set('ldcms_config', $config_file_new);

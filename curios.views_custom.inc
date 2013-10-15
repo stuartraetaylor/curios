@@ -206,7 +206,7 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $description_field_name = $resource_name.'_'.$view_spec->getDescriptionFieldId();
 
   // Optional data fields.
-  foreach ($view_spec->getOptionalDataFields() as $field_id) {
+  foreach ($view_spec->getFieldIds() as $field_id) {
     $field_name = $resource_name.'_'.$field_id;
     $field = $config->getField($field_id);
 

@@ -487,8 +487,60 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     '#collapsed' => TRUE,
   );
 
+  // Populated in fieldset fields and used in relationship fieldsets.
   $relationship_options = array();
 
+  // Include fieldsets.
+  _curios_update_fieldset_fields($form, $config, $rdf_mapping, $view_result, $resource_type, $field_instances, $relationship_options);
+  _curios_update_fieldset_record_meta($form, $config, $rdf_mapping, $view_result);
+  _curios_update_fieldset_existing_relationships($form, $config, $rdf_mapping, $subject_id, $resource_type, $relationship_options);
+  _curios_update_fieldset_new_relationships($form, $config, $rdf_mapping, $relationship_options);
+  _curios_update_fieldset_delete($form, $config, $rdf_mapping);
+
+  // Submit button.
+  $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
+
+  return $form;
+}
+
+function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $view_result) {
+  $owner_field = $config->getField($config->getOwnerFieldId());
+  $maintainer_field = $config->getField($config->getMaintainerFieldId());
+  $published_field = $config->getField($config->getPublishedFieldId());
+
+  $form['record_meta'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Record Maintainance'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['record_meta'][$owner_field->getId()] = array(
+    '#type' => 'textfield',
+    '#title' => t($owner_field->getLabel()),
+    '#required' => FALSE,
+    '#size' => '80',
+    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$owner_field->getId()]['predicates'][0] .')</em>',
+    '#default_value' => '',
+  );
+  $form['record_meta'][$maintainer_field->getId()] = array(
+    '#type' => 'textfield',
+    '#title' => t($maintainer_field->getLabel()),
+    '#required' => FALSE,
+    '#size' => '80',
+    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$maintainer_field->getId()]['predicates'][0] .')</em>',
+    '#default_value' => '',
+  );
+  $form['record_meta'][$published_field->getId()] = array(
+    '#type' => 'textfield',
+    '#title' => t($published_field->getLabel()),
+    '#required' => FALSE,
+    '#size' => '80',
+    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$published_field->getId()]['predicates'][0] .')</em>',
+    '#default_value' => '',
+  );
+}
+
+function _curios_update_fieldset_fields(&$form, $config, $rdf_mapping, $view_result, $resource_type, $field_instances, &$relationship_options) {
   foreach ($field_instances as $instance) {
     if (__is_identifier_field($instance) ||
         __is_title_field($instance) ||
@@ -522,10 +574,9 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
       }
     }
   }
+}
 
-
-  // === RELATIONSHIPS ===
-
+function _curios_update_fieldset_existing_relationships(&$form, $config, $rdf_mapping, $subject_id, $resource_type, $relationship_options) {
   // Existing relationships.
   $form['relationship_listing_fieldset'] = array(
     '#type' => 'fieldset',
@@ -572,7 +623,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
 
       if (in_array($current_group_name, $form_state['storage']['relationship_listing_group_remove'])) {
         $form['relationship_listing_fieldset'][$current_group_name]['description']['#default_value'] = "Delete: [$object_value]";
-        
+
         $form['relationship_listing_fieldset'][$current_group_name]['remove-relationship'] = array('#type' => 'hidden', '#value' => TRUE);
         $form['relationship_listing_fieldset'][$current_group_name]['field'] = array('#type' => 'hidden', '#value' => $relationship_id);
         $form['relationship_listing_fieldset'][$current_group_name]['value'] = array('#type' => 'hidden', '#value' => $relationship_value[0]);
@@ -613,7 +664,9 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   } else {
     $form['relationship_listing_fieldset']['#collapsed'] = FALSE;
   }
+}
 
+function _curios_update_fieldset_new_relationships(&$form, $config, $rdf_mapping, $relationship_options) {
   // New relationships.
   $form['relationship_fieldset'] = array(
     '#type' => 'fieldset',
@@ -690,8 +743,9 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   } else {
     $form['relationship_fieldset'][] = array('#markup' => "<p>No relationship fields have been defined for this record type.</p>");
   }
+}
 
-  // Delete fieldset.
+function _curios_update_fieldset_delete(&$form, $config, $rdf_mapping) {
   $form['delete_fieldset'] = array(
     '#type' => 'fieldset',
     '#title' => t('Delete Record'),
@@ -705,11 +759,6 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     '#attributes' => array('onclick' => 'return confirm("Are you sure you want to permanently delete this record?");'),
     '#submit' => array('curios_delete_form_submit'),
   );
-
-  // Submit button.
-  $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
-
-  return $form;
 }
 
 /** Ajax callback. */
@@ -952,4 +1001,9 @@ function __is_resource_field($field_instance) { return $field_instance['widget']
 function __is_identifier_field($field_instance) { return $field_instance['field_name'] == 'hc_subject_id'; }
 function __is_title_field($field_instance) { return ($field_instance['field_name'] == 'dc_title' || $field_instance['field_name'] == 'hc_english_name' || $field_instance['field_name'] == 'hc_title'); }
 function __is_description_field($field_instance) { return ($field_instance['field_name'] == 'dc_description' || $field_instance['field_name'] == 'hc_description'); }
-function __is_special_field($field_instance, $config) { return $field_instance['field_name'] == $config->getImageRelationshipFieldId(); }
+function __is_special_field($field_instance, $config) { 
+  return $field_instance['field_name'] == $config->getImageRelationshipFieldId() ||
+         $field_instance['field_name'] == $config->getOwnerFieldId() ||
+         $field_instance['field_name'] == $config->getMaintainerFieldId() ||
+         $field_instance['field_name'] == $config->getPublishedFieldId();
+}

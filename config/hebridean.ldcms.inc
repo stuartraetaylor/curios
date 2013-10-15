@@ -25,10 +25,23 @@ $namespaces = array(
 );
 
 $options = array(
+  // Default/fallback class - is a super class of all base classes.
   'default_class' => 'hc:Subject',
+
+  // Local identifier property and default prefix for new instances.
   'id_property' => 'hc:subjectID',
+  'default_prefix' => 'hc',
+
+  // Title and description properties for summary views etc.
   'title_property' => 'dc:title',
   'description_property' => 'dc:description',
+    
+  // Record metadata properties.
+  'owner_property' => 'hc:ownedBySociety',
+  'maintainer_property' => 'hc:maintainedBySociety',
+  'published_property' => 'hc:approvedForPub',
+
+  // Image details for gallery displays.
   'image_class' => 'hc:ImageFile',
   'image_relationship_property' => 'hc:hasImageFile',
   'url_property' => 'hc:URL',
@@ -536,6 +549,23 @@ $fields[] = array(
   'type'     => 'relationship',
 );
 
+/* Record metadata fields */
+$fields[] = array(
+  'property' => 'hc:approvedForPub',
+  'label'    => 'Published',
+  'type'     => 'text',
+);
+$fields[] = array(
+  'property' => 'hc:ownedBySociety',
+  'label'    => 'Record Owner',
+  'type'     => 'text',
+);
+$fields[] = array(
+  'property' => 'hc:maintainedBySociety',
+  'label'    => 'Record Maintainers',
+  'type'     => 'text',
+);
+
 /* Annotations */
 
 $fields[] = array(
@@ -546,21 +576,6 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:Approveddate',
   'label'    => 'Approved date',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'hc:approvedForPub',
-  'label'    => 'Approved For Pub',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'hc:ownedBySociety',
-  'label'    => 'Owned By Society',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'hc:maintainedBySociety',
-  'label'    => 'Maintained By Society',
   'type'     => 'text',
 );
 $fields[] = array(
