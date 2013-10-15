@@ -19,12 +19,11 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('curios_entities.inc');
-require_once('curios_ldcms.inc');
-require_once('curios_admin.inc');
-require_once('curios_update.inc');
-require_once('curios_sparql.inc');
-require_once('curios_functions.inc');
+require_once('includes/curios_ldcms.inc');
+require_once('includes/curios_admin.inc');
+require_once('includes/curios_update.inc');
+require_once('includes/curios_sparql.inc');
+require_once('includes/curios_functions.inc');
 require_once('curios.views.inc');
 
 /**

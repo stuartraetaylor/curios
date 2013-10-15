@@ -253,7 +253,7 @@ function curios_load_configuration_spec($config_file = NULL) {
  * Loads the config spec from a the specified file.
  */
 function curios_load_configuration_from_file($config_file) {
-  require "config/$config_file";
+  require drupal_get_path('module', 'curios') . "/config/$config_file";
 
   $config_spec = array(
     'namespaces' => $namespaces,

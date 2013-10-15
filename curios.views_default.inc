@@ -19,9 +19,8 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('curios_entities.inc');
-require_once('curios_ldcms.inc');
-require_once('curios.views_custom.inc');
+require_once('includes/curios_ldcms.inc');
+require_once('includes/curios.views_custom.inc');
 
 /**
  * Implements hook_views_default_views.

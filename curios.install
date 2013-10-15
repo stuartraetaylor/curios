@@ -19,8 +19,8 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('curios_functions.inc');
-require_once('curios_sparql.inc');
+require_once('includes/curios_functions.inc');
+require_once('includes/curios_sparql.inc');
 
 /**
  * Implements hook_schema.
@@ -77,6 +77,7 @@ function curios_install() {
 
   // Default to Hebridean Connections configuration.
   variable_set('ldcms_config', 'hebridean.ldcms.inc');
+  variable_del('ldcms_installed');
 
    // Clear caches.
   cache_clear_all(NULL, 'cache_views', TRUE);
