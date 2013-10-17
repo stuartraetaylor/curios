@@ -39,11 +39,11 @@ dependencies[] = rdfx
 dependencies[] = panels
 
 ; Dependencies below come from stable releases.
-dependencies[] = entity (>7.x-1.2)
-dependencies[] = views (>7.x-3.7)
-dependencies[] = ctools (>7.x-1.3)
-dependencies[] = libraries (>7.x-2.1)
-dependencies[] = views_litepager (>7.x-3.0)
+dependencies[] = entity
+dependencies[] = views
+dependencies[] = ctools
+dependencies[] = libraries
+dependencies[] = views_litepager
 dependencies[] = sparql_views_related_resource
 dependencies[] = lightbox2
 dependencies[] = ckeditor
