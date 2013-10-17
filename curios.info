@@ -25,27 +25,37 @@ configure = admin/structure/ldcms
 stylesheets[all][] = curios.css
 files[] = includes/curios_entities.inc
 files[] = includes/curios_handler_field.inc
-dependencies[] = menu
-dependencies[] = views
-dependencies[] = panels
-dependencies[] = page_manager
+
+; Depends on SPARQL Views CURIOS branch: https://github.com/stuartraetaylor/sparql_views.git
 dependencies[] = sparql_views
+
+; Depends on SPARQL 7.x-1.x-dev: https://drupal.org/project/sparql
+dependencies[] = sparql
+
+; Depends on RDFx 7.x-2.x-dev: https://drupal.org/project/rdfx
+dependencies[] = rdfx
+
+; Depends on Panels 7.x-3.x-dev: https://drupal.org/project/panels
+dependencies[] = panels
+
+; Dependencies below come from stable releases.
+dependencies[] = entity (>7.x-1.2)
+dependencies[] = views (>7.x-3.7)
+dependencies[] = ctools (>7.x-1.3)
+dependencies[] = libraries (>7.x-2.1)
+dependencies[] = views_litepager (>7.x-3.0)
 dependencies[] = sparql_views_related_resource
 dependencies[] = lightbox2
 dependencies[] = ckeditor
+dependencies[] = page_manager
+dependencies[] = menu
 dependencies[] = block
 dependencies[] = field
 dependencies[] = field_ui
 dependencies[] = filter
 dependencies[] = menu
-dependencies[] = ctools
-dependencies[] = entity
-dependencies[] = rdfx
-dependencies[] = sparql
 dependencies[] = sparql_registry
 dependencies[] = views_ui
 dependencies[] = panels_ipe
 dependencies[] = views_content
-dependencies[] = views_litepager
 dependencies[] = rdfui
-dependencies[] = libraries
