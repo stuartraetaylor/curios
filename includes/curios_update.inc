@@ -374,7 +374,7 @@ function curios_update_form_page($resource_type, $subject_id = NULL) {
 
     return $page;
   } else {
-    drupal_set_message("Unknown record: $resource_type->label; ID: $subject_id", 'error', FALSE);
+    //drupal_set_message("Unknown record: $resource_type->label; ID: $subject_id", 'error', FALSE);
     return curios_update_page();
   }
 }
@@ -402,6 +402,18 @@ function _curios_execute_relationship_view($resource_name, $relationship_name, $
 
   return views_get_view_result($view_config->getMachineName(), 'object_'.$resource_name.'_'.$relationship_name,
       $subject_id, $resource_config->getRDFType());
+}
+
+/**
+ * Executes the record meta view for a specified record.
+ */
+function _curios_execute_record_meta_view($resource_name, $subject_id) {
+  $config = curios_configuration();
+  $resource_config = $config->getResource($resource_name);
+  $view_config_id = $config->getViewIdForResource($resource_name);
+  $view_config = $config->getViewSpec($view_config_id);
+
+  return views_get_view_result($view_config->getMachineName(), 'record-meta', $subject_id, $resource_config->getRDFType());
 }
 
 /**
@@ -492,8 +504,8 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
 
   // Include fieldsets.
   _curios_update_fieldset_fields($form, $config, $rdf_mapping, $view_result, $resource_type, $field_instances, $relationship_options);
-  _curios_update_fieldset_record_meta($form, $config, $rdf_mapping, $view_result);
-  _curios_update_fieldset_existing_relationships($form, $config, $rdf_mapping, $subject_id, $resource_type, $relationship_options);
+  _curios_update_fieldset_record_meta($form, $config, $rdf_mapping, $resource_type, $subject_id);
+  _curios_update_fieldset_existing_relationships($form, $config, $rdf_mapping, $resource_type, $subject_id, $relationship_options);
   _curios_update_fieldset_new_relationships($form, $config, $rdf_mapping, $relationship_options);
   _curios_update_fieldset_delete($form, $config, $rdf_mapping);
 
@@ -503,10 +515,16 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   return $form;
 }
 
-function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $view_result) {
+function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $resource_type, $subject_id) {
+  $view_result = _curios_execute_record_meta_view($resource_type->name, $subject_id);
+
   $owner_field = $config->getField($config->getOwnerFieldId());
-  $maintainer_field = $config->getField($config->getMaintainerFieldId());
+  $views_owner_field = $resource_type->name.'_'.$owner_field->getId();
+  $owner_value = reset($view_result[0][$views_owner_field]);
+
   $published_field = $config->getField($config->getPublishedFieldId());
+  $views_published_field = $resource_type->name.'_'.$published_field->getId();
+  $published_value = reset($view_result[0][$views_published_field]);
 
   $form['record_meta'] = array(
     '#type' => 'fieldset',
@@ -520,15 +538,11 @@ function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $vie
     '#required' => FALSE,
     '#size' => '80',
     '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$owner_field->getId()]['predicates'][0] .')</em>',
-    '#default_value' => '',
+    '#default_value' => $owner_value,
   );
-  $form['record_meta'][$maintainer_field->getId()] = array(
-    '#type' => 'textfield',
-    '#title' => t($maintainer_field->getLabel()),
-    '#required' => FALSE,
-    '#size' => '80',
-    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$maintainer_field->getId()]['predicates'][0] .')</em>',
-    '#default_value' => '',
+  $form['old_'.$owner_field->getId()] = array(
+    '#type' => 'hidden',
+    '#value' => $owner_value,
   );
   $form['record_meta'][$published_field->getId()] = array(
     '#type' => 'textfield',
@@ -536,7 +550,11 @@ function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $vie
     '#required' => FALSE,
     '#size' => '80',
     '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$published_field->getId()]['predicates'][0] .')</em>',
-    '#default_value' => '',
+    '#default_value' => $published_value,
+  );
+  $form['old_'.$published_field->getId()] = array(
+    '#type' => 'hidden',
+    '#value' => $published_value,
   );
 }
 
@@ -576,7 +594,7 @@ function _curios_update_fieldset_fields(&$form, $config, $rdf_mapping, $view_res
   }
 }
 
-function _curios_update_fieldset_existing_relationships(&$form, $config, $rdf_mapping, $subject_id, $resource_type, $relationship_options) {
+function _curios_update_fieldset_existing_relationships(&$form, $config, $rdf_mapping, $resource_type, $subject_id, $relationship_options) {
   // Existing relationships.
   $form['relationship_listing_fieldset'] = array(
     '#type' => 'fieldset',

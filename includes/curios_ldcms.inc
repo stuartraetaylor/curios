@@ -68,8 +68,8 @@ function __curios_configuration_options($config, $config_spec) {
   $config->setOwnerFieldId($owner_field_id);
 
   // Maintainer field.
-  $maintainer_field_id = $config->getCMSID($config_spec['options']['maintainer_property']);
-  $config->setMaintainerFieldId($maintainer_field_id);
+  //$maintainer_field_id = $config->getCMSID($config_spec['options']['maintainer_property']);
+  //$config->setMaintainerFieldId($maintainer_field_id);
 
   // Published field.
   $published_field_id = $config->getCMSID($config_spec['options']['published_property']);
@@ -128,7 +128,7 @@ function __curios_configuration_resources_views($config, $config_spec) {
   $global_description_field = $config->getField($config->getDescriptionFieldId());
 
   $owner_field = $config->getField($config->getOwnerFieldId());
-  $maintainer_field = $config->getField($config->getMaintainerFieldId());
+  //$maintainer_field = $config->getField($config->getMaintainerFieldId());
   $published_field = $config->getField($config->getPublishedFieldId());
 
   // Create resources and views for all browsing classes.
@@ -182,7 +182,7 @@ function __curios_configuration_resources_views($config, $config_spec) {
 
     // Add record metadata fields.
     $resource->addField($owner_field);
-    $resource->addField($maintainer_field);
+    //$resource->addField($maintainer_field);
     $resource->addField($published_field);
 
     // Add relationships.
@@ -204,7 +204,7 @@ function __curios_configuration_resources_views($config, $config_spec) {
     // Attach fields and relationships to the view spec.
     $field_ids = array();
     foreach ($resource->getDataFields() as $field) {
-      if ($field->getId() == $maintainer_field->getId() || $field->getId() == $published_field->getId()) {
+      if ($field->getId() == $published_field->getId()) {
         continue;
       }
 
