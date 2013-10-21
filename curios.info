@@ -29,7 +29,7 @@ files[] = includes/curios_handler_field.inc
 ; Depends on SPARQL Views CURIOS branch: https://github.com/stuartraetaylor/sparql_views.git
 dependencies[] = sparql_views
 
-; Depends on SPARQL 7.x-1.x-dev: https://drupal.org/project/sparql
+; Depends on SPARQL arc2-sparql11: https://github.com/stuartraetaylor/sparql.git
 dependencies[] = sparql
 
 ; Depends on RDFx 7.x-2.x-dev: https://drupal.org/project/rdfx

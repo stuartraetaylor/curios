@@ -1,7 +1,7 @@
 CURIOS: Linked Data CMS
 =======================
 
-The *CURIOS: Linked Data CMS* is a Drupal 7 module that provides a mapping between OWL classes/properties and Drupal
+*CURIOS: Linked Data CMS* is a Drupal 7 module that provides a mapping between OWL classes/properties and Drupal
 entities to facilitate CRUD operations on RDF data stored in a triple store.
 
 This version of the module is intended for use with the [Hebridean Connections](http://blog.hebrideanconnections.com/)
@@ -15,7 +15,7 @@ case study for the [CURIOS project](http://www.dotrural.ac.uk/curios).
   * Jena Fuseki 1.0.0+ - http://jena.apache.org/documentation/serving_data/
 
 ### Required modules, stable releases:
-The *CURIOS: Linked Data CMS* module has been tested with the following stable releases. It may also work with newer releases originating from the same branch -- **drush** should download these automatically when the module is enabled.
+The module has been tested with the following stable releases. It may also work with newer releases originating from the same branch -- **drush** should install these dependencies automatically when the module is enabled.
 
   Module Name | Release  Download
   --- | ---
@@ -35,16 +35,16 @@ These modules should be downloaded manually, either by using the download links 
   --- | ---
   [Panels](https://drupal.org/project/panels) | [7.x-3.x-dev](http://ftp.drupal.org/files/projects/panels-7.x-3.x-dev.tar.gz)
   [RDFx](https://drupal.org/project/rdfx) | [7.x-2.x-dev](http://ftp.drupal.org/files/projects/rdfx-7.x-2.x-dev.tar.gz)
-  [SPARQL](https://github.com/stuartraetaylor/sparql) | [arc2-sparql11](https://github.com/stuartraetaylor/sparql/archive/arc2-sparql11.zip)
+  [SPARQL](https://github.com/stuartraetaylor/sparql) | [7.x-2.x-arc2-sparql11](https://github.com/stuartraetaylor/sparql/archive/7.x-2.x-arc2-sparql11.zip)
   [SPARQL Views](https://github.com/stuartraetaylor/sparql_views) | [curios-7.x-2.x](https://github.com/stuartraetaylor/sparql_views/archive/curios-7.x-2.x.zip)
   [CURIOS: Linked Data CMS](https://github.com/stuartraetaylor/curios) | [master](https://github.com/stuartraetaylor/curios/archive/master.zip)
 
 ### Other dependiences:
-  The CURIOS module relies on a modified version of the ARC2 PHP library and Drupal 7 theme.
+  The CURIOS module also relies on modified versions of the ARC2 PHP library and Drupal 7 theme.
 
   Name | Download | Description
   --- | --- | ---
-  [ARC2 library](https://github.com/stuartraetaylor/arc2-sparql11) | [arc2-sparql11](https://github.com/stuartraetaylor/arc2-sparql11/archive/master.zip) | ARC2 PHP library with support for SPARQL 1.1 remote stores.
+  [ARC2 library](https://github.com/stuartraetaylor/arc2-sparql11) | [master](https://github.com/stuartraetaylor/arc2-sparql11/archive/master.zip) | ARC2 PHP library with support for SPARQL 1.1 remote stores.
   [CURIOS theme](https://github.com/stuartraetaylor/curios_theme) | [master](https://github.com/stuartraetaylor/curios_theme/archive/master.zip) | Hebridean Connections Drupal 7 theme.
 
 
@@ -65,7 +65,7 @@ Installation Notes
          $ drush -v en curios
   6. Load configuration and install CMS entities:
     * Navigate to *Structure > Linked Data CMS settings* (admin/structure/ldcms),
-    * Click 'Load Configuration'.
+    * Click *Load Configuration*.
   7. Enable CURIOS Theme and set as default via admin/appearance.
   8. Enable *Description Link Filter* for *Filtered HTML* and *Full HTML* via admin/config/content/formats.
   9. Download and install the standalone CKEditor to the libraries folder as described in:
@@ -86,13 +86,14 @@ Installation Notes
 
          $ drush dis curios
          $ drush pm-uninstall curios
-  3. Pull or download the latest version of the CURIOS module from GitHub:
+  3. Pull the latest version of the CURIOS module from GitHub (or download the .zip):
 
          $ cd sites/all/modules/curios
          $ git pull origin master
   4. Enable CURIOS module:
+
          $ drush en curios
-  5. Load configuration and install CMS entities:
+  5. Load configuration and install new CMS entities:
     * Navigate to *Structure > Linked Data CMS settings* (admin/structure/ldcms),
     * Click *Load Configuration*.
   6. Clear Drupal's cache:
