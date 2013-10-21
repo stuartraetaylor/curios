@@ -97,16 +97,21 @@ class RDFResource extends DrupalThing {
 class RDFField extends DrupalThing {
 
   private $rdf_predicate;
-  private $type;
+  private $drupal_field_type;
+  private $ldcms_type;
 
-  public function __construct($machine_name, $label, $rdf_predicate, $type) {
+  public function __construct($machine_name, $label, $rdf_predicate, $drupal_field_type, $ldcms_type) {
     parent::__construct($machine_name, $label);
     $this->rdf_predicate = $rdf_predicate;
-    $this->type = $type;
+    $this->drupal_field_type = $drupal_field_type;
+    $this->ldcms_type = $ldcms_type;
   }
 
   public function getRDFPredicate() { return $this->rdf_predicate; }
-  public function getType() { return $this->type; }
+  public function getEntityType() { return $this->entity_type; }
+  public function getDrupalFieldType() { return $this->drupal_field_type; }
+  public function getLDCMSType() { return $this->ldcms_type; }
+  public function getType() { return $this->getLDCMSType(); }
 
 }
 
@@ -187,6 +192,10 @@ class LDCMSConfiguration {
   private $maintainer_field_id = NULL;
   private $published_field_id = NULL;
 
+  private $identifier_field_id = NULL;
+  private $default_browing_class_id = NULL;
+  private $default_namespace = NULL;
+
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
     return $is_curie ? 
       __curios_cmsid_from_curie($ontology_entity, $this) :
@@ -231,6 +240,12 @@ class LDCMSConfiguration {
   function getResourceForBaseClass($base_class_curie) {
     return isset($this->baseClassToResourceMap[$base_class_curie]) ? $this->baseClassToResourceMap[$base_class_curie] : NULL;
   }
+
+  function setDefaultNamespace($default_namespace) { $this->default_namespace = $default_namespace; }
+  function getDefaultNamespace() { return $this->default_namespace; }
+
+  function setDefaultBrowsingClassId($default_browsing_class_id) { $this->default_browsing_class_id = $default_browsing_class_id; }
+  function getDefaultBrowsingClassId() { return $this->default_browsing_class_id; }
   
   function setTitleFieldId($title_field_id) { $this->title_field_id = $title_field_id; }
   function getTitleFieldId() { return $this->title_field_id; }
@@ -253,6 +268,8 @@ class LDCMSConfiguration {
   function setPublishedFieldId($published_field_id) { $this->published_field_id = $published_field_id; }
   function getPublishedFieldId() { return $this->published_field_id; }
 
+  function setIdentifierFieldId($identifier_field_id) { $this->identifier_field_id = $identifier_field_id; }
+  function getIdentifierFieldId() { return $this->identifier_field_id; }
 
   function toString_dump() {
     var_dump($this->resourceToViewMap);

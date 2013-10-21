@@ -242,7 +242,7 @@ function curios_insert_form($form, $form_state, $resource_type) {
     '#title' => t($title_field->getLabel()),
     '#required' => TRUE,
     '#size' => '80',
-    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$title_field->getId()]['predicates'][0] .')</em>',
+    '#field_suffix' => '<span class="rdf-predicate">('. $rdf_mapping[$title_field->getId()]['predicates'][0] .')</span>',
   );
   $form[$description_field->getId()] = array(
     '#type'=>'text_format',
@@ -251,33 +251,33 @@ function curios_insert_form($form, $form_state, $resource_type) {
     '#cols' => '80',
     '#rows' => '4',
     '#format' => 'filtered_html',
-    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$description_field->getId()]['predicates'][0] .')</em>',
+    '#field_suffix' => '<span class="rdf-predicate">('. $rdf_mapping[$description_field->getId()]['predicates'][0] .')</span>',
   );
   $form[] = $break;
 
-  $form['optional_fields'] = array(
-  '#type' => 'fieldset',
-    '#title' => t('Additional Fields'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-
-  foreach ($field_instances as $instance) {
-    if (__is_identifier_field($instance) || 
-        __is_title_field($instance) ||
-        __is_description_field($instance) ||
-        __is_resource_field($instance)) {
-      continue;
-    }
-
-    $form['optional_fields'][$instance['field_name']] = array(
-      '#type' => 'textfield',
-      '#title' => t($instance['label']),
-      '#size' => '80',
-      '#autocomplete_path' => 'curios/manage/autocomplete_fields/'. $resource_type->name .'/'. $instance['field_name'] ,
-      '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
-    );
-  }
+  //  $form['optional_fields'] = array(
+  //  '#type' => 'fieldset',
+  //    '#title' => t('Additional Fields'),
+  //    '#collapsible' => TRUE,
+  //    '#collapsed' => TRUE,
+  //  );
+  //
+  //  foreach ($field_instances as $instance) {
+  //    if (__is_identifier_field($instance) ||
+  //        __is_title_field($instance) ||
+  //        __is_description_field($instance) ||
+  //        __is_relationship_field($instance)) {
+  //      continue;
+  //    }
+  //
+  //    $form['optional_fields'][$instance['field_name']] = array(
+  //      '#type' => 'textfield',
+  //      '#title' => t($instance['label']),
+  //      '#size' => '80',
+  //      '#autocomplete_path' => 'curios/manage/autocomplete_fields/'. $resource_type->name .'/'. $instance['field_name'] ,
+  //      '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
+  //    );
+  //  }
 
   $form[] = $break;
   $form['submit'] = array('#type' => 'submit', '#value' => 'Create New Record');
@@ -307,11 +307,8 @@ function curios_insert_form_submit($form, &$form_state) {
   $title_field = $config->getField($view_spec->getTitleFieldId());
   $description_field = $config->getField($view_spec->getDescriptionFieldId());
 
-  $subject_id = __generate_new_subject_id();
   $rdf_type = $rdf_mapping['rdftype'][0];
   $triples_insert = array();
-
-  $triples_insert[] = '      ' . $rdf_mapping['hc_subject_id']['predicates'][0]  ." \"$subject_id\"^^<http://www.w3.org/2001/XMLSchema#string>;";  // TODO 'id' field from config
   $required_fields = array($title_field->getId(), $description_field->getId());
 
   // Add required fields.
@@ -325,27 +322,28 @@ function curios_insert_form_submit($form, &$form_state) {
     $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
   }
 
-  foreach ($field_instances as $instance) {
-    if (__is_identifier_field($instance) ||
-        __is_title_field($instance) ||
-        __is_description_field($instance) ||
-        __is_resource_field($instance)) {
-      continue;
-    }
-
-    $form_value = $form_state['values'][$instance['field_name']];
-    if (!empty($form_value)) {
-      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
-    }
-  }
+  //  foreach ($field_instances as $instance) {
+  //    if (__is_identifier_field($instance) ||
+  //        __is_title_field($instance) ||
+  //        __is_description_field($instance) ||
+  //        __is_relationship_field($instance)) {
+  //      continue;
+  //    }
+  //
+  //    $form_value = $form_state['values'][$instance['field_name']];
+  //    if (!empty($form_value)) {
+  //      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
+  //    }
+  //  }
 
   $triples_insert = array_unique($triples_insert);
   $triples_insert = join("\n", $triples_insert);
 
-  $success = _curios_subject_insert($subject_id, $rdf_type, $triples_insert);
+  $success = _curios_subject_insert($rdf_type, $triples_insert);
+  $subject_id = _curios_fetch_max_identifier();
 
   if ($success) {
-    drupal_set_message("The new record has been created successfully (ID: $subject_id)", 'status', FALSE);
+    drupal_set_message("The new record has been created successfully.", 'status', FALSE);
     $path = "curios/manage/edit/$resource_name/$subject_id";
     $form_state['redirect'] = array($path, array(), 302);
   } else {
@@ -469,7 +467,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     '#title' => t($title_field->getLabel()),
     '#required' => TRUE,
     '#size' => '80',
-    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$title_field->getId()]['predicates'][0] .')</em>',
+    '#field_suffix' => '<span class="rdf-predicate">('. $rdf_mapping[$title_field->getId()]['predicates'][0] .')</span>',
     '#default_value' => $title_value,
   );
   $form['old_'.$title_field->getId()] = array(
@@ -483,7 +481,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
     '#cols' => '80',
     '#rows' => '4',
     '#format' => 'filtered_html',
-    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$description_field->getId()]['predicates'][0] .')</em>',
+    '#field_suffix' => '<span class="rdf-predicate">('. $rdf_mapping[$description_field->getId()]['predicates'][0] .')</span>',
     '#default_value' => $description_value,
   );
   $form['old_'.$description_field->getId()] = array(
@@ -520,11 +518,13 @@ function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $res
 
   $owner_field = $config->getField($config->getOwnerFieldId());
   $views_owner_field = $resource_type->name.'_'.$owner_field->getId();
-  $owner_value = reset($view_result[0][$views_owner_field]);
+  $owner_value_result = isset($view_result[0][$views_owner_field]);
+  $owner_value = $owner_value_result ? reset($view_result[0][$views_owner_field]) : '';
 
   $published_field = $config->getField($config->getPublishedFieldId());
   $views_published_field = $resource_type->name.'_'.$published_field->getId();
-  $published_value = reset($view_result[0][$views_published_field]);
+  $published_value_result = isset($view_result[0][$views_published_field]);
+  $published_value = $published_value_result ? reset($view_result[0][$views_published_field]) : '';
 
   $form['record_meta'] = array(
     '#type' => 'fieldset',
@@ -537,7 +537,7 @@ function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $res
     '#title' => t($owner_field->getLabel()),
     '#required' => FALSE,
     '#size' => '80',
-    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$owner_field->getId()]['predicates'][0] .')</em>',
+    '#field_suffix' => '<span class="rdf-predicate">('. $rdf_mapping[$owner_field->getId()]['predicates'][0] .')</span>',
     '#default_value' => $owner_value,
   );
   $form['old_'.$owner_field->getId()] = array(
@@ -549,7 +549,7 @@ function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $res
     '#title' => t($published_field->getLabel()),
     '#required' => FALSE,
     '#size' => '80',
-    '#field_suffix' => '<em style="font-size: 0.7em;">('. $rdf_mapping[$published_field->getId()]['predicates'][0] .')</em>',
+    '#field_suffix' => '<span class="rdf-predicate">('. $rdf_mapping[$published_field->getId()]['predicates'][0] .')</span>',
     '#default_value' => $published_value,
   );
   $form['old_'.$published_field->getId()] = array(
@@ -564,34 +564,108 @@ function _curios_update_fieldset_fields(&$form, $config, $rdf_mapping, $view_res
         __is_title_field($instance) ||
         __is_description_field($instance) ||
         __is_special_field($instance, $config)) {
-        //__is_resource_field($instance)) {
       continue;
     }
 
-    $results_field = $resource_type->name.'_'.$instance['field_name'];
-    $value = empty($view_result[0]->$results_field) ? '' : $view_result[0]->$results_field;
-
-    if (__is_resource_field($instance)) { // Relationship.
-      $relationship_options[$instance['field_name']] = $instance['label'];
-    } else { // Field.
-      $form['optional_fields'][$instance['field_name']] = array(
-        '#type' => 'textfield',
-        '#default_value' => $value,
-        '#title' => t($instance['label']),
-        '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
-        '#autocomplete_path' => 'curios/manage/autocomplete_fields/'. $resource_type->name .'/'. $instance['field_name'] ,
-      );
-
-      $form['old_'.$instance['field_name']] = array(
-        '#type' => 'hidden',
-        '#value' => $value,
-      );
-
-      if (!empty($value)) {
-        $form['optional_fields']['#collapsed'] = FALSE;
-      }
+    if ($instance['field_name'] == 'hc_gaelic_name') {
+      dpm($instance);
     }
+
+    switch ($instance['ldcms_type']) {
+      case 'relationship':
+        // Store relationships for this record.
+        $relationship_options[$instance['field_name']] = $instance['label'];
+        break;
+      case 'daterange':
+        curios_update_form_add_daterange_field($form, $resource_type, $instance, $rdf_mapping,  $view_result);
+        break;
+      case 'autocomplete':
+        $autocomplete = TRUE;
+      case 'text':
+      case 'integer':
+      default:
+        $autocomplete = isset($autocomplete) ? $autocomplete : FALSE;
+        curios_update_form_add_text_field($form, $resource_type, $instance, $rdf_mapping,  $view_result, $autocomplete);
+        break;
+    }
+
+    //  if (!empty($value)) {
+    //    $form['optional_fields']['#collapsed'] = FALSE;
+    //  }
+    $form['optional_fields']['#collapsed'] = FALSE;
   }
+}
+
+function curios_update_form_add_text_field(&$form, $resource_type, $instance, $rdf_mapping, $view_result, $autocomplete) {
+  $results_field = $resource_type->name.'_'.$instance['field_name'];
+  $value = empty($view_result[0]->$results_field) ? '' : $view_result[0]->$results_field;
+
+  $form['optional_fields'][$instance['field_name']] = array(
+    '#type' => 'textfield',
+    '#default_value' => $value,
+    '#title' => t($instance['label']),
+    '#field_suffix' => '<span class="rdf-predicate">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</span>',
+  );
+
+  if ($autocomplete) {
+    $form['optional_fields'][$instance['field_name']]['#autocomplete_path'] = 'curios/manage/autocomplete_fields/'. $resource_type->name .'/'. $instance['field_name'];
+  }
+
+  $form['old_'.$instance['field_name']] = array(
+    '#type' => 'hidden',
+    '#value' => $value,
+  );
+}
+
+function curios_update_form_add_daterange_field(&$form, $resource_type, $instance, $rdf_mapping, $view_result) {
+  drupal_add_js(drupal_get_path('module', 'curios') . '/js/curios-date-handler.js');
+  drupal_add_js(array('curios' => array('path' => drupal_get_path('module', 'curios'), 'field_name' => $instance['field_name'])), 'setting');
+
+  // TODO Get date from and date to from $view_result
+  $dateFrom = '1990-12-01T00:00:01+00:00';
+  $dateTo = '1995-05-01T00:00:01+00:00';
+
+  $value = curios_format_daterange($dateFrom, $dateTo);
+
+  $form['optional_fields'][$instance['field_name']] = array(
+      '#type' => 'textfield',
+      '#default_value' => $value,
+      '#title' => t($instance['label']),
+      '#field_suffix' =>
+          '<span class="rdf-predicate">(' . $rdf_mapping[$instance['field_name']]['predicates'][0] . ')</span>' .
+          '<a href="#" onclick="return false;" class="update-date-btn">[ Edit Date ]</a>' .
+          '<div class="date-input-widget"></div>',
+      '#attributes' => array(
+          'class' => array('datetime-type'),
+          'id' => array($instance['field_name']),
+      ),
+  );
+  
+  // add hidden fields for new and old startdate of the datefield.
+  $form['optional_fields']['startdate-' . $instance['field_name']] = array(
+      '#type' => 'hidden',
+      '#attributes' => array(
+          'name' => array('startdate-' . $instance['field_name']),
+          'id' => array('startdate-' . $instance['field_name'])
+      ),
+  );
+  $form['old_' . 'startdate-' . $instance['field_name']] = array(
+      '#type' => 'hidden',
+      '#value' => $value,
+  );
+
+  // add hidden fields for new and old enddate of the datefield.
+  $form['optional_fields']['enddate-' . $instance['field_name']] = array(
+      '#type' => 'hidden',
+      '#attributes' => array(
+          'name' => array('enddate-' . $instance['field_name']),
+          'id' => array('enddate-' . $instance['field_name'])
+      )
+  );
+  $form['old_' . 'enddate-' . $instance['field_name']] = array(
+      '#type' => 'hidden',
+      '#value' => $value,
+  );
 }
 
 function _curios_update_fieldset_existing_relationships(&$form, $config, $rdf_mapping, $resource_type, $subject_id, $relationship_options) {
@@ -870,6 +944,9 @@ function _curios_is_valid_relationship_assertion($resource_name, $relationship_n
 function curios_update_form_submit($form, &$form_state) {
   $config = curios_configuration();
 
+  dpm($form_state);
+  return;
+
   $resource_name = $form_state['values']['resource'];
   $subject_id = $form_state['values']['identifier'];
 
@@ -910,7 +987,7 @@ function curios_update_form_submit($form, &$form_state) {
     if (__is_identifier_field($instance) ||
         __is_title_field($instance) ||
         __is_description_field($instance) ||
-        __is_resource_field($instance)) {
+        __is_relationship_field($instance)) {
       continue;
     }
 
@@ -928,25 +1005,10 @@ function curios_update_form_submit($form, &$form_state) {
     }
   }
 
-  // Add new relationships - last 'add' item is ignored.
-  $relationships = $form_state['values']['relationship_fieldset'];
-  array_pop($relationships);
-  
-  foreach ($relationships as $relationship) {
-    $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
-    $triples_insert[] = '      '. $predicate .' hc:'. $relationship['value'] ." ;\n";
-  }
-  
-  // Remove existing relationships.
-  $relationships = isset($form_state['values']['relationship_listing_fieldset']) ? $form_state['values']['relationship_listing_fieldset'] : array();
-  
-  foreach ($relationships as $relationship) {
-    if (isset($relationship['remove-relationship'])) {
-      $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
-      $triples_delete[] = '      '. $predicate .' hc:'. $relationship['value'] ." ;\n";
-    }
-  }
+  // Add/remove relationships.
+  curios_update_form_submit_relationships($form_state, $triples_insert, $triples_delete);
 
+  // Filter duplicates.
   $triples_insert = array_unique($triples_insert);
   $triples_insert = join("\n", $triples_insert);
   $triples_delete = array_unique($triples_delete);
@@ -966,6 +1028,31 @@ function curios_update_form_submit($form, &$form_state) {
     }
   } else {
     drupal_set_message('There were no fields to update', 'warning', FALSE);
+  }
+}
+
+function curios_update_form_submit_relationship(&$form_state, &$triples_insert, &$triples_delete) {
+  $config = curios_configuration();
+  $default_namespace = $config->getDefaultNamespace();
+  $prefix = $config->getPrefix($default_namespace) .':';
+
+  // Add new relationships - last 'add' item is ignored.
+  $relationships = $form_state['values']['relationship_fieldset'];
+  array_pop($relationships);
+
+  foreach ($relationships as $relationship) {
+    $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
+    $triples_insert[] = '      '. $predicate .' '. $prefix . $relationship['value'] ." ;\n";
+  }
+
+  // Remove existing relationships.
+  $relationships = isset($form_state['values']['relationship_listing_fieldset']) ? $form_state['values']['relationship_listing_fieldset'] : array();
+
+  foreach ($relationships as $relationship) {
+    if (isset($relationship['remove-relationship'])) {
+      $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
+      $triples_delete[] = '      '. $predicate .' '. $prefix . $relationship['value'] ." ;\n";
+    }
   }
 }
 
@@ -1011,11 +1098,7 @@ function __generate_new_subject_id() { return intval(_curios_fetch_max_identifie
 //       update 20130808: the latest version generated in curios_ldcms has most of these definitions
 //                        now built in.
 
-// FIXME really hacky way of detecting sparql_view_related_resource's
-//     This entity type is defined as a sub type of sparql_views_resource in SPARQL Views,
-//     but all that I can get back from the API is its widget type to identify it...
-function __is_resource_field($field_instance) { return $field_instance['widget']['type'] == 'options_select'; }
-
+function __is_relationship_field($field_instance) { return $field_instance['ldcms_type'] == 'relationship'; }
 function __is_identifier_field($field_instance) { return $field_instance['field_name'] == 'hc_subject_id'; }
 function __is_title_field($field_instance) { return ($field_instance['field_name'] == 'dc_title' || $field_instance['field_name'] == 'hc_english_name' || $field_instance['field_name'] == 'hc_title'); }
 function __is_description_field($field_instance) { return ($field_instance['field_name'] == 'dc_description' || $field_instance['field_name'] == 'hc_description'); }
@@ -1025,3 +1108,4 @@ function __is_special_field($field_instance, $config) {
          $field_instance['field_name'] == $config->getMaintainerFieldId() ||
          $field_instance['field_name'] == $config->getPublishedFieldId();
 }
+

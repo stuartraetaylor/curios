@@ -450,7 +450,7 @@ function _curios_installed_fields($install_fields, &$config) {
 
     $fields[] = array(
       'field_name' => $field->getMachineName(),
-      'type' => $field->getType(),
+      'type' => $field->getDrupalFieldType(),
       'settings' => $settings,
     );
   }
@@ -475,6 +475,7 @@ function _curios_installed_instances($resources, &$config) {
         'field_name' => $field->getMachineName(),
         'label' => t($field->getLabel()),
         'entity_type' => 'sparql_views_resource',
+        'ldcms_type' => $field->getType(),
         'settings' => $settings,
       );
     }

@@ -123,3 +123,12 @@
 }
 .listing-image-Yes span { display: none; }
 
+.rdf-predicate {
+    font-size: 0.7em;
+    font-style: italic;
+}
+
+.update-date-btn {
+    margin-left: 8px;
+    font-size: 0.8em;
+}

@@ -20,6 +20,20 @@
  */
 
 /**
+ * Format xsd:dateTime to d-M-Y.
+ */
+function curios_format_datetime($datetime) {
+  return date('d-M-Y', strtoTime($datetime));
+}
+
+/**
+ * Returns a human readble representation of a DateRange.
+ */
+function curios_format_daterange($dateFrom, $dateTo) {
+  return 'Between ' .  curios_format_datetime($dateFrom) . ' and ' . curios_format_datetime($dateTo);
+}
+
+/**
  * startsWith function using the regex engine.
  */
 function startsWith($needle, $haystack) {

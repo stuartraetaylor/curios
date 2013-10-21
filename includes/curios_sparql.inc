@@ -116,20 +116,6 @@ function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
 }
 
 /**
- * Creates a new individiual.
- */
-function _curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
-  $query = '';
-  $query .= "INSERT DATA {\n";
-  $query .= "  hc:$subject_id a ". $rdf_type .";\n";
-  //$query .= "      hc:subjectID \"$identifier\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
-  $query .= $triples_insert;
-  $query .= '}';
-
-  return __curios_sparql_update($query);
-}
-
-/**
  * Removes an individual.
  */
 function _curios_subject_delete($subject_id) {
@@ -146,14 +132,50 @@ function _curios_subject_delete($subject_id) {
 }
 
 /**
- * Finds the highest subject_id used in the triple stores.
+ * Creates a new record.
  */
+function _curios_subject_insert($rdf_type, $triples_insert) {
+  $config = curios_configuration();
+  $namespace = $config->getDefaultNamespace();
+
+  $id_field = $config->getField($config->getIdentifierFieldId());
+  $id_property = $id_field->getRDFPredicate();
+
+  $default_browsing_class = $config->getResource($config->getDefaultBrowsingClassId());
+  $default_class = $default_browsing_class->getBaseClass();
+
+  $query = <<<EOT
+INSERT {
+  ?uri a {$rdf_type} ;
+    {$id_property} ?id ;
+{$triples_insert} .
+} WHERE {
+  SELECT ?uri ?id {
+    {
+      SELECT ((MAX(?n) + 1) AS ?id) {
+        [] {$id_property} ?n ; a {$default_class} .
+      }
+    }
+    BIND(URI(CONCAT("{$namespace}", STR(?id))) as ?uri) .
+  }
+}
+EOT;
+
+  return __curios_sparql_update($query);
+}
+
 function _curios_fetch_max_identifier() {
-  $query = '';
-  $query .= "select ?id where {\n";
-  $query .= "  [] hc:subjectID ?id .}\n";
-  $query .= "order by desc(strlen(?id)) desc(?id)\n";
-  $query .= "limit 1";
+  $config = curios_configuration();
+  $id_field = $config->getField($config->getIdentifierFieldId());
+  $id_property = $id_field->getRDFPredicate();
+  $default_browsing_class = $config->getResource($config->getDefaultBrowsingClassId());
+  $default_class = $default_browsing_class->getBaseClass();
+  
+$query = <<<EOT
+SELECT (MAX(?n) AS ?id) {
+  [] {$id_property} ?n ; a {$default_class} .
+}
+EOT;
 
   $rs = __curios_sparql_query($query);
   if ($rs != NULL) {
@@ -162,6 +184,37 @@ function _curios_fetch_max_identifier() {
     return -1;
   }
 }
+
+///**
+// * Creates a new individiual.
+// */
+//function _curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
+//  $query = '';
+//  $query .= "INSERT DATA {\n";
+//  $query .= "  hc:$subject_id a ". $rdf_type .";\n";
+//  $query .= $triples_insert;
+//  $query .= '}';
+//  //$triples_insert[] = '      ' . $rdf_mapping['hc_subject_id']['predicates'][0]  ." \"$subject_id\"^^<http://www.w3.org/2001/XMLSchema#integer>;";  // TODO 'id' field from config
+//  return __curios_sparql_update($query);
+//}
+//
+///**
+// * Finds the highest subject_id used in the triple stores.
+// */
+//function _curios_fetch_max_identifier() {
+//  $query = '';
+//  $query .= "select ?id where {\n";
+//  $query .= "  [] hc:subjectID ?id .}\n";
+//  $query .= "order by desc(strlen(?id)) desc(?id)\n";
+//  $query .= "limit 1";
+//
+//  $rs = __curios_sparql_query($query);
+//  if ($rs != NULL) {
+//    return $rs['result']['rows'][0]['id'];
+//  } else {
+//    return -1;
+//  }
+//}
 
 /**
  * Returns an array of recently inserted subject_id's.

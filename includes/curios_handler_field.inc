@@ -74,3 +74,16 @@ class curios_image_thumbnail_field extends views_handler_field {
     return $image_output;
   }
 }
+
+class curios_date_range_field extends views_handler_field {
+
+  function query() {
+    $this->field_alias = 'curios_daterange_' . $this->position;
+  }
+
+  function render($values) {
+      $datefrom = $values->{'hc_daterange_hc_datefrom'};
+      $dateto = $values->{'hc_daterange_hc_dateto'};
+      return curios_format_daterange($datefrom, $dateto);
+  }
+}

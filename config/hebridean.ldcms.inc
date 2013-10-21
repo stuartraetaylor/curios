@@ -29,7 +29,7 @@ $options = array(
   'default_class' => 'hc:Subject',
 
   // Local identifier property and default prefix for new instances.
-  'id_property' => 'hc:subjectID',
+  'identifier_property' => 'hc:subjectID',
   'default_prefix' => 'hc',
 
   // Title and description properties for summary views etc.
@@ -68,67 +68,67 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:createdBySociety',
   'label'    => 'Created By',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:date',
   'label'    => 'Date',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateBuilt',
   'label'    => 'Date Built',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateDemolished',
   'label'    => 'Date Demolished',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateEstablished',
   'label'    => 'Date Established',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateFounded',
   'label'    => 'Date Founded',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateLaunched',
   'label'    => 'Date Launched',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateLotted',
   'label'    => 'Date Lotted',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:born',
   'label'    => 'Date of Birth',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateOfDeath',
   'label'    => 'Date of Death',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateOfMarriage',
   'label'    => 'Date of Marriage',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateOfRegistration',
   'label'    => 'Date of Registration',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:dateOfSource',
   'label'    => 'Date of Source',
-  'type'     => 'text',
+  'type'     => 'daterange',
 );
 $fields[] = array(
   'property' => 'hc:description',
@@ -163,27 +163,27 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:occupation',
   'label'    => 'Occupation',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:period',
   'label'    => 'Period',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:periodOfConstructionUse',
   'label'    => 'Period of Construction',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:registration',
   'label'    => 'Registration',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:sex',
   'label'    => 'Sex',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:SMRRecordID',
@@ -193,7 +193,7 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:sourceType',
   'label'    => 'Source Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:soundexName',
@@ -203,7 +203,7 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:subjectID',
   'label'    => 'Subject Id',
-  'type'     => 'text',
+  'type'     => 'integer',
 );
 $fields[] = array(
   'property' => 'hc:title',
@@ -213,12 +213,12 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:theme',
   'label'    => 'Theme',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:timePeriod',
   'label'    => 'Time Period',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:URL',
@@ -233,61 +233,91 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:typeOfBoat',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfBuildingPublicAmenity',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfBusiness',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfEvent',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfLocation',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfNaturalLandscapeFeature',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfObjectArtefact',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfOrganisation',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfResidence',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfSite',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfStoryReportTradition',
   'label'    => 'Type',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:typeOfVehicle',
   'label'    => 'Type',
+  'type'     => 'autocomplete',
+);
+
+/* Record metadata fields */
+$fields[] = array(
+  'property' => 'hc:approvedForPub',
+  'label'    => 'Published',
+  'type'     => 'autocomplete',
+);
+$fields[] = array(
+  'property' => 'hc:ownedBySociety',
+  'label'    => 'Record Owner',
+  'type'     => 'autocomplete',
+);
+$fields[] = array(
+  'property' => 'hc:maintainedBySociety',
+  'label'    => 'Record Maintainers',
+  'type'     => 'autocomplete',
+);
+
+/* Dublin Core fields. */
+
+$fields[] = array(
+  'property' => 'dc:title',
+  'label'    => 'dc:title',
+  'type'     => 'text',
+);
+$fields[] = array(
+  'property' => 'dc:description',
+  'label'    => 'dc:description',
   'type'     => 'text',
 );
 
@@ -549,29 +579,13 @@ $fields[] = array(
   'type'     => 'relationship',
 );
 
-/* Record metadata fields */
-$fields[] = array(
-  'property' => 'hc:approvedForPub',
-  'label'    => 'Published',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'hc:ownedBySociety',
-  'label'    => 'Record Owner',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'hc:maintainedBySociety',
-  'label'    => 'Record Maintainers',
-  'type'     => 'text',
-);
 
 /* Annotations */
 
 $fields[] = array(
   'property' => 'hc:Approvedby',
   'label'    => 'Approved by',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Approveddate',
@@ -581,7 +595,7 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:Approved',
   'label'    => 'Approved',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Caption',
@@ -601,7 +615,7 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:Editedby',
   'label'    => 'Edited by',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Extrainfo',
@@ -621,37 +635,37 @@ $fields[] = array(
 $fields[] = array(
   'property' => 'hc:Inversecaption',
   'label'    => 'Inverse caption',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Isprimary',
   'label'    => 'Is primary',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Lochistsoc',
   'label'    => 'Lochistsoc',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Lochistsocref',
   'label'    => 'Lochistsoc ref',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:originator',
   'label'    => 'Originator',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:originDate',
   'label'    => 'Date',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Tobepublished',
   'label'    => 'To be published',
-  'type'     => 'text',
+  'type'     => 'autocomplete',
 );
 $fields[] = array(
   'property' => 'hc:Whencreated',
@@ -664,18 +678,6 @@ $fields[] = array(
   'type'     => 'text',
 );
 
-/* Dublin Core fields. */
-
-$fields[] = array(
-  'property' => 'dc:title',
-  'label'    => 'dc:title',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'dc:description',
-  'label'    => 'dc:description',
-  'type'     => 'text',
-);
 
 
 /* Browsing class definitions. */

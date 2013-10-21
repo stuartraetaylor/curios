@@ -82,6 +82,19 @@ function __curios_configuration_options($config, $config_spec) {
   // URL field.
   $url_field_id = $config->getCMSID($config_spec['options']['url_property']);
   $config->setURLFieldId($url_field_id);
+
+  // Identifier field.
+  $identifier_field_id = $config->getCMSID($config_spec['options']['identifier_property']);
+  $config->setIdentifierFieldId($identifier_field_id);
+
+  // Default browsing class.
+  $default_browsing_class_id = $config->getCMSID($config_spec['options']['default_class']);
+  $config->setDefaultBrowsingClassId($default_browsing_class_id);
+
+  // Default namespace.
+  $prefixToNS = $config->getPrefixToNamespaceMap();
+  $default_namespace = $prefixToNS[$config_spec['options']['default_prefix']];
+  $config->setDefaultNamespace($default_namespace);
 }
 
 /**
@@ -94,9 +107,10 @@ function __curios_configuration_fields($config, $config_spec) {
 
     $id = $config->getCMSID($property);
     $label = isset($row['label']) ? $row['label'] : __curios_label_from_curie($property, $config);
-    $type = __curios_translate_field_type($row['type']);
+    $drupal_type = __curios_translate_field_type($row['type']);
+    $ldcms_type = $row['type'];
 
-    $config->addField(new RDFField($id, $label, $property, $type));
+    $config->addField(new RDFField($id, $label, $property, $drupal_type, $ldcms_type));
   }
 }
 
@@ -109,6 +123,9 @@ function __curios_translate_field_type($field_type) {
       return 'sparql_views_related_resource';
       break;
     case 'text':
+    case 'autocomplete':
+    case 'integer':
+    case 'daterange':
     default:
       return 'text';
   }
