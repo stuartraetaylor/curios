@@ -24,29 +24,18 @@ Required modules, stable releases:
 Required modules, development releases:
   * Panels        7.x-3.x-dev     https://drupal.org/project/panels
   * RDFx          7.x-2.x-dev     https://drupal.org/project/rdfx
-  * SPARQL        7.x-2.x-dev     https://drupal.org/project/sparql
+  * SPARQL        arc2-sparql11   https://github.com/stuartraetaylor/sparql.git
   * SPARQL Views  curios-7.x-2.x  https://github.com/stuartraetaylor/sparql_views.git
+  * CURIOS: Linked Data CMS       https://github.com/stuartraetaylor/curios.git
 
 Special Requirements:
-  1. SPARQL Views CURIOS branch from github:
-      $ cd sites/all/modules
-      $ git clone https://github.com/stuartraetaylor/sparql_views.git
-  2. arc2-sparql11 from github:
+  1. arc2-sparql11 from GitHub:
       $ mkdir -p sites/all/libraries/ARC2
       $ cd sites/all/libraries/ARC2
       $ git clone https://github.com/stuartraetaylor/arc2-sparql11.git arc
-  3. Patch SPARQL module:
-      $ cd sites/all/modules/sparql
-      $ wget http://homepages.abdn.ac.uk/s.taylor/pages/curios/sparql-module-arc2-sparql11.patch
-      $ git apply -v sparql-module-arc2-sparql11.patch
-      $ wget https://drupal.org/files/sparql-registry-strict-errors-2053013-1.patch
-      $ git apply -v sparql-registry-strict-errors-2053013-1.patch
-  4. CURIOS module from BitBucket:
-      $ cd sites/all/modules
-      $ git clone https://bitbucket.org/stuartraetaylor/curios.git
-  5. CURIOS Hebridean Connections theme from BitBucket:
+  2. CURIOS Hebridean Connections theme from GitHub:
       $ cd sites/all/themes
-      $ git clone https://bitbucket.org/stuartraetaylor/curios_theme.git
+      $ git clone https://github.com/stuartraetaylor/curios_theme.git
 
 Installation:
   1. Install Drupal 7 - standard installation.
@@ -74,9 +63,9 @@ Major update (changes to dataset or module structure):
   2. Disable and uninstall the curios module:
       $ drush dis curios
       $ drush pm-uninstall curios
-  3. Pull latest CURIOS module from BitBucket:
+  3. Pull latest CURIOS module from GitHub:
       $ cd sites/all/modules/curios
-      $ git pull https://bitbucket.org/stuartraetaylor/curios.git
+      $ git pull origin master
   4. Enable CURIOS module:
       $ drush en curios
   5. Load configuration and install CMS entities:
