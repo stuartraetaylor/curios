@@ -1,8 +1,7 @@
 CURIOS: Linked Data CMS
 =======================
 
-*CURIOS: Linked Data CMS* is a Drupal 7 module that provides a mapping between OWL classes/properties and Drupal
-entities to facilitate CRUD operations on RDF data stored in a triple store.
+*CURIOS: Linked Data CMS* is a Drupal 7 module that provides the functionality to perform CRUD operations on RDF data stored in a triple store. The module makes use of a configuration that provides a mapping between OWL classes/properties and Drupal entities.
 
 This version of the module is intended for use with the [Hebridean Connections](http://blog.hebrideanconnections.com/)
 case study for the [CURIOS project](http://www.dotrural.ac.uk/curios).
@@ -35,15 +34,15 @@ The module has been tested with the following stable releases. It may also work 
   [Devel](https://drupal.org/project/devel) | [7.x-1.3](http://ftp.drupal.org/files/projects/devel-7.x-1.3.tar.gz)
 
 ### Required modules, development snapshots:
-These modules should be downloaded manually, either by using the download links below, or by using git to pull the latest development version.
+These modules should be downloaded manually and extracted to the appropriate directory, either by using the download links below, or by using git to pull the latest development version.
 
-  Module Name | Snapshot Download
-  --- | ---
-  [Panels](https://drupal.org/project/panels) | [7.x-3.x-dev](http://ftp.drupal.org/files/projects/panels-7.x-3.x-dev.tar.gz)
-  [RDFx](https://drupal.org/project/rdfx) | [7.x-2.x-dev](http://ftp.drupal.org/files/projects/rdfx-7.x-2.x-dev.tar.gz)
-  [SPARQL](https://github.com/stuartraetaylor/sparql) | [7.x-2.x-arc2-sparql11](https://github.com/stuartraetaylor/sparql/archive/7.x-2.x-arc2-sparql11.zip)
-  [SPARQL Views](https://github.com/stuartraetaylor/sparql_views) | [curios-7.x-2.x](https://github.com/stuartraetaylor/sparql_views/archive/curios-7.x-2.x.zip)
-  [CURIOS: Linked Data CMS](https://github.com/stuartraetaylor/curios) | [master](https://github.com/stuartraetaylor/curios/archive/master.zip)
+  Module Name | Snapshot Download | Module Directory
+  --- | --- | ---
+  [Panels](https://drupal.org/project/panels) | [7.x-3.x-dev](http://ftp.drupal.org/files/projects/panels-7.x-3.x-dev.tar.gz) | panels
+  [RDFx](https://drupal.org/project/rdfx) | [7.x-2.x-dev](http://ftp.drupal.org/files/projects/rdfx-7.x-2.x-dev.tar.gz) | rdfx
+  [SPARQL](https://github.com/stuartraetaylor/sparql) | [7.x-2.x-arc2-sparql11](https://github.com/stuartraetaylor/sparql/archive/7.x-2.x-arc2-sparql11.zip) | sparql
+  [SPARQL Views](https://github.com/stuartraetaylor/sparql_views) | [curios-7.x-2.x](https://github.com/stuartraetaylor/sparql_views/archive/curios-7.x-2.x.zip) | sparql_views
+  [CURIOS: Linked Data CMS](https://github.com/stuartraetaylor/curios) | [master](https://github.com/stuartraetaylor/curios/archive/master.zip) | curios
 
 ### Other dependencies:
 The CURIOS module also relies on modified versions of the ARC2 PHP library and Drupal 7 theme.
