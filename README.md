@@ -14,6 +14,11 @@ case study for the [CURIOS project](http://www.dotrural.ac.uk/curios).
   * msysgit (for Microsoft Windows installation) - http://msysgit.github.io/
   * Jena Fuseki 1.0.0+ - http://jena.apache.org/documentation/serving_data/
 
+### Useful documentation:
+  * [Drupal System Requirements](https://drupal.org/requirements)
+  * [Drupal Installation Guide](https://drupal.org/documentation/install)
+  * [Installing Drupal modules and themes](https://drupal.org/documentation/install/modules-themes)
+
 ### Required modules, stable releases:
 The module has been tested with the following stable releases. It may also work with newer releases originating from the same branch -- **drush** should install these dependencies automatically when the module is enabled.
 
@@ -51,7 +56,7 @@ These modules should be downloaded manually, either by using the download links 
 Installation Notes
 ------------------
 
-### Clean Install:
+### Clean install:
   1. Install Drupal 7 - standard installation.
   2. Download the **required Drupal modules**.
   3. Download the **CURIOS theme** and extract it to:
@@ -75,8 +80,8 @@ Installation Notes
 
           $ drush cc all
 
-### Major Update (changes to dataset or module structure)
-  *Steps 1--2 should be performed before updating the module.*
+### Major update (changes to dataset or module structure):
+  *Steps 1--2 should be performed **before** updating the module.*
 
   1. Uninstall CMS entities:
     * Navigate to *Structure > Linked Data CMS settings* (admin/structure/ldcms),
