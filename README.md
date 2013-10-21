@@ -10,8 +10,8 @@ case study for the [CURIOS project](http://www.dotrural.ac.uk/curios).
 ### Requirements:
   * Drupal 7.23+
   * Apache, MySQL, PHP 5.3+
-  * wget, git, drush
-  * msysgit (for Microsoft Windows installation) - http://msysgit.github.io/
+  * wget, git, [drush](http://drush.ws/)
+  * [msysgit](http://msysgit.github.io/) (for Microsoft Windows installation)
   * Jena Fuseki 1.0.0+ - http://jena.apache.org/documentation/serving_data/
 
 ### Useful documentation:
@@ -20,7 +20,8 @@ case study for the [CURIOS project](http://www.dotrural.ac.uk/curios).
   * [Installing Drupal modules and themes](https://drupal.org/documentation/install/modules-themes)
 
 ### Required modules, stable releases:
-The module has been tested with the following stable releases. It may also work with newer releases originating from the same branch -- **drush** should install these dependencies automatically when the module is enabled.
+The module has been tested with the following stable releases. It may also work with newer releases originating from the same branch --
+**drush** should install these dependencies automatically when the module is enabled.
 
   Module Name | Release  Download
   --- | ---
@@ -44,8 +45,8 @@ These modules should be downloaded manually, either by using the download links 
   [SPARQL Views](https://github.com/stuartraetaylor/sparql_views) | [curios-7.x-2.x](https://github.com/stuartraetaylor/sparql_views/archive/curios-7.x-2.x.zip)
   [CURIOS: Linked Data CMS](https://github.com/stuartraetaylor/curios) | [master](https://github.com/stuartraetaylor/curios/archive/master.zip)
 
-### Other dependiences:
-  The CURIOS module also relies on modified versions of the ARC2 PHP library and Drupal 7 theme.
+### Other dependencies:
+The CURIOS module also relies on modified versions of the ARC2 PHP library and Drupal 7 theme.
 
   Name | Download | Description
   --- | --- | ---
@@ -81,7 +82,7 @@ Installation Notes
           $ drush cc all
 
 ### Major update (changes to dataset or module structure):
-  *Steps 1--2 should be performed **before** updating the module.*
+  *Steps 1--2 should be performed before updating the module.*
 
   1. Uninstall CMS entities:
     * Navigate to *Structure > Linked Data CMS settings* (admin/structure/ldcms),
