@@ -363,7 +363,7 @@ function curios_insert_form_submit($form, &$form_state) {
  * Displays the update form.
  */
 function curios_update_form_page($resource_type, $subject_id = NULL) {
-  $view_result = _curios_execute_details_view($resource_type->name, $subject_id);
+  $view_result = _curios_execute_properties_view($resource_type->name, $subject_id);
 
   if (!empty($view_result)) {
     $page = array();
@@ -378,15 +378,15 @@ function curios_update_form_page($resource_type, $subject_id = NULL) {
 }
 
 /**
- * Executes the details view for a specified record, used to display the current values on the update form.
+ * Executes the properties view for a specified record, used to display the current values on the update form.
  */
-function _curios_execute_details_view($resource_name, $subject_id) {
+function _curios_execute_properties_view($resource_name, $subject_id) {
   $config = curios_configuration();
   $resource_config = $config->getResource($resource_name);
   $view_config_id = $config->getViewIdForResource($resource_name);
   $view_config = $config->getViewSpec($view_config_id);
   
-  return views_get_view_result($view_config->getMachineName(), 'details', $subject_id, $resource_config->getRDFType());
+  return views_get_view_result($view_config->getMachineName(), 'properties', $subject_id, $resource_config->getRDFType());
 }
 
 /**
@@ -559,6 +559,8 @@ function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $res
 }
 
 function _curios_update_fieldset_fields(&$form, $config, $rdf_mapping, $view_result, $resource_type, $field_instances, &$relationship_options) {
+  $date_range_position = 0;
+
   foreach ($field_instances as $instance) {
     if (__is_identifier_field($instance) ||
         __is_title_field($instance) ||
@@ -573,7 +575,8 @@ function _curios_update_fieldset_fields(&$form, $config, $rdf_mapping, $view_res
         $relationship_options[$instance['field_name']] = $instance['label'];
         break;
       case 'daterange':
-        curios_update_form_add_daterange_field($form, $resource_type, $instance, $rdf_mapping,  $view_result);
+        curios_update_form_add_daterange_field($form, $resource_type, $instance, $rdf_mapping,  $view_result, $date_range_position);
+        $date_range_position += 1;
         break;
       case 'autocomplete':
         $autocomplete = TRUE;
@@ -613,19 +616,28 @@ function curios_update_form_add_text_field(&$form, $resource_type, $instance, $r
   );
 }
 
-function curios_update_form_add_daterange_field(&$form, $resource_type, $instance, $rdf_mapping, $view_result) {
+function curios_update_form_add_daterange_field(&$form, $resource_type, $instance, $rdf_mapping, $view_result, $date_range_position) {
+  $config = curios_configuration();
+
   drupal_add_js(drupal_get_path('module', 'curios') . '/js/curios-date-handler.js');
   drupal_add_js(array('curios' => array('path' => drupal_get_path('module', 'curios'), 'field_name' => $instance['field_name'])), 'setting');
 
-  // TODO Get date from and date to from $view_result
-  $dateFrom = '1990-12-01T00:00:01+00:00';
-  $dateTo = '1995-05-01T00:00:01+00:00';
+  // Date range values.
+  $field_suffix = ($date_range_position > 0) ? '_'.$date_range_position : '';
+  $date_range_resource = $config->getDateRangeResource();
+  $date_from_results_field = $date_range_resource->getId() .'_'. $config->getDateRangeFromId() . $field_suffix;
+  $date_to_results_field = $date_range_resource->getId() .'_'. $config->getDateRangeToId() . $field_suffix;
 
-  $value = curios_format_daterange($dateFrom, $dateTo);
+  $date_from = ''; $date_to = ''; $display_value = '';
+  if (isset($view_result[0]->{$date_from_results_field})) {
+    $date_from = $view_result[0]->{$date_from_results_field};
+    $date_to = $view_result[0]->{$date_to_results_field};
+    $display_value = curios_format_daterange($date_from, $date_to);
+  }
 
   $form['optional_fields'][$instance['field_name']] = array(
       '#type' => 'textfield',
-      '#default_value' => $value,
+      '#default_value' => $display_value,
       '#title' => t($instance['label']),
       '#field_suffix' =>
           '<span class="rdf-predicate">(' . $rdf_mapping[$instance['field_name']]['predicates'][0] . ')</span>' .
@@ -647,7 +659,7 @@ function curios_update_form_add_daterange_field(&$form, $resource_type, $instanc
   );
   $form['old_' . 'startdate-' . $instance['field_name']] = array(
       '#type' => 'hidden',
-      '#value' => $value,
+      '#value' => $date_from,
   );
 
   // add hidden fields for new and old enddate of the datefield.
@@ -660,7 +672,7 @@ function curios_update_form_add_daterange_field(&$form, $resource_type, $instanc
   );
   $form['old_' . 'enddate-' . $instance['field_name']] = array(
       '#type' => 'hidden',
-      '#value' => $value,
+      '#value' => $date_to,
   );
 }
 

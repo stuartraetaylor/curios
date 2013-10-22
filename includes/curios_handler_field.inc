@@ -88,12 +88,13 @@ class curios_date_range_field extends views_handler_field {
     $date_range_from_field = $this->options['date_range_from'] . $field_suffix;
     $date_range_to_field = $this->options['date_range_to'] . $field_suffix;
 
-    dpm($result_position);
-    dpm($values);
+    if (isset($values->{$date_range_from_field})) {
+      $dateFrom = $values->{$date_range_from_field};
+      $dateTo = $values->{$date_range_to_field};
 
-    $dateFrom = $values->{$date_range_from_field};
-    $dateTo = $values->{$date_range_to_field};
-
-    return curios_format_daterange($dateFrom, $dateTo);
+      return curios_format_daterange($dateFrom, $dateTo);
+    } else {
+      return '';
+    }
   }
 }

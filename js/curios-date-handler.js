@@ -21,7 +21,7 @@
     Drupal.behaviors.field_date = {
         attach: function(context, settings) {
             $(".datetime-type").live("focus", function(event) {
-                $(this).attr('disabled', true);
+                //$(this).attr('disabled', true);
                 $(this).blur();
                 //$(".update-date-btn").trigger("click"); // TODO onclick form field to trigger date widget.
                 alert("Please click Edit Date to input a new date.");
