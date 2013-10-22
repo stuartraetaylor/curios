@@ -652,6 +652,7 @@ function curios_update_form_add_daterange_field(&$form, $resource_type, $instanc
   // add hidden fields for new and old startdate of the datefield.
   $form['optional_fields']['startdate-' . $instance['field_name']] = array(
       '#type' => 'hidden',
+      '#value' => $date_from,
       '#attributes' => array(
           'name' => array('startdate-' . $instance['field_name']),
           'id' => array('startdate-' . $instance['field_name'])
@@ -665,6 +666,7 @@ function curios_update_form_add_daterange_field(&$form, $resource_type, $instanc
   // add hidden fields for new and old enddate of the datefield.
   $form['optional_fields']['enddate-' . $instance['field_name']] = array(
       '#type' => 'hidden',
+      '#value' => $date_to,
       '#attributes' => array(
           'name' => array('enddate-' . $instance['field_name']),
           'id' => array('enddate-' . $instance['field_name'])
