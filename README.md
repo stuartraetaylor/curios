@@ -22,26 +22,26 @@ case study for the [CURIOS project](http://www.dotrural.ac.uk/curios).
 The module has been tested with the following stable releases. It may also work with newer releases originating from the same branch --
 **drush** should install these dependencies automatically when the module is enabled.
 
-  Module Name | Release  Download
+  Module Name | Release Download
   --- | ---
-  [Entity](https://drupal.org/project/entity) | [7.x-1.2](http://ftp.drupal.org/files/projects/entity-7.x-1.2.tar.gz)
-  [Views](https://drupal.org/project/views) | [7.x-3.7](http://ftp.drupal.org/files/projects/views-7.x-3.7.tar.gz)
-  [CTools](https://drupal.org/project/ctools) | [7.x-1.3](http://ftp.drupal.org/files/projects/ctools-7.x-1.3.tar.gz)
+  [Entity](https://drupal.org/project/entity)       | [7.x-1.2](http://ftp.drupal.org/files/projects/entity-7.x-1.2.tar.gz)
+  [Views](https://drupal.org/project/views)         | [7.x-3.7](http://ftp.drupal.org/files/projects/views-7.x-3.7.tar.gz)
+  [CTools](https://drupal.org/project/ctools)       | [7.x-1.3](http://ftp.drupal.org/files/projects/ctools-7.x-1.3.tar.gz)
   [Lightbox2](https://drupal.org/project/lightbox2) | [7.x-1.0-beta1](http://ftp.drupal.org/files/projects/lightbox2-7.x-1.0-beta1.tar.gz)
-  [Ckeditor](https://drupal.org/project/ckeditor) | [7.x-1.13](http://ftp.drupal.org/files/projects/ckeditor-7.x-1.13.tar.gz)
+  [Ckeditor](https://drupal.org/project/ckeditor)   | [7.x-1.13](http://ftp.drupal.org/files/projects/ckeditor-7.x-1.13.tar.gz)
   [Libraries](https://drupal.org/project/libraries) | [7.x-2.1](http://ftp.drupal.org/files/projects/libraries-7.x-2.1.tar.gz)
   [Views Litepager](https://drupal.org/project/views_litepager) | [7.x-3.0](http://ftp.drupal.org/files/projects/views_litepager-7.x-3.0.tar.gz)
-  [Devel](https://drupal.org/project/devel) | [7.x-1.3](http://ftp.drupal.org/files/projects/devel-7.x-1.3.tar.gz)
+  [Devel](https://drupal.org/project/devel)         | [7.x-1.3](http://ftp.drupal.org/files/projects/devel-7.x-1.3.tar.gz)
 
 ### Required modules, development snapshots:
 These modules should be downloaded manually and extracted to the appropriate directory, either by using the download links below, or by using git to pull the latest development version.
 
   Module Name | Snapshot Download | Module Directory
   --- | --- | ---
-  [Panels](https://drupal.org/project/panels) | [7.x-3.x-dev](http://ftp.drupal.org/files/projects/panels-7.x-3.x-dev.tar.gz) | panels
-  [RDFx](https://drupal.org/project/rdfx) | [7.x-2.x-dev](http://ftp.drupal.org/files/projects/rdfx-7.x-2.x-dev.tar.gz) | rdfx
-  [SPARQL](https://github.com/stuartraetaylor/sparql) | [7.x-2.x-arc2-sparql11](https://github.com/stuartraetaylor/sparql/archive/7.x-2.x-arc2-sparql11.zip) | sparql
-  [SPARQL Views](https://github.com/stuartraetaylor/sparql_views) | [curios-7.x-2.x](https://github.com/stuartraetaylor/sparql_views/archive/curios-7.x-2.x.zip) | sparql_views
+  [Panels](https://drupal.org/project/panels)               | [7.x-3.x-dev](http://ftp.drupal.org/files/projects/panels-7.x-3.x-dev.tar.gz) | panels
+  [RDFx](https://drupal.org/project/rdfx)                   | [7.x-2.x-dev](http://ftp.drupal.org/files/projects/rdfx-7.x-2.x-dev.tar.gz) | rdfx
+  [SPARQL](https://github.com/stuartraetaylor/sparql)       | [sparql11-0.1.0](https://github.com/stuartraetaylor/sparql/archive/sparql11-0.1.0.tar.gz) | sparql
+  [SPARQL Views](https://github.com/stuartraetaylor/sparql_views) | [curios-0.1.0](https://github.com/stuartraetaylor/sparql_views/archive/curios-0.1.0.tar.gz) | sparql_views
   [CURIOS: Linked Data CMS](https://github.com/stuartraetaylor/curios) | [master](https://github.com/stuartraetaylor/curios/archive/master.zip) | curios
 
 ### Other dependencies:
@@ -49,8 +49,8 @@ The CURIOS module also relies on modified versions of the ARC2 PHP library and D
 
   Name | Download | Description
   --- | --- | ---
-  [ARC2 library](https://github.com/stuartraetaylor/arc2-sparql11) | [master](https://github.com/stuartraetaylor/arc2-sparql11/archive/master.zip) | ARC2 PHP library with support for SPARQL 1.1 remote stores.
-  [CURIOS theme](https://github.com/stuartraetaylor/curios_theme) | [master](https://github.com/stuartraetaylor/curios_theme/archive/master.zip) | Hebridean Connections Drupal 7 theme.
+  [ARC2 library](https://github.com/stuartraetaylor/arc2-sparql11)  | [sparql11-0.1.0](https://github.com/stuartraetaylor/arc2-sparql11/archive/sparql11-0.1.0.tar.gz) | ARC2 PHP library with support for SPARQL 1.1 remote stores.
+  [CURIOS theme](https://github.com/curiosproject/curios_theme)     | [master](https://github.com/curiosproject/curios_theme/archive/master.zip) | Hebridean Connections Drupal 7 theme.
 
 
 Installation Notes
