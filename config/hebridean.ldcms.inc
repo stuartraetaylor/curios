@@ -45,6 +45,11 @@ $options = array(
   'image_class' => 'hc:ImageFile',
   'image_relationship_property' => 'hc:hasImageFile',
   'url_property' => 'hc:URL',
+
+  // DateRange definition.
+  'date_range_class' => 'hc:DateRange',
+  'date_range_from' => 'hc:dateFrom',
+  'date_range_to' => 'hc:dateTo',
 );
 
 
@@ -319,6 +324,18 @@ $fields[] = array(
   'property' => 'dc:description',
   'label'    => 'dc:description',
   'type'     => 'text',
+);
+
+/* Date Range fields. */
+$fields[] = array(
+  'property' => 'hc:dateFrom',
+  'label'    => 'Date From',
+  'type'     => 'datetime',
+);
+$fields[] = array(
+  'property' => 'hc:dateTo',
+  'label'    => 'Date To',
+  'type'     => 'datetime',
 );
 
 /* Relationship fields. */

@@ -567,10 +567,6 @@ function _curios_update_fieldset_fields(&$form, $config, $rdf_mapping, $view_res
       continue;
     }
 
-    if ($instance['field_name'] == 'hc_gaelic_name') {
-      dpm($instance);
-    }
-
     switch ($instance['ldcms_type']) {
       case 'relationship':
         // Store relationships for this record.
@@ -596,7 +592,7 @@ function _curios_update_fieldset_fields(&$form, $config, $rdf_mapping, $view_res
   }
 }
 
-function curios_update_form_add_text_field(&$form, $resource_type, $instance, $rdf_mapping, $view_result, $autocomplete) {
+function curios_update_form_add_text_field(&$form, $resource_type, $instance, $rdf_mapping, $view_result, $autocomplete = FALSE) {
   $results_field = $resource_type->name.'_'.$instance['field_name'];
   $value = empty($view_result[0]->$results_field) ? '' : $view_result[0]->$results_field;
 

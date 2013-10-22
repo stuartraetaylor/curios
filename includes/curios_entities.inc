@@ -184,6 +184,10 @@ class LDCMSConfiguration {
   private $resourceToViewMap = array();
   private $baseClassToResourceMap = array();
 
+  private $date_range_resource = NULL;
+  private $date_range_from_id = NULL;
+  private $date_range_to_id = NULL;
+
   private $title_field_id = NULL;
   private $description_field_id = NULL;
   private $image_relationship_field_id = NULL;
@@ -193,7 +197,7 @@ class LDCMSConfiguration {
   private $published_field_id = NULL;
 
   private $identifier_field_id = NULL;
-  private $default_browing_class_id = NULL;
+  private $default_browsing_class_id = NULL;
   private $default_namespace = NULL;
 
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
@@ -224,7 +228,13 @@ class LDCMSConfiguration {
   function addViewSpec($view) { $this->views[$view->getId()] = $view; }
 
   function getFields() { return $this->fields; }
-  function getResources() { return $this->resources; }
+  function getResources($include_daterange = FALSE) {
+    if ($include_daterange) {
+      return array_merge($this->resources, array($this->getDateRangeResource()));
+    }
+
+    return $this->resources;
+  }
   function getViews() { return $this->views; }
 
   function getField($id) { return $this->fields[$id]; }
@@ -243,6 +253,15 @@ class LDCMSConfiguration {
 
   function setDefaultNamespace($default_namespace) { $this->default_namespace = $default_namespace; }
   function getDefaultNamespace() { return $this->default_namespace; }
+
+  function setDateRangeResource($date_range_resource) { $this->date_range_resource = $date_range_resource; }
+  function getDateRangeResource() { return $this->date_range_resource; }
+
+  function setDateRangeFromId($date_range_from_id) { $this->date_range_from_id = $date_range_from_id; }
+  function getDateRangeFromId() { return $this->date_range_from_id; }
+
+  function setDateRangeToId($date_range_to_id) { $this->date_range_to_id = $date_range_to_id; }
+  function getDateRangeToId() { return $this->date_range_to_id; }
 
   function setDefaultBrowsingClassId($default_browsing_class_id) { $this->default_browsing_class_id = $default_browsing_class_id; }
   function getDefaultBrowsingClassId() { return $this->default_browsing_class_id; }

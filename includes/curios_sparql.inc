@@ -194,7 +194,7 @@ EOT;
 //  $query .= "  hc:$subject_id a ". $rdf_type .";\n";
 //  $query .= $triples_insert;
 //  $query .= '}';
-//  //$triples_insert[] = '      ' . $rdf_mapping['hc_subject_id']['predicates'][0]  ." \"$subject_id\"^^<http://www.w3.org/2001/XMLSchema#integer>;";  // TODO 'id' field from config
+//
 //  return __curios_sparql_update($query);
 //}
 //

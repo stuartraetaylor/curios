@@ -27,7 +27,7 @@
  */
 function  _curios_update_entity_batch_start(&$config_old, &$config_new, $remove_only = FALSE, $quick_mode = FALSE) {
   $install_fields = $config_new->getFields();
-  $install_resources = $config_new->getResources();
+  $install_resources = $config_new->getResources(TRUE);
 
   $remove_fields = array();
   $remove_resources = array();
@@ -37,7 +37,7 @@ function  _curios_update_entity_batch_start(&$config_old, &$config_new, $remove_
       list($remove_fields, $install_fields, $remove_resources, $install_resources) = _curios_config_diff($config_old, $config_new);
     } else { // Full reinstall.
       $remove_fields = $config_old->getFields();
-      $remove_resources = $config_old->getResources();
+      $remove_resources = $config_old->getResources(TRUE);
     }
   }
   
@@ -408,8 +408,8 @@ function _curios_config_diff($config_old, $config_new) {
 //    }
 //  }
 
-  $remove_resources = $config_old->getResources();
-  $install_resources = $config_new->getResources();
+  $remove_resources = $config_old->getResources(TRUE);
+  $install_resources = $config_new->getResources(TRUE);
 
   return array($remove_fields, $install_fields, $remove_resources, $install_resources);
 }
@@ -487,7 +487,7 @@ function _curios_installed_instances($resources, &$config) {
 function _curios_rdf_mappings(&$config) {
   $mappings = array();
 
-  foreach ($config->getResources() as $entity) {
+  foreach ($config->getResources(TRUE) as $entity) {
     $rdf_mapping = array();
     $rdf_mapping['rdftype'] = array($entity->getRDFType());
 

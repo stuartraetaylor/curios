@@ -30,7 +30,11 @@ function curios_format_datetime($datetime) {
  * Returns a human readble representation of a DateRange.
  */
 function curios_format_daterange($dateFrom, $dateTo) {
-  return 'Between ' .  curios_format_datetime($dateFrom) . ' and ' . curios_format_datetime($dateTo);
+  if ($dateFrom == $dateTo) {
+    return $dateFrom;
+  } else {
+    return 'Between ' .  curios_format_datetime($dateFrom) . ' and ' . curios_format_datetime($dateTo);
+  }
 }
 
 /**

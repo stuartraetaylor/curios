@@ -22,7 +22,9 @@
         attach: function(context, settings) {
             $(".datetime-type").live("focus", function(event) {
                 $(this).attr('disabled', true);
-                $(".update-date-btn").trigger("click");
+                $(this).blur();
+                //$(".update-date-btn").trigger("click"); // TODO onclick form field to trigger date widget.
+                alert("Please click Edit Date to input a new date.");
             });
             $(".update-date-btn").live("click", function(event) {
                 $(".date-input-widget").hide();

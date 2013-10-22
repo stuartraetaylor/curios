@@ -42,6 +42,14 @@ function curios_views_data() {
       'handler' => 'curios_image_thumbnail_field',
     ),
   );
+  $data['views']['curios_date_range_field'] = array(
+    'title' => t('Date Range field'),
+    'help' => t('Renders date range objects as a single field..'),
+    'field' => array(
+      'help' => t('CURIOS Date Range field.'),
+      'handler' => 'curios_date_range_field',
+    ),
+  );
   return $data;
 }
 

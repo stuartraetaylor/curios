@@ -46,6 +46,7 @@ function curios_create_configuration($config_spec) {
 
   __curios_configuration_options($config, $config_spec);
   __curios_configuration_fields($config, $config_spec);
+  __curios_configuration_date_range_resource($config, $config_spec);
   __curios_configuration_resources_views($config, $config_spec);
 
   return $config;
@@ -120,12 +121,13 @@ function __curios_configuration_fields($config, $config_spec) {
 function __curios_translate_field_type($field_type) {
   switch ($field_type) {
     case 'relationship':
+    case 'daterange':
       return 'sparql_views_related_resource';
       break;
     case 'text':
     case 'autocomplete':
     case 'integer':
-    case 'daterange':
+    case 'datetime':
     default:
       return 'text';
   }
@@ -147,6 +149,10 @@ function __curios_configuration_resources_views($config, $config_spec) {
   $owner_field = $config->getField($config->getOwnerFieldId());
   //$maintainer_field = $config->getField($config->getMaintainerFieldId());
   $published_field = $config->getField($config->getPublishedFieldId());
+
+  // DateRange resource mapping.
+  $date_range_resource = $config->getDateRangeResource();
+  $baseClassToResourceMap[$date_range_resource->getRDFType()] = $date_range_resource;
 
   // Create resources and views for all browsing classes.
   // __curios_sparql_fetch_browsing_classes($config);
@@ -209,7 +215,7 @@ function __curios_configuration_resources_views($config, $config_spec) {
       $target = (array)$row['target'];
 
       $relationship_id = $config->getCMSID($property);
-      $relationship = $config->getField($relationship_id); // TODO should be $config->getRelationship
+      $relationship = $config->getField($relationship_id);
       $resource->addRelationship($relationship);
       
       $target_id_function = function($t) use (&$config) { return $config->getCMSID($t); };
@@ -237,6 +243,34 @@ function __curios_configuration_resources_views($config, $config_spec) {
     $view->setRelationshipIds($relationship_ids);
   }
   
+}
+
+/**
+ * Creates a DateRange resource for the target of daterange fields.
+ */
+function __curios_configuration_date_range_resource($config, $config_spec) {
+  // Resource for DateRange objects.
+  $base_class_curie = $config_spec['options']['date_range_class'];
+  $resource_id = $config->getCMSID($base_class_curie);
+  $resource_label =  __curios_label_from_curie($base_class_curie, $config);
+  $resource = new RDFResource($resource_id, $resource_label, $base_class_curie);
+
+  // dateFrom.
+  $date_from_property = $config_spec['options']['date_range_from'];
+  $date_range_from_id = $config->getCMSID($date_from_property);
+  $config->setDateRangeFromId($date_range_from_id);
+  $date_from_field = $config->getField($date_range_from_id);
+  $resource->addField($date_from_field);
+
+  // dateTo.
+  $date_to_property = $config_spec['options']['date_range_to'];
+  $date_range_to_id = $config->getCMSID($date_to_property);
+  $config->setDateRangeToId($date_range_to_id);
+  $date_to_field = $config->getField($date_range_to_id);
+  $resource->addField($date_to_field);
+
+  $config->setDateRangeResource($resource);
+  //$config->addResource($resource);
 }
 
 /**
