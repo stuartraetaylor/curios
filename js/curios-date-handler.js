@@ -116,6 +116,7 @@
                 var closestDateWidget = $(this).closest("div.form-item");
                 var startDateInput = closestDateWidget.next("input[name|='startdate']");
                 var endDateInput = closestDateWidget.next().next("input[name|='enddate']");
+
                 // declare msg area and reset text
                 var msg = $(this).prev("div.date-input-msg");
                 msg.html("");
@@ -128,8 +129,8 @@
                     var exactDate = $(this).parent().prevAll("span.exact-date-widget").children("input").val().trim();
                     validated = validate_date(exactDate, msg);
                     if (validated)
-                        result = new Array(exactDate + 'T00:00:01+00:00'
-                                , exactDate + 'T23:59:59+00:00');
+                        result = new Array(exactDate + 'T00:00:00'
+                                , exactDate + 'T24:00:00');
                 }
                 else
                         // else using circa type
@@ -148,8 +149,8 @@
                                     var strYear = chosen.next().children('input[name=year]').val().trim();
                                     validated = validate_year(strYear, msg);
                                     if (validated)
-                                        result = new Array(strYear + '-01-01' + 'T00:00:01+00:00'
-                                                , strYear + '-12-31' + 'T23:59:59+00:00');
+                                        result = new Array(strYear + '-01-01' + 'T00:00:00'
+                                                , strYear + '-12-31' + 'T24:00:00');
                                     break;
                                 case "3":
                                     var strDecade = chosen.next().children('input[name=decade]').val().trim();
@@ -169,8 +170,8 @@
 
                                     validated = validate_daterange(strStartDate, strEndDate, msg);
                                     if (validated)
-                                        result = new Array(strStartDate + 'T00:00:01+00:00'
-                                                , strEndDate + 'T23:59:59+00:00');
+                                        result = new Array(strStartDate + 'T00:00:00'
+                                                , strEndDate + 'T24:00:00');
                                     break;
                                 default:
                                     validated = false;
@@ -200,20 +201,20 @@ function season_to_date(season, year) {
     var next_year = year + 1;
     switch (season.toLowerCase()) {
         case "winter":
-            start_date = year + '-12-01' + 'T00:00:01+00:00';
-            end_date = next_year + '-02-28' + 'T23:59:59+00:00';
+            start_date = year + '-12-01' + 'T00:00:00';
+            end_date = next_year + '-02-28' + 'T24:00:00';
             break;
         case "autumn":
-            start_date = year + '-09-01' + 'T00:00:01+00:00';
-            end_date = year + '-11-30' + 'T23:59:59+00:00';
+            start_date = year + '-09-01' + 'T00:00:00';
+            end_date = year + '-11-30' + 'T24:00:00';
             break;
         case "summer":
-            start_date = year + '-06-01' + 'T00:00:01+00:00';
-            end_date = year + '-08-31' + 'T23:59:59+00:00';
+            start_date = year + '-06-01' + 'T00:00:00';
+            end_date = year + '-08-31' + 'T24:00:00';
             break;
         case "spring":
-            start_date = year + '-03-01' + 'T00:00:01+00:00';
-            end_date = year + '-05-31' + 'T23:59:59+00:00';
+            start_date = year + '-03-01' + 'T00:00:00';
+            end_date = year + '-05-31' + 'T24:00:00';
             break;
     }
 
@@ -222,8 +223,8 @@ function season_to_date(season, year) {
 
 function decade_to_date(decade) {
     var decadeStr = decade.substr(0, 3);
-    start_date = decadeStr + '0-01-01' + 'T00:00:01+00:00';
-    end_date = decadeStr + '9-12-31' + 'T23:59:59+00:00';
+    start_date = decadeStr + '0-01-01' + 'T00:00:00';
+    end_date = decadeStr + '9-12-31' + 'T24:00:00';
     return new Array(start_date, end_date);
 }
 function century_to_date(century) {
@@ -231,13 +232,13 @@ function century_to_date(century) {
     var centuryInt = parseInt(centuryStr) - 1;
     if (centuryInt<10)
     {
-        start_date = '0'+centuryInt + '00-01-01' + 'T00:00:01+00:00';
-        end_date = '0'+centuryInt + '99-12-31' + 'T23:59:59+00:00';
+        start_date = '0'+centuryInt + '00-01-01' + 'T00:00:00';
+        end_date = '0'+centuryInt + '99-12-31' + 'T24:00:00';
     }
     else 
     {
-        start_date = centuryInt + '00-01-01' + 'T00:00:01+00:00';
-        end_date = centuryInt + '99-12-31' + 'T23:59:59+00:00';
+        start_date = centuryInt + '00-01-01' + 'T00:00:00';
+        end_date = centuryInt + '99-12-31' + 'T24:00:00';
         
     }
         return new Array(start_date, end_date);

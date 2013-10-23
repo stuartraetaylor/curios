@@ -53,6 +53,52 @@ $options = array(
 );
 
 
+/* Dublin Core fields. */
+
+$fields[] = array(
+  'property' => 'dc:title',
+  'label'    => 'dc:title',
+  'type'     => 'text',
+);
+$fields[] = array(
+  'property' => 'dc:description',
+  'label'    => 'dc:description',
+  'type'     => 'text',
+);
+
+/* Date Range fields. */
+$fields[] = array(
+  'property' => 'hc:dateFrom',
+  'label'    => 'Date From',
+  'type'     => 'datetime',
+);
+$fields[] = array(
+  'property' => 'hc:dateTo',
+  'label'    => 'Date To',
+  'type'     => 'datetime',
+);
+
+$all_records = array(
+    'hc:LandmarkOrArchaeologicalSite',
+    'hc:Business',
+    'hc:HistoricalEvent',
+    'hc:Location',
+    'hc:GaelicVersebRdachd',
+    'hc:ObjectOrArtefact',
+    'hc:NaturalLandscapeFeature',
+    'hc:StoryReportOrTradition',
+    'hc:Boat',
+    'hc:Person',
+    'hc:CroftOrResidence',
+    'hc:Organisation',
+    'hc:Person',
+    'hc:BuildingOrPublicAmenity',
+    'hc:Resource',
+    'hc:Vehicle',
+);
+
+
+
 /* Literal value fields. */
 
 $fields[] = array(
@@ -313,30 +359,6 @@ $fields[] = array(
   'type'     => 'autocomplete',
 );
 
-/* Dublin Core fields. */
-
-$fields[] = array(
-  'property' => 'dc:title',
-  'label'    => 'dc:title',
-  'type'     => 'text',
-);
-$fields[] = array(
-  'property' => 'dc:description',
-  'label'    => 'dc:description',
-  'type'     => 'text',
-);
-
-/* Date Range fields. */
-$fields[] = array(
-  'property' => 'hc:dateFrom',
-  'label'    => 'Date From',
-  'type'     => 'datetime',
-);
-$fields[] = array(
-  'property' => 'hc:dateTo',
-  'label'    => 'Date To',
-  'type'     => 'datetime',
-);
 
 /* Relationship fields. */
 
@@ -1077,24 +1099,6 @@ $field_assignments['sound_files'] = array(
 
 /* Relationship assignments. */
 
-$all_records = array(
-    'hc:LandmarkOrArchaeologicalSite',
-    'hc:Business',
-    'hc:HistoricalEvent',
-    'hc:Location',
-    'hc:GaelicVersebRdachd',
-    'hc:ObjectOrArtefact',
-    'hc:NaturalLandscapeFeature',
-    'hc:StoryReportOrTradition',
-    'hc:Boat',
-    'hc:Person',
-    'hc:CroftOrResidence',
-    'hc:Organisation',
-    'hc:Person',
-    'hc:BuildingOrPublicAmenity',
-    'hc:Resource',
-    'hc:Vehicle',
-);
 
 /* Subjects */
 $relationship_assignments['subjects'][] = array(

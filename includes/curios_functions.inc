@@ -20,21 +20,18 @@
  */
 
 /**
- * Format xsd:dateTime to d-M-Y.
- */
-function curios_format_datetime($datetime) {
-  return date('d-M-Y', strtoTime($datetime));
-}
-
-/**
  * Returns a human readble representation of a DateRange.
  */
 function curios_format_daterange($dateFrom, $dateTo) {
-  if ($dateFrom == $dateTo) {
-    return $dateFrom;
-  } else {
-    return 'Between ' .  curios_format_datetime($dateFrom) . ' and ' . curios_format_datetime($dateTo);
-  }
+  return 'Between ' .  curios_format_datetime($dateFrom) . ' and ' . curios_format_datetime($dateTo);
+}
+
+/**
+ * Format xsd:dateTime to d-M-Y.
+ */
+function curios_format_datetime($datetime) {
+  // (Removes time values to avoid formatting dateTimes ending T24:00:00 as the start of the follwing day.)
+  return date('d-M-Y', strtoTime(preg_replace('/T.+$/', '', $datetime)));
 }
 
 /**

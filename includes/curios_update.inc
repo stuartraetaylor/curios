@@ -319,7 +319,7 @@ function curios_insert_form_submit($form, &$form_state) {
       $form_value = $form_state['values'][$field_name]['value'];
     }
 
-    $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
+    $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^xsd:string;";
   }
 
   //  foreach ($field_instances as $instance) {
@@ -503,8 +503,8 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   // Include fieldsets.
   _curios_update_fieldset_fields($form, $config, $rdf_mapping, $view_result, $resource_type, $field_instances, $relationship_options);
   _curios_update_fieldset_record_meta($form, $config, $rdf_mapping, $resource_type, $subject_id);
-  _curios_update_fieldset_existing_relationships($form, $config, $rdf_mapping, $resource_type, $subject_id, $relationship_options);
-  _curios_update_fieldset_new_relationships($form, $config, $rdf_mapping, $relationship_options);
+  _curios_update_fieldset_existing_relationships($form, $form_state, $rdf_mapping, $resource_type, $subject_id, $relationship_options);
+  _curios_update_fieldset_new_relationships($form, $form_state, $rdf_mapping, $relationship_options);
   _curios_update_fieldset_delete($form, $config, $rdf_mapping);
 
   // Submit button.
@@ -652,7 +652,7 @@ function curios_update_form_add_daterange_field(&$form, $resource_type, $instanc
   // add hidden fields for new and old startdate of the datefield.
   $form['optional_fields']['startdate-' . $instance['field_name']] = array(
       '#type' => 'hidden',
-      '#value' => $date_from,
+      '#default_value' => $date_from,
       '#attributes' => array(
           'name' => array('startdate-' . $instance['field_name']),
           'id' => array('startdate-' . $instance['field_name'])
@@ -666,7 +666,7 @@ function curios_update_form_add_daterange_field(&$form, $resource_type, $instanc
   // add hidden fields for new and old enddate of the datefield.
   $form['optional_fields']['enddate-' . $instance['field_name']] = array(
       '#type' => 'hidden',
-      '#value' => $date_to,
+      '#default_value' => $date_to,
       '#attributes' => array(
           'name' => array('enddate-' . $instance['field_name']),
           'id' => array('enddate-' . $instance['field_name'])
@@ -678,7 +678,7 @@ function curios_update_form_add_daterange_field(&$form, $resource_type, $instanc
   );
 }
 
-function _curios_update_fieldset_existing_relationships(&$form, $config, $rdf_mapping, $resource_type, $subject_id, $relationship_options) {
+function _curios_update_fieldset_existing_relationships(&$form, $form_state, $rdf_mapping, $resource_type, $subject_id, $relationship_options) {
   // Existing relationships.
   $form['relationship_listing_fieldset'] = array(
     '#type' => 'fieldset',
@@ -768,7 +768,7 @@ function _curios_update_fieldset_existing_relationships(&$form, $config, $rdf_ma
   }
 }
 
-function _curios_update_fieldset_new_relationships(&$form, $config, $rdf_mapping, $relationship_options) {
+function _curios_update_fieldset_new_relationships(&$form, $form_state, $rdf_mapping, $relationship_options) {
   // New relationships.
   $form['relationship_fieldset'] = array(
     '#type' => 'fieldset',
@@ -954,9 +954,6 @@ function _curios_is_valid_relationship_assertion($resource_name, $relationship_n
 function curios_update_form_submit($form, &$form_state) {
   $config = curios_configuration();
 
-  dpm($form_state);
-  return;
-
   $resource_name = $form_state['values']['resource'];
   $subject_id = $form_state['values']['identifier'];
 
@@ -987,8 +984,8 @@ function curios_update_form_submit($form, &$form_state) {
     }
 
     if ($form_value_new != $form_value_old) {
-      $triples_delete[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
-      $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) . "\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
+      $triples_delete[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^xsd:string;\n";
+      $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) . "\"^^xsd:string;\n";
     }
   }
 
@@ -1001,22 +998,16 @@ function curios_update_form_submit($form, &$form_state) {
       continue;
     }
 
-    $form_value_new = $form_state['values'][$instance['field_name']];
-    $form_value_old = $form_state['values']['old_'.$instance['field_name']];
-
-    if ($form_value_new != $form_value_old) {
-      if (!empty($form_value_old)) {
-        $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
-      }
-
-      if (!empty($form_value_new)) {
-        $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;\n";
-      }
+    // Add/remove literal field values.
+    if ($instance['ldcms_type'] == 'daterange') { // Handle date range values.
+      curios_update_form_submit_date_range($form_state, $instance, $rdf_mapping, $triples_insert, $triples_delete);
+    } else { // All other field types.
+      curios_update_form_submit_field($form_state, $instance, $rdf_mapping, $triples_insert, $triples_delete);
     }
   }
 
   // Add/remove relationships.
-  curios_update_form_submit_relationships($form_state, $triples_insert, $triples_delete);
+  curios_update_form_submit_relationships($form_state, $instance, $rdf_mapping, $triples_insert, $triples_delete);
 
   // Filter duplicates.
   $triples_insert = array_unique($triples_insert);
@@ -1041,7 +1032,49 @@ function curios_update_form_submit($form, &$form_state) {
   }
 }
 
-function curios_update_form_submit_relationship(&$form_state, &$triples_insert, &$triples_delete) {
+function curios_update_form_submit_field(&$form_state, $instance, $rdf_mapping, &$triples_insert, &$triples_delete) {
+  $form_value_new = $form_state['values'][$instance['field_name']];
+  $form_value_old = $form_state['values']['old_'.$instance['field_name']];
+
+  if ($form_value_new != $form_value_old) {
+    if (!empty($form_value_old)) {
+      $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^xsd:string;\n";
+    }
+
+    if (!empty($form_value_new)) {
+      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) ."\"^^xsd:string;\n";
+    }
+  }
+}
+
+function curios_update_form_submit_date_range(&$form_state, $instance, $rdf_mapping, &$triples_insert, &$triples_delete) {
+  $config = curios_configuration();
+  
+  $date_from_new = $form_state['values']['startdate-'.$instance['field_name']];
+  $date_from_old = $form_state['values']['old_'.'startdate-'.$instance['field_name']];
+  $date_to_new = $form_state['values']['enddate-'.$instance['field_name']];
+  $date_to_old = $form_state['values']['old_'.'enddate-'.$instance['field_name']];
+
+  $date_range_class = $config->getDateRangeResource()->getBaseClass();
+  $date_from_field = $config->getField($config->getDateRangeFromId());
+  $date_from_property = $date_from_field->getRDFPredicate();
+  $date_to_field = $config->getField($config->getDateRangeToId());
+  $date_to_property = $date_to_field->getRDFPredicate();
+
+  if ($date_from_new != $date_from_old || $date_to_new != $date_to_old) {
+    if (!empty($date_from_old)) {
+      $dateTimeTriples = "a $date_range_class ; $date_from_property \"$date_from_old\"^^xsd:dateTime ; $date_to_property \"$date_to_old\"^^xsd:dateTime";
+      $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." [ ". $dateTimeTriples ." ];\n";
+    }
+
+    if (!empty($date_from_new)) {
+      $dateTimeTriples = "a $date_range_class ; $date_from_property \"$date_from_new\"^^xsd:dateTime ; $date_to_property \"$date_to_new\"^^xsd:dateTime";
+      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." [ ". $dateTimeTriples ." ];\n";
+    }
+  }
+}
+
+function curios_update_form_submit_relationships(&$form_state, $instance, $rdf_mapping, &$triples_insert, &$triples_delete) {
   $config = curios_configuration();
   $default_namespace = $config->getDefaultNamespace();
   $prefix = $config->getPrefix($default_namespace) .':';

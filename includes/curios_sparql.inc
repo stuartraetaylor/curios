@@ -70,8 +70,9 @@ function __curios_sparql_prefixes() {
   $config = curios_configuration();
   
   $prefixes = '';
-  $prefixes .= "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n";
+  $prefixes .= "prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#>\n";
   $prefixes .= "prefix owl:<http://www.w3.org/2002/07/owl#>\n";
+  $prefixes .= "prefix xsd:<http://www.w3.org/2001/XMLSchema#>\n";
 
   foreach ($config->getPrefixToNamespaceMap() as $prefix=>$ns) {
     $prefixes .= "prefix $prefix: <$ns>\n";
@@ -92,25 +93,29 @@ function __curios_escape_sparql($s) {
  * Inserts and deletes triples for an individual.
  */
 function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
+  $config = curios_configuration();
+  $prefix = $config->getPrefix($config->getDefaultNamespace());
+  $record = "$prefix:$subject_id";
+
   $query = '';
 
   if (!empty ($triples_delete)) {
     $query .= "DELETE {\n";
-    $query .= "  ?subject ";
+    $query .= "  ?s ";
     $query .= $triples_delete;
     $query .= " } \n";
   }
 
   if (!empty ($triples_insert)) {
     $query .= "INSERT {\n";
-    $query .= "  ?subject ";
+    $query .= "  ?s ";
     $query .= $triples_insert;
     $query .= " } \n";
   }
 
   $query .= "WHERE {\n";
-  $query .= "  ?subject ?p ?o \n";
-  $query .= "  FILTER ( ?subject = hc:$subject_id ) }";
+  $query .= "  ?s ?p ?o \n";
+  $query .= "  FILTER ( ?s = $record ) }";
 
   return __curios_sparql_update($query);
 }
