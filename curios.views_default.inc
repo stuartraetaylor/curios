@@ -1431,7 +1431,7 @@ function __curios_generate_display_record_meta_default(&$view, &$view_spec, $bas
   $handler->display->display_options['query']['type'] = 'views_query';
 
   // Combine multi-valued fields.
-  $handler->display->display_options['query']['options']['consolidate'] = TRUE;
+  $handler->display->display_options['query']['options']['consolidate'] = FALSE;
 
   // Overrides.
   $handler->display->display_options['defaults']['title'] = FALSE;

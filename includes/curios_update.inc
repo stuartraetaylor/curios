@@ -153,7 +153,7 @@ function curios_delete_form_submit($form, &$form_state) {
   $success = _curios_subject_delete($subject_id);
 
   if ($success) {
-    drupal_set_message("The record has been deleted successfully  (ID: $subject_id)", 'status', FALSE);
+    drupal_set_message("The record has been deleted successfully  (ID: $subject_id).", 'status', FALSE);
     $form_state['redirect'] = array("curios/manage", array(), 302);
   } else {
     drupal_set_message("Failed to delete record.", 'error', FALSE);
@@ -255,34 +255,28 @@ function curios_insert_form($form, $form_state, $resource_type) {
   );
   $form[] = $break;
 
-  //  $form['optional_fields'] = array(
-  //  '#type' => 'fieldset',
-  //    '#title' => t('Additional Fields'),
-  //    '#collapsible' => TRUE,
-  //    '#collapsed' => TRUE,
-  //  );
-  //
-  //  foreach ($field_instances as $instance) {
-  //    if (__is_identifier_field($instance) ||
-  //        __is_title_field($instance) ||
-  //        __is_description_field($instance) ||
-  //        __is_relationship_field($instance)) {
-  //      continue;
-  //    }
-  //
-  //    $form['optional_fields'][$instance['field_name']] = array(
-  //      '#type' => 'textfield',
-  //      '#title' => t($instance['label']),
-  //      '#size' => '80',
-  //      '#autocomplete_path' => 'curios/manage/autocomplete_fields/'. $resource_type->name .'/'. $instance['field_name'] ,
-  //      '#field_suffix' => '<em style="font-size: 0.7em;">('.$rdf_mapping[$instance['field_name']]['predicates'][0].')</em>',
-  //    );
-  //  }
+  //$form['submit'] = array('#type' => 'submit', '#value' => 'Create New Record');
 
-  $form[] = $break;
-  $form['submit'] = array('#type' => 'submit', '#value' => 'Create New Record');
+  $form['submit_create'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save & Create another'),
+    '#submit' => array('curios_insert_form_submit_then_create'),
+  );
+  $form['submit_edit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save & Edit'),
+    '#submit' => array('curios_insert_form_submit_then_edit'),
+  );
 
   return $form;
+}
+
+function curios_insert_form_submit_then_create($form, &$form_state) {
+  curios_insert_form_submit($form, &$form_state, 'create');
+}
+
+function curios_insert_form_submit_then_edit($form, &$form_state) {
+  curios_insert_form_submit($form, &$form_state, 'edit');
 }
 
 /**
@@ -290,7 +284,7 @@ function curios_insert_form($form, $form_state, $resource_type) {
  *
  * Processes the insert form and builds the set of triples to be inserted.
  */
-function curios_insert_form_submit($form, &$form_state) {
+function curios_insert_form_submit($form, &$form_state, $redirect = 'edit') {
   $config = curios_configuration();
 
   $resource_name = $form_state['values']['resource'];
@@ -322,20 +316,6 @@ function curios_insert_form_submit($form, &$form_state) {
     $triples_insert[] = '      ' . $rdf_mapping[$field_name]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^xsd:string;";
   }
 
-  //  foreach ($field_instances as $instance) {
-  //    if (__is_identifier_field($instance) ||
-  //        __is_title_field($instance) ||
-  //        __is_description_field($instance) ||
-  //        __is_relationship_field($instance)) {
-  //      continue;
-  //    }
-  //
-  //    $form_value = $form_state['values'][$instance['field_name']];
-  //    if (!empty($form_value)) {
-  //      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value) ."\"^^<http://www.w3.org/2001/XMLSchema#string>;";
-  //    }
-  //  }
-
   $triples_insert = array_unique($triples_insert);
   $triples_insert = join("\n", $triples_insert);
 
@@ -343,11 +323,20 @@ function curios_insert_form_submit($form, &$form_state) {
   $subject_id = _curios_fetch_max_identifier();
 
   if ($success) {
-    drupal_set_message("The new record has been created successfully.", 'status', FALSE);
-    $path = "curios/manage/edit/$resource_name/$subject_id";
+    drupal_set_message("The new record has been created successfully (ID: $subject_id).", 'status', FALSE);
+
+    switch ($redirect) {
+      case 'create':
+        $path = "curios/manage/create/$resource_name";
+        break;
+      case 'edit':
+      default:
+        $path = "curios/manage/edit/$resource_name/$subject_id";
+    }
+
     $form_state['redirect'] = array($path, array(), 302);
   } else {
-    drupal_set_message("Failed to create record", 'error', FALSE);
+    drupal_set_message("Failed to create record.", 'error', FALSE);
   }
 }
 
@@ -439,6 +428,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   $browsing_class = $config->getResource($resource_type->name);
   $view_spec_id = $config->getViewIdForResource($browsing_class->getId());
   $view_spec = $config->getViewSpec($view_spec_id);
+  $view_path = $view_spec->getPath() .'/'. $subject_id;
   
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_type->name]['rdf_mapping'];
@@ -459,6 +449,7 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   $form['status'] = array('#markup' => "<h3>Edit: <strong>".$resource_type->label."</strong>; ID: <strong>". $subject_id ."</strong>; Name: <strong>". $title_value ."</strong></h3>");
   $form['resource'] = array('#type' => 'hidden', '#value' => $resource_type->name);
   $form['identifier'] = array('#type' => 'hidden', '#value' => $subject_id);
+  $form['view_path'] = array('#type' => 'hidden', '#value' => $view_path);
 
   $break = array('#markup' => '<br/>');
 
@@ -508,7 +499,22 @@ function curios_update_form($form, $form_state, $resource_type, $subject_id, $vi
   _curios_update_fieldset_delete($form, $config, $rdf_mapping);
 
   // Submit button.
-  $form['submit'] = array('#type' => 'submit', '#value' => 'Update Record');
+  $form['submit_update'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save Changes'),
+    '#submit' => array('curios_update_form_submit'),
+  );
+  $form['submit_view'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save & View record'),
+    '#submit' => array('curios_update_form_submit_then_view'),
+  );
+  $form['submit_discard'] = array(
+    '#type' => 'submit',
+    '#value' => t('Discard Changes'),
+    '#attributes' => array('onclick' => 'return confirm("Are you sure you want to discard your changes?");'),
+    '#submit' => array('curios_update_form_submit_discard'),
+  );
 
   return $form;
 }
@@ -518,13 +524,11 @@ function _curios_update_fieldset_record_meta(&$form, $config, $rdf_mapping, $res
 
   $owner_field = $config->getField($config->getOwnerFieldId());
   $views_owner_field = $resource_type->name.'_'.$owner_field->getId();
-  $owner_value_result = isset($view_result[0][$views_owner_field]);
-  $owner_value = $owner_value_result ? reset($view_result[0][$views_owner_field]) : '';
+  $owner_value = isset($view_result[0]->$views_owner_field) ? $view_result[0]->$views_owner_field : '';
 
   $published_field = $config->getField($config->getPublishedFieldId());
   $views_published_field = $resource_type->name.'_'.$published_field->getId();
-  $published_value_result = isset($view_result[0][$views_published_field]);
-  $published_value = $published_value_result ? reset($view_result[0][$views_published_field]) : '';
+  $published_value = isset($view_result[0]->$views_published_field) ? $view_result[0]->$views_published_field : '';
 
   $form['record_meta'] = array(
     '#type' => 'fieldset',
@@ -946,16 +950,27 @@ function _curios_is_valid_relationship_assertion($resource_name, $relationship_n
 
 /* Update */
 
+function curios_update_form_submit_then_view($form, &$form_state) {
+  curios_update_form_submit($form, &$form_state, 'view');
+}
+
+function curios_update_form_submit_discard($form, &$form_state) {
+  drupal_set_message("No changes have been made.", 'status', FALSE);
+  $path = "curios/manage/edit";
+  $form_state['redirect'] = array($path, array(), 302);
+}
+
 /**
  * Submit handler.
  *
  * Processes the update form and generates the tripled to be added/removed.
  */
-function curios_update_form_submit($form, &$form_state) {
+function curios_update_form_submit($form, &$form_state, $redirect = 'edit') {
   $config = curios_configuration();
 
   $resource_name = $form_state['values']['resource'];
   $subject_id = $form_state['values']['identifier'];
+  $view_path = $form_state['values']['view_path'];
 
   $entity_info = entity_get_info('sparql_views_resource');
   $rdf_mapping = $entity_info['bundles'][$resource_name]['rdf_mapping'];
@@ -1025,12 +1040,20 @@ function curios_update_form_submit($form, &$form_state) {
     $success = _curios_subject_update($subject_id, $triples_insert, $triples_delete, $triples_delete_append, $triples_where_append);
 
     if ($success) {
-      drupal_set_message("The record has been updated successfully (ID: $subject_id)", 'status', FALSE);
+      drupal_set_message("The record has been updated successfully (ID: $subject_id).", 'status', FALSE);
+
+      if ($redirect == 'view') {
+        $form_state['redirect'] = array($view_path, array(), 302);
+      }
     } else {
-      drupal_set_message("Failed to update record", 'error', FALSE);
+      drupal_set_message('Failed to update record.', 'error', FALSE);
     }
   } else {
-    drupal_set_message('There were no fields to update', 'warning', FALSE);
+    drupal_set_message('There were no fields to update.', 'warning', FALSE);
+
+    if ($redirect == 'view') {
+      $form_state['redirect'] = array($view_path, array(), 302);
+    }
   }
 }
 
