@@ -30,7 +30,7 @@ function curios_default_panels_layout() {
 $layout = new stdClass();
 $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
 $layout->api_version = 1;
-$layout->name = 'hc_subject_page_layout';
+$layout->name = 'ldcms_details_page_layout';
 $layout->admin_title = 'Subject Page Layout';
 $layout->admin_description = '';
 $layout->category = 'CURIOS';

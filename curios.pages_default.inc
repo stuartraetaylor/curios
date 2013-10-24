@@ -237,7 +237,7 @@ function _curios_generate_details_panel(&$view_spec, $hander_id) {
     ),
   );
   $display = new panels_display;
-  $display->layout = 'flexible:hc_subject_page_layout';
+  $display->layout = 'flexible:ldcms_details_page_layout';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
