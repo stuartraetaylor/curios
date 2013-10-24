@@ -156,7 +156,7 @@ function curios_delete_form_submit($form, &$form_state) {
     drupal_set_message("The record has been deleted successfully  (ID: $subject_id)", 'status', FALSE);
     $form_state['redirect'] = array("curios/manage", array(), 302);
   } else {
-    drupal_set_message("Failed to delete record", 'status', FALSE);
+    drupal_set_message("Failed to delete record.", 'error', FALSE);
   }
 }
 
@@ -972,6 +972,9 @@ function curios_update_form_submit($form, &$form_state) {
   $triples_delete = array();
   $triples_insert = array();
 
+  $triples_delete_append = array();
+  $triples_where_append = array();
+
   $required_fields = array($title_field->getId(), $description_field->getId());
 
   // Add required fields.
@@ -1000,7 +1003,7 @@ function curios_update_form_submit($form, &$form_state) {
 
     // Add/remove literal field values.
     if ($instance['ldcms_type'] == 'daterange') { // Handle date range values.
-      curios_update_form_submit_date_range($form_state, $instance, $rdf_mapping, $triples_insert, $triples_delete);
+      curios_update_form_submit_date_range($form_state, $instance, $rdf_mapping, $triples_insert, $triples_delete, $triples_delete_append, $triples_where_append);
     } else { // All other field types.
       curios_update_form_submit_field($form_state, $instance, $rdf_mapping, $triples_insert, $triples_delete);
     }
@@ -1009,23 +1012,22 @@ function curios_update_form_submit($form, &$form_state) {
   // Add/remove relationships.
   curios_update_form_submit_relationships($form_state, $instance, $rdf_mapping, $triples_insert, $triples_delete);
 
-  // Filter duplicates.
+  // Filter duplicates and build triples strings.
   $triples_insert = array_unique($triples_insert);
   $triples_insert = join("\n", $triples_insert);
   $triples_delete = array_unique($triples_delete);
   $triples_delete = join("\n", $triples_delete);
+  $triples_delete_append = join("\n", $triples_delete_append);
+  $triples_where_append = join("\n", $triples_where_append);
 
   // Submit form.
   if (!empty($triples_delete) || !empty($triples_insert)) {
-    $success = _curios_subject_update($subject_id, $triples_insert, $triples_delete);
+    $success = _curios_subject_update($subject_id, $triples_insert, $triples_delete, $triples_delete_append, $triples_where_append);
 
     if ($success) {
       drupal_set_message("The record has been updated successfully (ID: $subject_id)", 'status', FALSE);
-      //$path = "curios/manage/edit/$resource_name/$subject_id";
-      //$form_state['redirect'] = array($path, array(), 302);
-      //$form_state['rebuild'] = TRUE;
     } else {
-      drupal_set_message("Failed to update record", 'status', FALSE);
+      drupal_set_message("Failed to update record", 'error', FALSE);
     }
   } else {
     drupal_set_message('There were no fields to update', 'warning', FALSE);
@@ -1038,16 +1040,16 @@ function curios_update_form_submit_field(&$form_state, $instance, $rdf_mapping, 
 
   if ($form_value_new != $form_value_old) {
     if (!empty($form_value_old)) {
-      $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^xsd:string;\n";
+      $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_old) ."\"^^xsd:string;";
     }
 
     if (!empty($form_value_new)) {
-      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) ."\"^^xsd:string;\n";
+      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." \"". __curios_escape_sparql($form_value_new) ."\"^^xsd:string;";
     }
   }
 }
 
-function curios_update_form_submit_date_range(&$form_state, $instance, $rdf_mapping, &$triples_insert, &$triples_delete) {
+function curios_update_form_submit_date_range(&$form_state, $instance, $rdf_mapping, &$triples_insert, &$triples_delete, &$triples_delete_append, &$triples_where_append) {
   $config = curios_configuration();
   
   $date_from_new = $form_state['values']['startdate-'.$instance['field_name']];
@@ -1061,15 +1063,22 @@ function curios_update_form_submit_date_range(&$form_state, $instance, $rdf_mapp
   $date_to_field = $config->getField($config->getDateRangeToId());
   $date_to_property = $date_to_field->getRDFPredicate();
 
+  $date_property = $rdf_mapping[$instance['field_name']]['predicates'][0];
+  $field_id = $instance['field_name'];
+
   if ($date_from_new != $date_from_old || $date_to_new != $date_to_old) {
     if (!empty($date_from_old)) {
-      $dateTimeTriples = "a $date_range_class ; $date_from_property \"$date_from_old\"^^xsd:dateTime ; $date_to_property \"$date_to_old\"^^xsd:dateTime";
-      $triples_delete[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." [ ". $dateTimeTriples ." ];\n";
+      $date_time_triples = "a $date_range_class ; $date_from_property \"$date_from_old\"^^xsd:dateTime ; $date_to_property \"$date_to_old\"^^xsd:dateTime";
+
+      // Delete relationship, DateTime instance -- variables must be bound in WHERE clause.
+      $triples_delete[] = "      $date_property ?$field_id;";
+      $triples_delete_append[] = "  ?$field_id $date_time_triples .";
+      $triples_where_append[] = "  ?s $date_property ?$field_id .";
     }
 
     if (!empty($date_from_new)) {
-      $dateTimeTriples = "a $date_range_class ; $date_from_property \"$date_from_new\"^^xsd:dateTime ; $date_to_property \"$date_to_new\"^^xsd:dateTime";
-      $triples_insert[] = '      ' . $rdf_mapping[$instance['field_name']]['predicates'][0]  ." [ ". $dateTimeTriples ." ];\n";
+      $date_time_triples = "a $date_range_class ; $date_from_property \"$date_from_new\"^^xsd:dateTime ; $date_to_property \"$date_to_new\"^^xsd:dateTime";
+      $triples_insert[] = "      $date_property [ $date_time_triples ];";
     }
   }
 }
@@ -1085,7 +1094,7 @@ function curios_update_form_submit_relationships(&$form_state, $instance, $rdf_m
 
   foreach ($relationships as $relationship) {
     $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
-    $triples_insert[] = '      '. $predicate .' '. $prefix . $relationship['value'] ." ;\n";
+    $triples_insert[] = '      '. $predicate .' '. $prefix . $relationship['value'] ." ;";
   }
 
   // Remove existing relationships.
@@ -1094,7 +1103,7 @@ function curios_update_form_submit_relationships(&$form_state, $instance, $rdf_m
   foreach ($relationships as $relationship) {
     if (isset($relationship['remove-relationship'])) {
       $predicate = $rdf_mapping[$relationship['field']]['predicates'][0];
-      $triples_delete[] = '      '. $predicate .' '. $prefix . $relationship['value'] ." ;\n";
+      $triples_delete[] = '      '. $predicate .' '. $prefix . $relationship['value'] ." ;";
     }
   }
 }

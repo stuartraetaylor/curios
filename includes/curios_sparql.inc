@@ -91,22 +91,28 @@ function __curios_escape_sparql($s) {
 
 /**
  * Inserts and deletes triples for an individual.
+ *
+ * $triples_insert and $triples_delete are expected to be a predicate-object list, for the subject being updated.
+ * $triples_delete_append and $triples_where_append are expected to be individual triple patterns which are appended
+ * to the end of the relevant triples block.
  */
-function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
+function _curios_subject_update($subject_id, $triples_insert, $triples_delete, $triples_delete_append = '', $triples_where_append = '') {
   $config = curios_configuration();
   $prefix = $config->getPrefix($config->getDefaultNamespace());
   $record = "$prefix:$subject_id";
 
   $query = '';
 
-  if (!empty ($triples_delete)) {
+  if (!empty($triples_delete)) {
     $query .= "DELETE {\n";
     $query .= "  ?s ";
     $query .= $triples_delete;
+    $query .= " .\n";
+    $query .= $triples_delete_append;
     $query .= " } \n";
   }
 
-  if (!empty ($triples_insert)) {
+  if (!empty($triples_insert)) {
     $query .= "INSERT {\n";
     $query .= "  ?s ";
     $query .= $triples_insert;
@@ -114,8 +120,9 @@ function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
   }
 
   $query .= "WHERE {\n";
-  $query .= "  ?s ?p ?o \n";
-  $query .= "  FILTER ( ?s = $record ) }";
+  $query .= "  BIND($record as ?s)\n";
+  $query .= $triples_where_append;
+  $query .= " }";
 
   return __curios_sparql_update($query);
 }
@@ -124,14 +131,15 @@ function _curios_subject_update($subject_id, $triples_insert, $triples_delete) {
  * Removes an individual.
  */
 function _curios_subject_delete($subject_id) {
-  // TODO should use subject id field.
-  $subject_id = __curios_escape_sparql($subject_id);
+  $config = curios_configuration();
+  $prefix = $config->getPrefix($config->getDefaultNamespace());
+  $record = "$prefix:$subject_id";
 
   $query = '';
   $query .= "DELETE { ?subject ?p ?o }\n";
   $query .= "WHERE {\n";
   $query .= "  ?subject ?p ?o .\n";
-  $query .= "  FILTER ( ?subject = hc:$subject_id ) }";
+  $query .= "  FILTER ( ?subject = $record ) }";
 
   return __curios_sparql_update($query);
 }
