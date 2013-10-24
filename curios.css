@@ -132,3 +132,10 @@
     margin-left: 8px;
     font-size: 0.8em;
 }
+
+.region-content .plain-list,
+.plain-list {
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 0px;
+}

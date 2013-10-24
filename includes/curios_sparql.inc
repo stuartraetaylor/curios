@@ -198,6 +198,56 @@ EOT;
   }
 }
 
+/**
+ * Returns an array of recently inserted subject_id's.
+ */
+function _curios_latest_record_identifiers($n = 10) {
+  $query = <<<EOT
+select ?id ?title where {
+  [] hc:subjectID ?id ; dc:title ?title .
+} order by desc(?id) limit $n
+EOT;
+
+  $rs = __curios_sparql_query($query);
+  $identifiers = array();
+
+  if ($rs != NULL) {
+    foreach ($rs['result']['rows'] as $row) {
+      $identifiers[$row['id']] = $row['title'];
+    }
+  }
+
+  return $identifiers;
+}
+
+/**
+ * Returns all values for the specified property.
+ */
+function _curios_fetch_property_values($class, $property) {
+  $query = '';
+  $query .= "select distinct ?value where { \n";
+  $query .= "[] a $class ; \n";
+  $query .= "  $property ?value . \n";
+  $query .= "} limit 500";
+
+    return __curios_sparql_query($query);
+}
+
+/**
+ * Returns all types for a specified individual.
+ */
+function _curios_fetch_subject_types($subject_id) {
+  $query = "select ?type where { hc:$subject_id a ?type . ?type a owl:Class }";
+  $rs = __curios_sparql_query($query);
+
+  $classes = array();
+  foreach ($rs['result']['rows'] as $row) {
+    $classes[] = $row['type'];
+  }
+
+  return $classes;
+}
+
 ///**
 // * Creates a new individiual.
 // */
@@ -228,59 +278,31 @@ EOT;
 //    return -1;
 //  }
 //}
-
-/**
- * Returns an array of recently inserted subject_id's.
- */
-function _curios_latest_record_identifiers($n = 10) {
-  $query = <<<EOT
-select ?id ?title where {
-  [] hc:subjectID ?id ;
-     dc:title ?title .
-}
-order by desc(strlen(?id)) desc(?id)
-limit $n
-EOT;
-
-  $rs = __curios_sparql_query($query);
-  $identifiers = array();
-
-  if ($rs != NULL) {
-    foreach ($rs['result']['rows'] as $row) {
-      $identifiers[$row['id']] = $row['title'];
-    }
-  }
-
-  return $identifiers;
-}
-
-/**
- * Returns all values for the specified property. 
- */
-function _curios_fetch_property_values($class, $property) {
-  $query = '';
-  $query .= "select distinct ?value where { \n";
-  $query .= "[] a $class ; \n";
-  $query .= "  $property ?value . \n";
-  $query .= "} limit 500";
-
-    return __curios_sparql_query($query);
-}
-
-/**
- * Returns all types for a specified individual.
- */
-function _curios_fetch_subject_types($subject_id) {
-  $query = "select ?type where { hc:$subject_id a ?type . ?type a owl:Class }";
-  $rs = __curios_sparql_query($query);
-
-  $classes = array();
-  foreach ($rs['result']['rows'] as $row) {
-    $classes[] = $row['type'];
-  }
-
-  return $classes;
-}
+//
+///**
+// * Returns an array of recently inserted subject_id's.
+// */
+//function _curios_latest_record_identifiers($n = 10) {
+//  $query = <<<EOT
+//select ?id ?title where {
+//  [] hc:subjectID ?id ;
+//     dc:title ?title .
+//}
+//order by desc(strlen(?id)) desc(?id)
+//limit $n
+//EOT;
+//
+//  $rs = __curios_sparql_query($query);
+//  $identifiers = array();
+//
+//  if ($rs != NULL) {
+//    foreach ($rs['result']['rows'] as $row) {
+//      $identifiers[$row['id']] = $row['title'];
+//    }
+//  }
+//
+//  return $identifiers;
+//}
 
 //function _curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
 //  $query = <<<EOT

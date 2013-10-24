@@ -57,9 +57,9 @@ function curios_admin_tools_page() {
 
   $content .= '<p>This page contains a selection of admin tools for the Hebridean Connections repository.</p>';
   $content .= '<h2>Recently created records:</h2>';
-  $content .= '<ul>';
+  $content .= '<ul class="plain-list">';
   foreach ($latest_records as $id=>$title) {
-    $content .= "<li>$id &mdash; $title</li>";
+    $content .= "<li><input type=\"text\" size=\"8\" value=\"$id\" readonly=\"readonly\" /> &nbsp; $title</li>";
   }
   $content .= '</ul>';
 
