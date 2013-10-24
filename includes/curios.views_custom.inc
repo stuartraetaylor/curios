@@ -54,9 +54,11 @@ function __curios_generate_display_images_hc_sound_file(&$view, &$view_spec, $ba
  * Remove image file column from listing.
  */
 function __curios_remove_image_file_column(&$view, &$view_spec, $base_fields) {
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $image_file = $resource_name.'_hc_has_image_file';
+  $image_file = $resource_name.'_'.$config->getImageRelationshipFieldId();
+  
 
   // Remove image file column.
   $handler = __curios_generate_display('listing', $view, $view_spec, $base_fields, TRUE);
@@ -189,11 +191,12 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
   $handler->display->display_options['fields'][$field_name]['required'] = 1;
 
+  $image_url_field = $config->getImageResourceId() .'_'.$config->getURLFieldId();
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['id'] = 'curios_image_thumbnail_field';
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['table'] = 'views';
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['field'] = 'curios_image_thumbnail_field';
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['label'] = '';
-  $handler->display->display_options['fields']['curios_image_thumbnail_field']['alter']['text'] = '[hc_image_file_hc_url]';
+  $handler->display->display_options['fields']['curios_image_thumbnail_field']['alter']['text'] = "[$image_url_field]";
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['alter']['make_link'] = FALSE;
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['hide_alter_empty'] = FALSE;

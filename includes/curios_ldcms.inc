@@ -91,6 +91,10 @@ function __curios_configuration_options($config, $config_spec) {
   // Default browsing class.
   $default_browsing_class_id = $config->getCMSID($config_spec['options']['default_class']);
   $config->setDefaultBrowsingClassId($default_browsing_class_id);
+  
+  // Image resource/class.
+  $image_resource_id = $config->getCMSID($config_spec['options']['image_class']);
+  $config->setImageResourceId($image_resource_id);
 
   // Default namespace.
   $prefixToNS = $config->getPrefixToNamespaceMap();

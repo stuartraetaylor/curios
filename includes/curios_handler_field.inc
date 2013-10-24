@@ -39,7 +39,8 @@ class curios_link_target_rewriter extends views_handler_field {
     $config = curios_configuration();
     $display = $this->view->display[$this->view->current_display];
     $targets = $display->display_options['curios']['relationship_targets'];
-    $subject_id = $values->{'hc_subject_hc_subject_id'};
+    $id_field = $config->getDefaultBrowsingClassId .'_'. $config->getIdentifierFieldId();
+    $subject_id = $values->$id_field;
     $target_view = $config->getViewSpec($targets[$subject_id]);
     $target_path = $target_view->getPath();
     $this->options['alter']['path'] =  $target_path. strstr($this->options['alter']['path'], '/');
@@ -60,7 +61,8 @@ class curios_image_thumbnail_field extends views_handler_field {
     $timthumb_path = '/' . drupal_get_path('module', 'curios') . '/scripts/timthumb.php';
     $w = '260';
 
-    $image_url = $values->{'hc_image_file_hc_url'};
+    $image_url_field = $config->getImageResourceId() .'_'. $config->getURLFieldId();
+    $image_url = $values->$image_url_field;
     $image_url = str_replace('http://www.hebrideanconnections.com/', 'http://www.dotrural.ac.uk/curiosdemo/', $image_url);
     $title = $values->{$this->options['title_field']};
 

@@ -202,10 +202,16 @@ EOT;
  * Returns an array of recently inserted subject_id's.
  */
 function _curios_latest_record_identifiers($n = 10) {
+  $config = curios_configuration();
+  $id_field = $config->getField($config->getIdentifierFieldId());
+  $id_property = $id_field->getRDFPredicate();
+  $title_field = $config->getField($config->getTitleFieldId())
+  $title_property = $title_field->getRDFPredicate();
+  
   $query = <<<EOT
 select ?id ?title where {
-  [] hc:subjectID ?id ; dc:title ?title .
-} order by desc(?id) limit $n
+  [] {$id_property} ?id ; {$title_property} ?title .
+} order by desc(?id) limit {$n}
 EOT;
 
   $rs = __curios_sparql_query($query);
@@ -237,7 +243,11 @@ function _curios_fetch_property_values($class, $property) {
  * Returns all types for a specified individual.
  */
 function _curios_fetch_subject_types($subject_id) {
-  $query = "select ?type where { hc:$subject_id a ?type . ?type a owl:Class }";
+  $config = curios_configuration();
+  $prefix = $config->getPrefix($config->getDefaultNamespace());
+  $record = "$prefix:$subject_id";
+  
+  $query = "select ?type where { $record a ?type . ?type a owl:Class }";
   $rs = __curios_sparql_query($query);
 
   $classes = array();
@@ -285,7 +295,7 @@ function _curios_fetch_subject_types($subject_id) {
 //function _curios_latest_record_identifiers($n = 10) {
 //  $query = <<<EOT
 //select ?id ?title where {
-//  [] hc:subjectID ?id ;
+//  [] dsubjectID ?id ;
 //     dc:title ?title .
 //}
 //order by desc(strlen(?id)) desc(?id)

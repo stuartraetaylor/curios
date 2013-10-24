@@ -164,11 +164,12 @@ function curios_delete_form_submit($form, &$form_state) {
  * Generates a form select element from the browsing classes in the configuration.
  */
 function __curios_resources_form_select() {
+  $config = curios_configuration();
   $options = array();
   $resources = entity_load('sparql_views_resource_type');
 
   foreach ($resources as $entity) {
-    if ($entity->name == 'hc_subject') { // FIXME top level resource should come from confg.
+    if ($entity->name == $config->getDefaultBrowsingClassId()) {
       continue;
     }
     $options[$entity->name] = $entity->label;
@@ -337,19 +338,30 @@ function curios_insert_form_submit($form, &$form_state, $redirect = 'edit') {
   }
 }
 
-
-// FIXME the conditions in the below functions should eventually be part of the config.
-//       update 20130808: the latest version generated in curios_ldcms has most of these definitions
-//                        now built in.
+/* Helper functions to check for special fields defined in the configuration. */
 
 function __is_relationship_field($field_instance) { return $field_instance['ldcms_type'] == 'relationship'; }
-function __is_identifier_field($field_instance) { return $field_instance['field_name'] == 'hc_subject_id'; }
-function __is_title_field($field_instance) { return ($field_instance['field_name'] == 'dc_title' || $field_instance['field_name'] == 'hc_english_name' || $field_instance['field_name'] == 'hc_title'); }
-function __is_description_field($field_instance) { return ($field_instance['field_name'] == 'dc_description' || $field_instance['field_name'] == 'hc_description'); }
+
+function __is_identifier_field($field_instance) {
+  $config = curios_configuration();
+  return $field_instance['field_name'] == $config->getIdentifierField();
+}
+
+function __is_title_field($field_instance) {
+  $config = curios_configuration();
+  return ($field_instance['field_name'] == $config->getTitleFieldId() || 
+    $field_instance['field_name'] == 'hc_english_name' || 
+    $field_instance['field_name'] == 'hc_title'); // FIXME check $resource title field.
+}
+
+function __is_description_field($field_instance) {
+  $config = curios_configuration();
+  return ($field_instance['field_name'] == $config->getDescriptionFieldId() || $field_instance['field_name'] == 'hc_description');
+}
+
 function __is_special_field($field_instance, $config) { 
   return $field_instance['field_name'] == $config->getImageRelationshipFieldId() ||
          $field_instance['field_name'] == $config->getOwnerFieldId() ||
          $field_instance['field_name'] == $config->getMaintainerFieldId() ||
          $field_instance['field_name'] == $config->getPublishedFieldId();
 }
-

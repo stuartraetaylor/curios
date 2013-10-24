@@ -237,7 +237,7 @@ function __curios_generate_display_summary_default(&$view, &$view_spec, $base_fi
   $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
+  $subject_id_field = $resource_name .'_'. $config->getIdentifierFieldId();
 
   /* Display: Details */
   $handler = $view->new_display('block', 'Summary', 'summary');
@@ -669,10 +669,10 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   // Find target type.
   if (empty($ranges[$field_id])) {
     // No target, default to hc_subject.
-    $ranges[$field_id] = 'hc_subject';
+    $ranges[$field_id] = $config->getDefaultBrowsingClassId();
   } else if (is_array($ranges[$field_id])) {
     // Non-empty array -> multiple targets.
-    $ranges[$field_id] = 'hc_subject';
+    $ranges[$field_id] = $config->getDefaultBrowsingClassId();
     $use_rewrite = TRUE;
   } // else -> single target.
 
@@ -719,10 +719,9 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   $handler->display->display_options['relationships'][$field_name]['field'] = $field_name;
   $handler->display->display_options['relationships'][$field_name]['required'] = 0;
 
-  //if (!empty($ranges[$field_id])) {
-  $title_field_name = /*$field_name.'_'.*/$ranges[$field_id].'_dc_title'; // TODO use $base_fields
-  $identifier_field_name = /*$field_name.'_'.*/$ranges[$field_id].'_hc_subject_id'; // TODO use $base_fields
-  $type_field_name = /*$field_name.'_'.*/$ranges[$field_id].'_type'; // TODO use $base_fields
+  $title_field_name = $ranges[$field_id].'_'.$config->getTitleFieldId();
+  $identifier_field_name = $ranges[$field_id].'_'.$config->getIdentifierFieldId();
+  $type_field_name = $ranges[$field_id].'_type';
   $target_view_id = $config->getViewIdForResource($ranges[$field_id]);
   $target_view = $config->getViewSpec($target_view_id);
 
@@ -839,14 +838,19 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     $handler->display->display_options['fields'][$type_field_name]['required'] = 1;
 
     /* Field: Global: Link Target Rewriter */
+    $title_field_id = $config->getDefaultBrowsingClassId().'_'.$config->getTitleFieldId();
+    $identifier_field_id = $config->getDefaultBrowsingClassId().'_'.$config->getIdentifierFieldId();
+    $default_view_spec = $config->getViewIdForResource($config->getResource($config->getDefaultBrowsingClassId()));
+    $default_view_path = $default_view_spec->getPath();
+    
     $handler->display->display_options['fields']['curios_link_target_rewriter']['id'] = 'curios_link_target_rewriter';
     $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
     $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_link_target_rewriter';
     $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
     $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['alter_text'] = TRUE;
-    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_subject_dc_title]';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = "[$title_field_id]";
     $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = TRUE;
-    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['path'] = 'subjects/[hc_subject_hc_subject_id]';
+    $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['path'] = "$default_view_path/[$identifier_field_id]";
     $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
     $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
     $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['max_length'] = '18';
@@ -865,10 +869,11 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
  * Generates the default listings page view.
  */
 function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fields) {
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $image_file = $resource_name.'_hc_has_image_file';
-  $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
+  $image_file = $resource_name.'_'.$config->getImageRelationshipFieldId();
+  $subject_id_field = $resource_name.'_'.$config->getDefaultBrowsingClassId();
   
   $handler = $view->new_display('block', 'Listing', 'listing');
   
@@ -1129,8 +1134,8 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
-  $image_view_id = $config->getViewIdForResource('hc_image_file');
+  $subject_id_field = $resource_name.'_'.$config->getIdentifierFieldId();
+  $image_view_id = $config->getViewIdForResource($config->getImageResourceId());
   $image_view_spec = $config->getViewSpec($image_view_id);
 
   /* Display: Images */
@@ -1162,7 +1167,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['row_options']['default_field_elements'] = 1;
 
   // Relationship
-  $relationship_field = $resource_name.'_hc_has_image_file';
+  $relationship_field = $resource_name.'_'.$config->getImageRelationshipFieldId();
   $handler->display->display_options['relationships'][$relationship_field]['id'] = $relationship_field;
   $handler->display->display_options['relationships'][$relationship_field]['table'] = $view->base_table;
   $handler->display->display_options['relationships'][$relationship_field]['field'] = $relationship_field;
@@ -1194,7 +1199,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields'][$subject_id_field]['hide_alter_empty'] = 0;
 
   // Field: file.
-  $field_name = 'hc_image_file_hc_url';
+  $field_name = $config->getImageResourceId().'_'.$config->getURLFieldId();
   $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
   $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
@@ -1253,7 +1258,7 @@ function __curios_generate_display_images_default(&$view, &$view_spec, $base_fie
   $handler->display->display_options['fields']['curios_link_target_rewriter']['table'] = 'views';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['field'] = 'curios_image_thumbnail_field';
   $handler->display->display_options['fields']['curios_link_target_rewriter']['label'] = '';
-  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = '[hc_image_file_hc_url]';
+  $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['text'] = "[$field_name]";
   $handler->display->display_options['fields']['curios_link_target_rewriter']['alter']['make_link'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['curios_link_target_rewriter']['hide_alter_empty'] = FALSE;
@@ -1301,9 +1306,10 @@ function __curios_rdf_type_filter(&$handler, $view, $view_spec) {
  * Generates display with admin links for users with 'curios manage repository' access.
  */
 function __curios_generate_display_admin_tools_default(&$view, &$view_spec, $base_fields) {
+  $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $subject_id_field = $resource_name.'_hc_subject_id';  // TODO use $base_fields
+  $subject_id_field = $resource_name.'_'.$config->getIdentifierField();
   $admin_edit_path = 'curios/manage/edit/'. $resource_name;
 
   /* Display: Details */

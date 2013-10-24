@@ -133,7 +133,7 @@ function _curios_views_link_target_rewriter(&$view) {
 
       // Find target resource from candidate resources.
       $intersect = array_intersect($candidate_targets, $available_target_resources);
-      $target_resource = !empty($intersect) ? reset($intersect) : 'hc_subject'; // pick one or fall back to subject.
+      $target_resource = !empty($intersect) ? reset($intersect) : $config->getDefaultBrowsingClassId(); // pick one or fall back to subject.
 
       // Rewrite link using target resource path.
       $target_view = $config->getViewIdForResource($target_resource);
@@ -146,7 +146,8 @@ function _curios_views_link_target_rewriter(&$view) {
           break;
         }
 
-        if ($result->{'hc_subject_hc_subject_id'} == $target_individual) {
+		$id_field = $config->getDefaultBrowsingClassId .'_'. $config->getIdentifierFieldId();
+        if ($result->$id_field == $target_individual) {
           unset($view->result[$key]);
           $removed += 1;
         }
@@ -165,9 +166,12 @@ function _curios_views_link_target_rewriter(&$view) {
 }
 
 function __group_object_result_types($results) {
+  $id_field = $config->getDefaultBrowsingClassId .'_'. $config->getIdentifierFieldId();
+  $type_field = $config->getDefaultBrowsingClassId .'_type';
+
   $types = array();
   foreach ($results as $result) {
-    $types[$result->{'hc_subject_hc_subject_id'}][] = $result->{'hc_subject_type'};
+    $types[$result->$id_field][] = $result->$type_field;
   }
   return $types;
 }

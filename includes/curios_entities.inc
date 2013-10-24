@@ -189,7 +189,8 @@ class LDCMSConfiguration {
   private $date_range_to_id = NULL;
 
   private $title_field_id = NULL;
-  private $description_field_id = NULL;
+  private $description_field_id = NULL
+  private $image_resource_id = NULL;
   private $image_relationship_field_id = NULL;
   private $url_field_id = NULL;
   private $owner_field_id = NULL;
@@ -263,6 +264,9 @@ class LDCMSConfiguration {
   function setDateRangeToId($date_range_to_id) { $this->date_range_to_id = $date_range_to_id; }
   function getDateRangeToId() { return $this->date_range_to_id; }
 
+  function setImageResourceId($image_resource_id) { $this->image_resource_id = $image_resource_id; }
+  function getImageResourceId() { return $this->image_resource_id; }
+  
   function setDefaultBrowsingClassId($default_browsing_class_id) { $this->default_browsing_class_id = $default_browsing_class_id; }
   function getDefaultBrowsingClassId() { return $this->default_browsing_class_id; }
   
