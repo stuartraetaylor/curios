@@ -465,7 +465,7 @@ function _curios_update_fieldset_existing_relationships(&$form, $form_state, $rd
   }
 }
 
-function _curios_update_fieldset_new_relationships(&$form, $form_state, $rdf_mapping, $relationship_options) {
+function _curios_update_fieldset_new_relationships(&$form, &$form_state, $rdf_mapping, $relationship_options) {
   // New relationships.
   $form['relationship_fieldset'] = array(
     '#type' => 'fieldset',
