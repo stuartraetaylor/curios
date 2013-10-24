@@ -29,16 +29,34 @@ require_once(dirname(__FILE__) .'/../scripts/php_fast_cache.php');
 function curios_update_form_page($resource_type, $subject_id = NULL) {
   $view_result = _curios_execute_properties_view($resource_type->name, $subject_id);
 
-  if (!empty($view_result)) {
+  if (curios_is_empty_view_result($view_result)) {
+    drupal_set_message("Unknown record or unable to retrieve: $resource_type->label; ID: $subject_id.", 'error', FALSE);
+    return curios_update_page();
+  } else {
     $page = array();
     $page[] = array('#markup' => "<p>Edit the form below to update this record.</p>");
     $page[] = drupal_get_form('curios_update_form', $resource_type, $subject_id, $view_result);
 
     return $page;
-  } else {
-    //drupal_set_message("Unknown record: $resource_type->label; ID: $subject_id", 'error', FALSE);
-    return curios_update_page();
   }
+}
+
+/**
+ *
+ * Checks for empty view results.
+ *
+ * The results are considered empty if only the URI field is returned.
+ */
+function curios_is_empty_view_result($view_result) {
+ if (empty($view_result)) {
+   return TRUE;
+ }
+
+ if (count((array)$view_result[0]) <= 1) { // only URI or empty.
+   return TRUE;
+ }
+
+ return FALSE;
 }
 
 /**
