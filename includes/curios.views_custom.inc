@@ -88,6 +88,10 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
 
+  // Title/description fields.
+  $title_field_name = $resource_name.'_'.$view_spec->getTitleFieldId();
+  $description_field_name = $resource_name.'_'.$view_spec->getDescriptionFieldId();
+
   // DateRange.
   $date_range_resource = $config->getDateRangeResource();
   $date_range_from_id = $config->getDateRangeFromId();
@@ -127,15 +131,29 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $handler->display->display_options['fields'][$resource_name]['field'] = $resource_name;
   $handler->display->display_options['fields'][$resource_name]['exclude'] = TRUE;
 
-  // Field: title
+  // dc:title
   $handler->display->display_options['fields'][$base_fields['title']]['id'] = $base_fields['title'];
   $handler->display->display_options['fields'][$base_fields['title']]['table'] = $view->base_table;
   $handler->display->display_options['fields'][$base_fields['title']]['field'] = $base_fields['title'];
   $handler->display->display_options['fields'][$base_fields['title']]['label'] = '';
   $handler->display->display_options['fields'][$base_fields['title']]['exclude'] = TRUE;
-  $handler->display->display_options['fields'][$base_fields['title']]['element_label_colon'] = 1;
-  $handler->display->display_options['fields'][$base_fields['title']]['element_default_classes'] = 1;
   $handler->display->display_options['fields'][$base_fields['title']]['required'] = 1;
+
+  // hc:title
+  $handler->display->display_options['fields'][$title_field_name]['id'] = $title_field_name;
+  $handler->display->display_options['fields'][$title_field_name]['table'] = $view->base_table;
+  $handler->display->display_options['fields'][$title_field_name]['field'] = $title_field_name;
+  $handler->display->display_options['fields'][$title_field_name]['label'] = '';
+  $handler->display->display_options['fields'][$title_field_name]['exclude'] = TRUE;
+  $handler->display->display_options['fields'][$title_field_name]['required'] = 1;
+
+  // hc:description
+  $handler->display->display_options['fields'][$description_field_name]['id'] = $description_field_name;
+  $handler->display->display_options['fields'][$description_field_name]['table'] = $view->base_table;
+  $handler->display->display_options['fields'][$description_field_name]['field'] = $description_field_name;
+  $handler->display->display_options['fields'][$description_field_name]['label'] = '';
+  $handler->display->display_options['fields'][$description_field_name]['exclude'] = TRUE;
+  $handler->display->display_options['fields'][$description_field_name]['required'] = 0;
 
     // Field: file.
   $field_name = $resource_name.'_'.$config->getURLFieldId();
@@ -157,11 +175,6 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['title_field'] = $base_fields['title'];
   $handler->display->display_options['fields']['curios_image_thumbnail_field']['disable_thumbnail'] = TRUE;
-
-
-  // Title/description fields.
-  $title_field_name = $resource_name.'_'.$view_spec->getTitleFieldId();
-  $description_field_name = $resource_name.'_'.$view_spec->getDescriptionFieldId();
 
   // Optional data fields.
   $date_range_position = 0;
