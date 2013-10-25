@@ -269,11 +269,11 @@ function curios_insert_form($form, $form_state, $resource_type) {
 }
 
 function curios_insert_form_submit_then_create($form, &$form_state) {
-  curios_insert_form_submit($form, &$form_state, 'create');
+  curios_insert_form_submit($form, $form_state, 'create');
 }
 
 function curios_insert_form_submit_then_edit($form, &$form_state) {
-  curios_insert_form_submit($form, &$form_state, 'edit');
+  curios_insert_form_submit($form, $form_state, 'edit');
 }
 
 /**

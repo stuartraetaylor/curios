@@ -638,7 +638,7 @@ function _curios_is_valid_relationship_assertion($resource_name, $relationship_n
 }
 
 function curios_update_form_submit_then_view($form, &$form_state) {
-  curios_update_form_submit($form, &$form_state, 'view');
+  curios_update_form_submit($form, $form_state, 'view');
 }
 
 function curios_update_form_submit_discard($form, &$form_state) {
