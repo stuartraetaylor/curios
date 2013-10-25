@@ -344,7 +344,7 @@ function __is_relationship_field($field_instance) { return $field_instance['ldcm
 
 function __is_identifier_field($field_instance) {
   $config = curios_configuration();
-  return $field_instance['field_name'] == $config->getIdentifierField();
+  return $field_instance['field_name'] == $config->getIdentifierFieldId();
 }
 
 function __is_title_field($field_instance) {
