@@ -1136,7 +1136,7 @@ function __curios_uri_filter(&$handler, $view, $view_spec) {
   $handler->display->display_options['arguments'][$resource_name]['sparql_options'] = array(
     'value_type' => 'uri',
     'language' => '0',
-    'code' => 'return \'' . $config->getNamespace('hc') . '\'.$this->argument;',
+    'code' => 'return \'' . $config->getDefaultNamespace() . '\'.$this->argument;',
   );
 }
 
