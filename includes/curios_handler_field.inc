@@ -59,8 +59,6 @@ class curios_image_thumbnail_field extends views_handler_field {
 
   function render($values) {
     $config = curios_configuration();
-    $timthumb_path = '/' . drupal_get_path('module', 'curios') . '/scripts/timthumb.php';
-    $w = '260';
 
     $image_url_field = $config->getImageResourceId() .'_'. $config->getURLFieldId();
     $image_url = $values->$image_url_field;
@@ -70,8 +68,8 @@ class curios_image_thumbnail_field extends views_handler_field {
     if (isset($this->options['disable_thumbnail']) && $this->options['disable_thumbnail'] = TRUE) { // Display full size image.
       $image_output = "<a href=\"$image_url\" title=\"$title\" rel=\"lightbox[gallery]\"><img src=\"$image_url\" alt=\"$title\" /></a>";
     } else { // Generate thumbnail.
-      $timthumb_url = $timthumb_path . "?w=$w&src=" . urlencode($image_url);
-      $image_output = "<a href=\"$image_url\" title=\"$title\" rel=\"lightbox[gallery]\"><img src=\"$timthumb_url\" width=\"$w\" alt=\"$title\" /></a>";
+      $thumbnail = theme('imagecache_external', array('path' => $image_url, 'style_name'=> 'medium','alt'=>$title));
+      $image_output = "<a href=\"$image_url\" title=\"$title\" rel=\"lightbox[gallery]\">$thumbnail</a>";
     }
 
     return $image_output;

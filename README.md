@@ -31,6 +31,7 @@ The module has been tested with the following stable releases. It may also work 
   [Ckeditor](https://drupal.org/project/ckeditor)   | [7.x-1.13](http://ftp.drupal.org/files/projects/ckeditor-7.x-1.13.tar.gz)
   [Libraries](https://drupal.org/project/libraries) | [7.x-2.1](http://ftp.drupal.org/files/projects/libraries-7.x-2.1.tar.gz)
   [Views Litepager](https://drupal.org/project/views_litepager) | [7.x-3.0](http://ftp.drupal.org/files/projects/views_litepager-7.x-3.0.tar.gz)
+  [Imagecache External](https://drupal.org/project/imagecache_external) | [7.x-2.0-beta1](http://ftp.drupal.org/files/projects/imagecache_external-7.x-2.0-beta1.tar.gz)
   [Devel](https://drupal.org/project/devel)         | [7.x-1.3](http://ftp.drupal.org/files/projects/devel-7.x-1.3.tar.gz)
 
 ### Required modules, development snapshots:
@@ -73,10 +74,11 @@ Installation Notes
     * Click *Load Configuration*.
   7. Enable CURIOS Theme and set as default via admin/appearance.
   8. Enable *Description Link Filter* for *Filtered HTML* and *Full HTML* via admin/config/content/formats.
-  9. Download and install the standalone CKEditor to the libraries folder as described in:
+  9. Add 'www.dotrural.ac.uk' to the Imagecache External whitelist (admin/config/media/imagecache_external).
+  10. Download and install the standalone CKEditor to the libraries folder as described in:
     http://docs.cksource.com/CKEditor_for_Drupal/Open_Source/Drupal_7/Installation
-  10. Optional: enable *Cache pages for anonymous users* via admin/config/development/performance.
-  11. Finally, clear Drupal's cache:
+  11. Optional: enable *Cache pages for anonymous users* via admin/config/development/performance.
+  12. Finally, clear Drupal's cache:
 
           $ drush cc all
 

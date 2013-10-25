@@ -59,4 +59,5 @@ dependencies[] = views_ui
 dependencies[] = panels_ipe
 dependencies[] = views_content
 dependencies[] = rdfui
+dependencies[] = imagecache_external
 dependencies[] = devel

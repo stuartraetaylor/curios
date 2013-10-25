@@ -19,7 +19,7 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(dirname(__FILE__) .'/../scripts/php_fast_cache.php');
+require_once('scripts/php_fast_cache.php');
 
 /**
  * Page callback.
