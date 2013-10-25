@@ -205,7 +205,7 @@ function _curios_latest_record_identifiers($n = 10) {
   $config = curios_configuration();
   $id_field = $config->getField($config->getIdentifierFieldId());
   $id_property = $id_field->getRDFPredicate();
-  $title_field = $config->getField($config->getTitleFieldId())
+  $title_field = $config->getField($config->getTitleFieldId());
   $title_property = $title_field->getRDFPredicate();
   
   $query = <<<EOT

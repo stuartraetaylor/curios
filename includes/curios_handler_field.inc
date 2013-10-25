@@ -39,7 +39,7 @@ class curios_link_target_rewriter extends views_handler_field {
     $config = curios_configuration();
     $display = $this->view->display[$this->view->current_display];
     $targets = $display->display_options['curios']['relationship_targets'];
-    $id_field = $config->getDefaultBrowsingClassId .'_'. $config->getIdentifierFieldId();
+    $id_field = $config->getDefaultBrowsingClassId() .'_'. $config->getIdentifierFieldId();
     $subject_id = $values->$id_field;
     $target_view = $config->getViewSpec($targets[$subject_id]);
     $target_path = $target_view->getPath();
@@ -58,6 +58,7 @@ class curios_image_thumbnail_field extends views_handler_field {
   }
 
   function render($values) {
+    $config = curios_configuration();
     $timthumb_path = '/' . drupal_get_path('module', 'curios') . '/scripts/timthumb.php';
     $w = '260';
 

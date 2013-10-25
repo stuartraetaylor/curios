@@ -189,7 +189,7 @@ class LDCMSConfiguration {
   private $date_range_to_id = NULL;
 
   private $title_field_id = NULL;
-  private $description_field_id = NULL
+  private $description_field_id = NULL;
   private $image_resource_id = NULL;
   private $image_relationship_field_id = NULL;
   private $url_field_id = NULL;

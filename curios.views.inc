@@ -146,7 +146,7 @@ function _curios_views_link_target_rewriter(&$view) {
           break;
         }
 
-		$id_field = $config->getDefaultBrowsingClassId .'_'. $config->getIdentifierFieldId();
+		$id_field = $config->getDefaultBrowsingClassId() .'_'. $config->getIdentifierFieldId();
         if ($result->$id_field == $target_individual) {
           unset($view->result[$key]);
           $removed += 1;
@@ -166,15 +166,13 @@ function _curios_views_link_target_rewriter(&$view) {
 }
 
 function __group_object_result_types($results) {
-  $id_field = $config->getDefaultBrowsingClassId .'_'. $config->getIdentifierFieldId();
-  $type_field = $config->getDefaultBrowsingClassId .'_type';
+  $config = curios_configuration();
+  $identifier_field_id = $config->getDefaultBrowsingClassId() .'_'. $config->getIdentifierFieldId();
+  $type_field_id = $config->getDefaultBrowsingClassId() .'_type';
 
   $types = array();
   foreach ($results as $result) {
-    $types[$result->$id_field][] = $result->$type_field;
+    $types[$result->$identifier_field_id][] = $result->$type_field_id;
   }
   return $types;
 }
-
-
-

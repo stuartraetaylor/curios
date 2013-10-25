@@ -840,7 +840,7 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     /* Field: Global: Link Target Rewriter */
     $title_field_id = $config->getDefaultBrowsingClassId().'_'.$config->getTitleFieldId();
     $identifier_field_id = $config->getDefaultBrowsingClassId().'_'.$config->getIdentifierFieldId();
-    $default_view_spec = $config->getViewIdForResource($config->getResource($config->getDefaultBrowsingClassId()));
+    $default_view_spec = $config->getViewSpec($config->getViewIdForResource($config->getDefaultBrowsingClassId()));
     $default_view_path = $default_view_spec->getPath();
     
     $handler->display->display_options['fields']['curios_link_target_rewriter']['id'] = 'curios_link_target_rewriter';
@@ -873,7 +873,7 @@ function __curios_generate_display_listing_default(&$view, &$view_spec, $base_fi
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
   $image_file = $resource_name.'_'.$config->getImageRelationshipFieldId();
-  $subject_id_field = $resource_name.'_'.$config->getDefaultBrowsingClassId();
+  $subject_id_field = $resource_name.'_'.$config->getIdentifierFieldId();
   
   $handler = $view->new_display('block', 'Listing', 'listing');
   
@@ -1309,7 +1309,7 @@ function __curios_generate_display_admin_tools_default(&$view, &$view_spec, $bas
   $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
-  $subject_id_field = $resource_name.'_'.$config->getIdentifierField();
+  $subject_id_field = $resource_name.'_'.$config->getIdentifierFieldId();
   $admin_edit_path = 'curios/manage/edit/'. $resource_name;
 
   /* Display: Details */

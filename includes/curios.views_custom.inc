@@ -83,9 +83,15 @@ function __curios_remove_search_link(&$view, &$view_spec, $base_fields) {
  * Override properties view for hc_image_file.
  */
 function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec, $base_fields) {
+  // FIXME there is a lot of duplicated code from __curios_generate_display_properties_default here.
   $config = curios_configuration();
   $resource = $view_spec->getResource();
   $resource_name = $resource->getMachineName();
+
+  // DateRange.
+  $date_range_resource = $config->getDateRangeResource();
+  $date_range_from_id = $config->getDateRangeFromId();
+  $date_range_to_id = $config->getDateRangeToId();
 
   /* Display: Properties */
   $handler = $view->new_display('block', 'Properties', 'properties');
@@ -108,7 +114,9 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   //$handler->display->display_options['defaults']['title'] = FALSE;
 
   // Pager options.
-  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
 
   // Field options.
   $handler->display->display_options['style_plugin'] = 'default';
@@ -209,41 +217,75 @@ function __curios_generate_display_properties_hc_image_file(&$view, &$view_spec,
   $description_field_name = $resource_name.'_'.$view_spec->getDescriptionFieldId();
 
   // Optional data fields.
+  $date_range_position = 0;
   foreach ($view_spec->getFieldIds() as $field_id) {
     $field_name = $resource_name.'_'.$field_id;
     $field = $config->getField($field_id);
 
-    // Remove base fields.
+    // Skip base fields.
     if (in_array($field_name, $base_fields) || $field_name == $title_field_name || $field_name == $description_field_name) {
         continue;
     }
 
-    //__new_field_set_defaults($handler, $resource_name.'_'.$field_name);
-    $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
-    $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
-    $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
-    $handler->display->display_options['fields'][$field_name]['label'] = __format_name($field->getLabel());
-    $handler->display->display_options['fields'][$field_name]['alter']['alter_text'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['make_link'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['absolute'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['external'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['replace_spaces'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['trim_whitespace'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['nl2br'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['word_boundary'] = 1;
-    $handler->display->display_options['fields'][$field_name]['alter']['ellipsis'] = 1;
-    $handler->display->display_options['fields'][$field_name]['alter']['strip_tags'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['trim'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['html'] = 0;
-    $handler->display->display_options['fields'][$field_name]['alter']['url_encode'] = 0;
-    $handler->display->display_options['fields'][$field_name]['element_label_type'] = 'strong';
-    $handler->display->display_options['fields'][$field_name]['element_label_colon'] = 1;
-    $handler->display->display_options['fields'][$field_name]['element_default_classes'] = 1;
-    $handler->display->display_options['fields'][$field_name]['hide_empty'] = 0;
-    $handler->display->display_options['fields'][$field_name]['empty_zero'] = 0;
-    $handler->display->display_options['fields'][$field_name]['hide_alter_empty'] = 0;
-    $handler->display->display_options['fields'][$field_name]['hide_empty'] = 1;
-    $handler->display->display_options['fields'][$field_name]['required'] = 0;
+    if ($field->getType() == 'daterange') { // date range field.
+      // Add relationship.
+      $handler->display->display_options['relationships'][$field_name]['id'] = $field_name;
+      $handler->display->display_options['relationships'][$field_name]['table'] = $view->base_table;
+      $handler->display->display_options['relationships'][$field_name]['field'] = $field_name;
+      $handler->display->display_options['relationships'][$field_name]['required'] = 0;
+
+      // DateRange: dateFrom.
+      $date_from_field_name = $date_range_resource->getId() .'_'. $date_range_from_id;
+      $date_from_views_field = $field_name .'_'. $date_from_field_name;
+      $handler->display->display_options['fields'][$date_from_views_field]['id'] =  $date_from_views_field;
+      $handler->display->display_options['fields'][$date_from_views_field]['table'] = $view->base_table;
+      $handler->display->display_options['fields'][$date_from_views_field]['field'] =  $date_from_field_name;
+      $handler->display->display_options['fields'][$date_from_views_field]['relationship'] = $field_name;
+      $handler->display->display_options['fields'][$date_from_views_field]['label'] = "$field_id $date_range_from_id";
+      $handler->display->display_options['fields'][$date_from_views_field]['exclude'] = TRUE;
+      $handler->display->display_options['fields'][$date_from_views_field]['required'] = 1;
+
+      // DateRange: dateTo.
+      $date_to_field_name = $date_range_resource->getId() .'_'. $date_range_to_id;
+      $date_to_views_field = $field_name .'_'. $date_to_field_name;
+      $handler->display->display_options['fields'][$date_to_views_field]['id'] =  $date_to_views_field;
+      $handler->display->display_options['fields'][$date_to_views_field]['table'] = $view->base_table;
+      $handler->display->display_options['fields'][$date_to_views_field]['field'] =  $date_to_field_name;
+      $handler->display->display_options['fields'][$date_to_views_field]['relationship'] = $field_name;
+      $handler->display->display_options['fields'][$date_to_views_field]['label'] = "$field_id $date_range_to_id";
+      $handler->display->display_options['fields'][$date_to_views_field]['exclude'] = TRUE;
+      $handler->display->display_options['fields'][$date_to_views_field]['required'] = 1;
+
+      // Date range renderer.
+      $date_range_views_field = $field_name .'_date_range';
+      $handler->display->display_options['fields'][$date_range_views_field]['id'] = $date_range_views_field;
+      $handler->display->display_options['fields'][$date_range_views_field]['table'] = 'views';
+      $handler->display->display_options['fields'][$date_range_views_field]['field'] = 'curios_date_range_field';
+      $handler->display->display_options['fields'][$date_range_views_field]['label'] = __format_name($field->getLabel());
+      $handler->display->display_options['fields'][$date_range_views_field]['element_label_type'] = 'strong';
+      $handler->display->display_options['fields'][$date_range_views_field]['element_label_colon'] = 1;
+      $handler->display->display_options['fields'][$date_range_views_field]['element_default_classes'] = 1;
+      $handler->display->display_options['fields'][$date_range_views_field]['hide_empty'] = 1;
+      $handler->display->display_options['fields'][$date_range_views_field]['exclude'] = FALSE;
+      $handler->display->display_options['fields'][$date_range_views_field]['required'] = 1;
+      $handler->display->display_options['fields'][$date_range_views_field]['date_range_position'] = $date_range_position;
+      $handler->display->display_options['fields'][$date_range_views_field]['date_range_from'] = $date_from_field_name;
+      $handler->display->display_options['fields'][$date_range_views_field]['date_range_to'] = $date_to_field_name;
+
+      // Track number of date ranges added to the field set.
+      $date_range_position += 1;
+
+    } else { // Text field / default.
+      $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
+      $handler->display->display_options['fields'][$field_name]['table'] = $view->base_table;
+      $handler->display->display_options['fields'][$field_name]['field'] = $field_name;
+      $handler->display->display_options['fields'][$field_name]['label'] = __format_name($field->getLabel());
+      $handler->display->display_options['fields'][$field_name]['element_label_type'] = 'strong';
+      $handler->display->display_options['fields'][$field_name]['element_label_colon'] = 1;
+      $handler->display->display_options['fields'][$field_name]['element_default_classes'] = 1;
+      $handler->display->display_options['fields'][$field_name]['hide_empty'] = 1;
+      $handler->display->display_options['fields'][$field_name]['required'] = 0;
+    }
   }
 
   // Contextual filters.
