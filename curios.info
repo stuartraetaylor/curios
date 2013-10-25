@@ -59,3 +59,4 @@ dependencies[] = views_ui
 dependencies[] = panels_ipe
 dependencies[] = views_content
 dependencies[] = rdfui
+dependencies[] = devel
