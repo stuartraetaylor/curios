@@ -1012,17 +1012,19 @@ function __curios_generate_display_admin_tools_default(&$view, &$view_spec, $bas
   $handler->display->display_options['fields'][$subject_id_field]['field'] = $subject_id_field;
   $handler->display->display_options['fields'][$subject_id_field]['exclude'] = TRUE;
 
-  // Edit link.
-  $field_name = 'curios_admin_edit_link';
-  $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
-  $handler->display->display_options['fields'][$field_name]['table'] = 'views';
-  $handler->display->display_options['fields'][$field_name]['field'] = 'nothing';
-  $handler->display->display_options['fields'][$field_name]['label'] = '';
-  $handler->display->display_options['fields'][$field_name]['alter']['text'] = '[ Edit This Record ]';
-  $handler->display->display_options['fields'][$field_name]['ui_name'] = 'Edit Record Link';
-  $handler->display->display_options['fields'][$field_name]['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields'][$field_name]['alter']['make_link'] = 1;
-  $handler->display->display_options['fields'][$field_name]['alter']['path'] = $admin_edit_path.'/['.$subject_id_field.']';
+  // Edit record button.
+  if ($resource_name != $config->getDefaultResourceId()) { // Do not display edit option for the default resource/class.
+    $field_name = 'curios_admin_edit_link';
+    $handler->display->display_options['fields'][$field_name]['id'] = $field_name;
+    $handler->display->display_options['fields'][$field_name]['table'] = 'views';
+    $handler->display->display_options['fields'][$field_name]['field'] = 'nothing';
+    $handler->display->display_options['fields'][$field_name]['label'] = '';
+    $handler->display->display_options['fields'][$field_name]['alter']['text'] = '[ Edit This Record ]';
+    $handler->display->display_options['fields'][$field_name]['ui_name'] = 'Edit Record Link';
+    $handler->display->display_options['fields'][$field_name]['alter']['alter_text'] = 0;
+    $handler->display->display_options['fields'][$field_name]['alter']['make_link'] = 1;
+    $handler->display->display_options['fields'][$field_name]['alter']['path'] = $admin_edit_path.'/['.$subject_id_field.']';
+  }
 
   // Contextual filters.
   __curios_uri_filter($handler, $view, $view_spec);

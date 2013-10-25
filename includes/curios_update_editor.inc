@@ -27,6 +27,13 @@ require_once('scripts/php_fast_cache.php');
  * Displays the update form.
  */
 function curios_update_form_page($resource_type, $subject_id = NULL) {
+  $config = curios_configuration();
+
+  // Do not show update form for default resource/class.
+  if ($resource_type->name == $config->getDefaultResourceId()) {
+    return curios_update_page();
+  }
+
   $view_result = _curios_execute_properties_view($resource_type->name, $subject_id);
 
   if (curios_is_empty_view_result($view_result)) {
