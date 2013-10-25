@@ -508,10 +508,10 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
   // Find target type.
   if (empty($ranges[$field_id])) {
     // No target, default to hc_subject.
-    $ranges[$field_id] = $config->getDefaultBrowsingClassId();
+    $ranges[$field_id] = $config->getDefaultResourceId();
   } else if (is_array($ranges[$field_id])) {
     // Non-empty array -> multiple targets.
-    $ranges[$field_id] = $config->getDefaultBrowsingClassId();
+    $ranges[$field_id] = $config->getDefaultResourceId();
     $use_rewrite = TRUE;
   } // else -> single target.
 
@@ -606,9 +606,9 @@ function __curios_generate_object_block(&$view, &$view_spec, $base_fields, $fiel
     $handler->display->display_options['fields'][$type_field_name]['required'] = 1;
 
     /* Field: Global: Link Target Rewriter */
-    $title_field_id = $config->getDefaultBrowsingClassId().'_'.$config->getTitleFieldId();
-    $identifier_field_id = $config->getDefaultBrowsingClassId().'_'.$config->getIdentifierFieldId();
-    $default_view_spec = $config->getViewSpec($config->getViewIdForResource($config->getDefaultBrowsingClassId()));
+    $title_field_id = $config->getDefaultResourceId().'_'.$config->getTitleFieldId();
+    $identifier_field_id = $config->getDefaultResourceId().'_'.$config->getIdentifierFieldId();
+    $default_view_spec = $config->getViewSpec($config->getViewIdForResource($config->getDefaultResourceId()));
     $default_view_path = $default_view_spec->getPath();
     
     $handler->display->display_options['fields']['curios_link_target_rewriter']['id'] = 'curios_link_target_rewriter';

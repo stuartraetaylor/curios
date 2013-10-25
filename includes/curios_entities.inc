@@ -198,7 +198,7 @@ class LDCMSConfiguration {
   private $published_field_id = NULL;
 
   private $identifier_field_id = NULL;
-  private $default_browsing_class_id = NULL;
+  private $default_resource_id = NULL;
   private $default_namespace = NULL;
 
   function getCMSID($ontology_entity, $is_curie = TRUE) {  // id function
@@ -267,8 +267,8 @@ class LDCMSConfiguration {
   function setImageResourceId($image_resource_id) { $this->image_resource_id = $image_resource_id; }
   function getImageResourceId() { return $this->image_resource_id; }
   
-  function setDefaultBrowsingClassId($default_browsing_class_id) { $this->default_browsing_class_id = $default_browsing_class_id; }
-  function getDefaultBrowsingClassId() { return $this->default_browsing_class_id; }
+  function setDefaultResourceId($default_resource_id) { $this->default_resource_id = $default_resource_id; }
+  function getDefaultResourceId() { return $this->default_resource_id; }
   
   function setTitleFieldId($title_field_id) { $this->title_field_id = $title_field_id; }
   function getTitleFieldId() { return $this->title_field_id; }

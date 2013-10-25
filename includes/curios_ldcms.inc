@@ -88,9 +88,9 @@ function __curios_configuration_options($config, $config_spec) {
   $identifier_field_id = $config->getCMSID($config_spec['options']['identifier_property']);
   $config->setIdentifierFieldId($identifier_field_id);
 
-  // Default browsing class.
-  $default_browsing_class_id = $config->getCMSID($config_spec['options']['default_class']);
-  $config->setDefaultBrowsingClassId($default_browsing_class_id);
+  // Default browsing class/resource.
+  $default_resource_id = $config->getCMSID($config_spec['options']['default_class']);
+  $config->setDefaultResourceId($default_resource_id);
   
   // Image resource/class.
   $image_resource_id = $config->getCMSID($config_spec['options']['image_class']);

@@ -150,7 +150,7 @@ function _curios_subject_insert($rdf_type, $triples_insert) {
   $id_field = $config->getField($config->getIdentifierFieldId());
   $id_property = $id_field->getRDFPredicate();
 
-  $default_browsing_class = $config->getResource($config->getDefaultBrowsingClassId());
+  $default_browsing_class = $config->getResource($config->getDefaultResourceId());
   $default_class = $default_browsing_class->getBaseClass();
 
   $query = <<<EOT
@@ -177,7 +177,7 @@ function _curios_fetch_max_identifier() {
   $config = curios_configuration();
   $id_field = $config->getField($config->getIdentifierFieldId());
   $id_property = $id_field->getRDFPredicate();
-  $default_browsing_class = $config->getResource($config->getDefaultBrowsingClassId());
+  $default_browsing_class = $config->getResource($config->getDefaultResourceId());
   $default_class = $default_browsing_class->getBaseClass();
   
 $query = <<<EOT

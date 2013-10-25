@@ -169,7 +169,7 @@ function __curios_resources_form_select() {
   $resources = entity_load('sparql_views_resource_type');
 
   foreach ($resources as $entity) {
-    if ($entity->name == $config->getDefaultBrowsingClassId()) {
+    if ($entity->name == $config->getDefaultResourceId()) {
       continue;
     }
     $options[$entity->name] = $entity->label;
