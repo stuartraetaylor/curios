@@ -28,10 +28,6 @@ function curios_endpoints() {
       'query' => 'http://localhost:3030/dataset/query',
       'update' => 'http://localhost:3030/dataset/update',
     ),
-    //'config' => array(
-    //  'query' => 'http://localhost:3030/ldcms-config/query',
-    //  'update' => 'http://localhost:3030/ldcms-config/update',
-    //),
   );
 
   return $endpoints;
@@ -258,78 +254,7 @@ function _curios_fetch_subject_types($subject_id) {
   return $classes;
 }
 
-///**
-// * Creates a new individiual.
-// */
-//function _curios_subject_insert($subject_id, $rdf_type, $triples_insert) {
-//  $query = '';
-//  $query .= "INSERT DATA {\n";
-//  $query .= "  hc:$subject_id a ". $rdf_type .";\n";
-//  $query .= $triples_insert;
-//  $query .= '}';
-//
-//  return __curios_sparql_update($query);
-//}
-//
-///**
-// * Finds the highest subject_id used in the triple stores.
-// */
-//function _curios_fetch_max_identifier() {
-//  $query = '';
-//  $query .= "select ?id where {\n";
-//  $query .= "  [] hc:subjectID ?id .}\n";
-//  $query .= "order by desc(strlen(?id)) desc(?id)\n";
-//  $query .= "limit 1";
-//
-//  $rs = __curios_sparql_query($query);
-//  if ($rs != NULL) {
-//    return $rs['result']['rows'][0]['id'];
-//  } else {
-//    return -1;
-//  }
-//}
-//
-///**
-// * Returns an array of recently inserted subject_id's.
-// */
-//function _curios_latest_record_identifiers($n = 10) {
-//  $query = <<<EOT
-//select ?id ?title where {
-//  [] dsubjectID ?id ;
-//     dc:title ?title .
-//}
-//order by desc(strlen(?id)) desc(?id)
-//limit $n
-//EOT;
-//
-//  $rs = __curios_sparql_query($query);
-//  $identifiers = array();
-//
-//  if ($rs != NULL) {
-//    foreach ($rs['result']['rows'] as $row) {
-//      $identifiers[$row['id']] = $row['title'];
-//    }
-//  }
-//
-//  return $identifiers;
-//}
 
-//function _curios_is_valid_property_assertion($domain_class, $property, $range_individual) {
-//  $query = <<<EOT
-//# Check individual is in the range of the specified property for the specified class.
-//select ?range where  {
-//  [] a owl:ObjectProperty ;
-//      rdfs:subPropertyOf $property ;
-//      rdfs:domain $domain_class ;
-//      rdfs:range ?range .
-//  hc:$range_individual a ?range .
-//} limit 1
-//EOT;
-//
-//    $rs = __curios_sparql_query($query, 'dataset');
-//    return ($rs != NULL && !empty($rs['result']['rows']));
-//}
-//
 //// -- CONFIGURATION --
 //
 //function __curios_sparql_fetch_browsing_classes() {
