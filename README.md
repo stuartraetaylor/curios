@@ -1,6 +1,8 @@
 CURIOS: Linked Data CMS
 =======================
 
+***This project is now maintained at http://github.com/curiosproject/curios.***
+
 *CURIOS: Linked Data CMS* is a Drupal 7 module that provides the functionality to perform CRUD operations on RDF data stored in a triple store. The module makes use of a configuration that provides a mapping between OWL classes/properties and Drupal entities.
 
 This version of the module is intended for use with the [Hebridean Connections](http://blog.hebrideanconnections.com/)
